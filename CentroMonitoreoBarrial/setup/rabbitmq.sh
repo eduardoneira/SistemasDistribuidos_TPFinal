@@ -1,11 +1,17 @@
 #!/bin/bash
 
+echo "Instalando dependencias rabbitMQ"
+
+dnf install erlang
+dnf install logrotate
+dnf install socat
+
 echo "Comenzando instalacion rabbitMQ"
 
-sudo rpm rabbitmq-server-3.6.10-1.el7.noarch.rpm
+rpm -U rabbitmq-server-3.6.10-1.el7.noarch.rpm
 
 #Para usar mqtt
-sudo rabbitmq-plugins enable rabbitmq_mqtt
+rabbitmq-plugins enable rabbitmq_mqtt
 
 #Reinicio el servicio
-sudo service rabbitmq-server restart
+service rabbitmq-server restart
