@@ -15,3 +15,6 @@ rabbitmq-plugins enable rabbitmq_mqtt
 
 #Reinicio el servicio
 service rabbitmq-server restart
+
+#Instalo pika cliente
+pip install pika
