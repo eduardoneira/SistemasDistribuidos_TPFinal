@@ -7,6 +7,8 @@ fi
 
 echo "Comienza instalacion de Camara"
 
+mkdir log
+
 cd setup/
 
 ./python.sh

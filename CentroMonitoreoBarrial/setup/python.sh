@@ -4,7 +4,7 @@ echo "Instalando python 3"
 dnf install python3
 
 echo "Instalando pip"
-python get-pip.py
+python3 get-pip.py
 
 echo "Instalando cliente pika"
-pip install pika
+pip3 install pika

@@ -1,18 +1,30 @@
 #!/bin/python3
 
 import json
-import os
+import signal, os
+from time import sleep
 import pika
 import logging
 
+#TODO: Modularizar a archivos
 def set_logger(logging_level):
   logging.basicConfig(  level=logging_level,
                         format='%(asctime)s %(levelname)-8s Camera   '+ str(os.getpid()) +'    %(message)s',
                         datefmt='%a, %d %b %Y %H:%M:%S',
-                        filename='./Camera.log',
+                        filename='./log/Camara.log',
                         filemode='w')
 
   logging.getLogger('pika').setLevel(logging.WARNING)
+
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True
+    logging.debug('Llego señal de salida. Se va a terminar la captura de fotos')
 
 
 #  STARTS PROGRAM
@@ -33,15 +45,25 @@ channel.queue_declare(queue=config['queue'])
 
 print('Configuración terminada. Comenzando envió de mensajes')
 
-channel.basic_publish(exchange='',
-                      routing_key=config['queue'],
-                      body='Hello World!')
+killer = GracefulKiller()
+sleep_time = 1 / config['FPS']
 
-logging.debug("Sent 'Hello World!'")
+while True:
+  
+
+  channel.basic_publish(exchange='',
+                        routing_key=config['queue'],
+                        body='Hello World!')
+  print('Mensaje enviado')
+  logging.debug('Se envió: \'Hello World!\'')
+
+  sleep(sleep_time)
+
+  if killer.kill_now:
+    break
+
+print('Se recibió una señal de salida, cerrando conexión')
+
 connection.close()
 
-print('Camera terminada')
-
-
-
-  
+print('Proceso terminado')

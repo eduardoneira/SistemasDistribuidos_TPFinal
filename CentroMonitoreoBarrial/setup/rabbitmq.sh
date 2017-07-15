@@ -16,5 +16,6 @@ if ! command -v rabbitmq-server > /dev/null 2>&1; then
 	rabbitmq-plugins enable rabbitmq_mqtt
 
 fi
+
 #Reinicio el servicio
 service rabbitmq-server restart
