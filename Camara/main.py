@@ -27,9 +27,9 @@ sleep_time = 1 / config['FPS']
 
 while True:  
 
-  # channel.basic_publish(  exchange='',
-  #                         routing_key=config['queue'],
-  #                         body='Hello World!')
+  channel.basic_publish(  exchange='',
+                          routing_key=config['queue'],
+                          body='Hello World!')
   print('Mensaje enviado')
   logging.debug('Se envió: \'Hello World!\'')
 
