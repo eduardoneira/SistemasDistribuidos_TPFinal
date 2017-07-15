@@ -13,5 +13,5 @@ sudo ./install.sh
 Configurar el archivo config.json en base a lo necesitado. 
 
 ```
-python3 camara.py
+python3 main.py
 ```

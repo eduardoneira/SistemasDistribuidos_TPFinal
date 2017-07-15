@@ -7,6 +7,8 @@ fi
 
 echo "Comienza instalacion de entorno CMB"
 
+mkdir log
+
 cd setup/
 
 ./python.sh
