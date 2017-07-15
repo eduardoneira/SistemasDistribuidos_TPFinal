@@ -5,15 +5,10 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-echo "Comienza instalacion de entorno CMB"
+echo "Comienza instalacion de Camara"
 
 cd setup/
 
 ./python.sh
 
-./rabbitmq.sh
-
-./python_opencv.sh
-
 cd ..
-

@@ -1,0 +1,3 @@
+Sat, 15 Jul 2017 17:01:55 DEBUG    Camera   6676    Creando conexión a servidor CMB en host 127.0.0.1 usando la cola camToCMB
+Sat, 15 Jul 2017 17:01:55 DEBUG    Camera   6676    Sent 'Hello World!'
+Sat, 15 Jul 2017 17:01:55 WARNING  Camera   6676    Disconnected from RabbitMQ at 127.0.0.1:5672 (200): Normal shutdown
