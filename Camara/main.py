@@ -24,13 +24,12 @@ print('Configuración terminada. Comenzando envió de mensajes')
 
 killer = GracefulKiller()
 sleep_time = 1 / config['FPS']
-i = 1
 
 while True:  
 
   channel.basic_publish(  exchange='',
                           routing_key=config['queue'],
-                          body='Hello World! '+ str(i))
+                          body='Hello World! ')
   print('Mensaje enviado')
   logging.debug('Se envió: \'Hello World!\'')
 
