@@ -8,4 +8,10 @@
 sudo ./install.sh
 ```
 
-# Run 
+# Run
+
+En el archivo config.json se pueden modificar valores para cambiar el comportamiento del CMB. Para correr un CMB usar el siguiente comando :
+
+```
+python3 main.py
+``` 
