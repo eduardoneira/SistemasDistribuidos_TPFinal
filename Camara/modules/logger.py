@@ -7,7 +7,7 @@ import os
 def set_logger(logging_level):
 
   #Para no sobreescribir
-  id = len(glob.glob("./log/*.log")) +1
+  id = len(glob.glob("./log/*.log")) + 1
 
   logging.basicConfig(  level=logging_level,
                         format='%(asctime)s %(levelname)-8s Camera   '+ str(os.getpid()) +'    %(message)s',

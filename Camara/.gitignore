@@ -1,2 +1,4 @@
 log/
 modules/__pycache__
+img/
+img_processed/
