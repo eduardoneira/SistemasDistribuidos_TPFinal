@@ -15,3 +15,7 @@ En el archivo config.json se pueden modificar valores para cambiar el comportami
 ```
 python3 main.py
 ``` 
+
+# Overview
+
+Basado en https://gist.github.com/jpanganiban/3844261
