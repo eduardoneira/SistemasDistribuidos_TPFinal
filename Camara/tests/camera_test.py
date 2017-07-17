@@ -27,6 +27,12 @@ class TestCamera(unittest.TestCase):
     self.assertNotEqual(img,self.camera.INVALID())
     self.assertTrue(len(img) > 0)
 
+  def tearDown(self):
+    shutil.rmtree(path = self.camera.PATH_IMG(),
+                  ignore_errors = True)
+
+    shutil.rmtree(path = self.camera.PATH_IMG_PROCESSED(),
+                  ignore_errors = True)
 
 if __name__ == '__main__':
   unittest.main()
