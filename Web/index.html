@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="estilos.css">
     <link rel="stylesheet" href="css/dropzone.css">
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/dropzone.js"></script>
   </head>
   <body>
     <header>
@@ -16,37 +14,40 @@
         <h1>Citizen Tracking</h1>
       </div>
     </header>
+    <br>
     <main>
         <section>
-            <div id="dropzone">
-                <form action="http://www.torrentplease.com/dropzone.php" class="dropzone dz-clickable" id="upload">
-                    <div class="dz-message">Drop files here or click to upload.
-                        <br> <span class="note">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
-                    </div>
-                </form>
+            <div id="dropzone" class="dropzone dz-clickable">
+              <div id="previews" class="dz-message">Drop files here or click to upload.
+                  <br> <span class="note">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+              </div>
             </div>
         </section>
-      </main>
-      <div class="container">
+    </main>
+    <section>
+      <div id="actions" class="container">
         <h2>Choose the operation</h2>
-        <div class="radio">
-          <label>
-            <input type="radio" name="survey" id="Radios1" value="Yes">
-            Insert new face to the system
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="survey" id="Radios2" value="No">
-            Check face existance
-          </label>
-        </div>
-        <div class="radio disabled">
-          <label>
-            <input type="radio" name="survey" id="Radios3" value="No">
-            Get face 's trajectory
-          </label>
+        <input type="radio" name="Choose" id="RadioInsertFace" value="No">
+        Insert new face to the system<br>
+        <input type="radio" name="Choose" id="RadiosCheckExistance" value="No">
+        Check face existance<br>
+        <input type="radio" name="Choose" id="RadiosGetTrajectory" value="No">
+        Get face 's trajectory<br>
+        <div class="col-lg-7">
+          <button type="submit" class="btn btn-primary start">
+              <i class="glyphicon glyphicon-upload"></i>
+              <span>Submit</span>
+          </button>
+          <button type="reset" class="btn btn-warning cancel">
+              <i class="glyphicon glyphicon-ban-circle"></i>
+              <span>Cancel</span>
+          </button>
         </div>
         </div>
+    </section>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/dropzone.js"></script>
+    <script type="text/javascript" src="js/myDropzone.js"></script>
   </body>
 </html>
