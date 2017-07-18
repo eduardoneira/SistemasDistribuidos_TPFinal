@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Citizen Tracking</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="css/dropzone.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/dropzone.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Citizen Tracking</h1>
+      </div>
+    </header>
+    <main>
+        <section>
+            <div id="dropzone">
+                <form action="http://www.torrentplease.com/dropzone.php" class="dropzone dz-clickable" id="upload">
+                    <div class="dz-message">Drop files here or click to upload.
+                        <br> <span class="note">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+                    </div>
+                </form>
+            </div>
+        </section>
+      </main>
+      <div class="container">
+        <h2>Choose the operation</h2>
+        <div class="radio">
+          <label>
+            <input type="radio" name="survey" id="Radios1" value="Yes">
+            Insert new face to the system
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="survey" id="Radios2" value="No">
+            Check face existance
+          </label>
+        </div>
+        <div class="radio disabled">
+          <label>
+            <input type="radio" name="survey" id="Radios3" value="No">
+            Get face 's trajectory
+          </label>
+        </div>
+        </div>
+  </body>
+</html>
