@@ -9,7 +9,7 @@ function setOperation(){
   return 2;
 }
 var myDropzone = new Dropzone("div#dropzone",{
-  url: "/file/post", // Set the url
+  url: "http://localhost:3000/", // Set the url
   autoQueue: false, // Make sure the files aren't queued until manually added,
   init: function(){
     document.querySelector("#actions .start").disabled = true;
