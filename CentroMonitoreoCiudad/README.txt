@@ -6,3 +6,4 @@ Para correr:
 $ python app.py
 
 y luego en el navegador ir a localhost:5000
+Al hacer click en submit, la foto queda guardada en la carpeta upload

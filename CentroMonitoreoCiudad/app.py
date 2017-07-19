@@ -81,6 +81,8 @@ def upldfile():
         for f in files:
             if f and allowed_file(f.filename):
                 filename = secure_filename(f.filename)
+                if not os.path.exists('upload'):
+                    os.makedirs('upload')
                 updir = os.path.join(basedir, 'upload/')
                 f.save(os.path.join(updir, filename))
                 file_size = os.path.getsize(os.path.join(updir, filename))
