@@ -80,6 +80,7 @@ def upldfile():
         files = request.files.getlist('file[]')
         for f in files:
             if f and allowed_file(f.filename):
+                checkFileExistanceAndSendResply()
                 filename = secure_filename(f.filename)
                 if not os.path.exists('upload'):
                     os.makedirs('upload')
