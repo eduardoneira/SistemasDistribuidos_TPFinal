@@ -18,8 +18,8 @@ footer{
   color:#fff;
 }
 #droparea{
-	width: 400px;
-	min-height: 400px;
+	width: 500px;
+	min-height: 500px;
 	margin: 20px auto 0;
 	padding: 0 20px;
 	border: 4px solid rgba(0, 82, 156, 0.8);
@@ -29,14 +29,5 @@ footer{
 	width: 300px;
 	min-height: 280px;
 	background: #FFF;
-	margin: 0 auto 20px;
-}
-#selectImage {
-	color: #FFF;
-	width: 200px;
-	text-align: center;
-	padding: 10px 0;
-	background: rgba(0, 82, 156, 0.5);
-	float: left;
-	cursor: pointer;
+	margin: 0 auto 0;
 }
