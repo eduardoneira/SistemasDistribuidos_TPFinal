@@ -1,4 +1,3 @@
-Dropzone.autoDiscover= false;
 function setOperation(){
   if ((document.getElementById("RadioInsertFace").checked == true)){
     return 0;
@@ -8,21 +7,21 @@ function setOperation(){
   }
   return 2;
 }
+Dropzone.autoDiscover= false;
+$(function() {
 var myDropzone = new Dropzone("div#droparea", {
     url: "/uploadajax",
     method: "POST", // can be changed to "put" if necessary
     maxFilesize: 2, // in MB
     paramName: "file", // The name that will be used to transfer the file
     uploadMultiple: true, // This option will also trigger additional events (like processingmultiple).
-    headers: {
-      "My-Awesome-Header": "header value"
-    },
     addRemoveLinks: true, // add an <a class="dz-remove">Remove file</a> element to the file preview that will remove the file, and it will change to Cancel upload
+    dictRemoveFile: "Delete",
     previewsContainer: "#previewsContainer",
     createImageThumbnails: true,
     maxThumbnailFilesize: 2, // in MB
-    thumbnailWidth: 90,
-    thumbnailHeight: 90,
+    thumbnailWidth: 300,
+    thumbnailHeight: 300,
     maxFiles: 1,
     acceptedFiles: "image/png, image/jpeg, image/gif", //This is a comma separated list of mime types or file extensions.Eg.: image/*,application/pdf,.psd.
     autoProcessQueue: false, // When set to false you have to call myDropzone.processQueue() yourself in order to upload the dropped files.
@@ -33,14 +32,6 @@ var myDropzone = new Dropzone("div#droparea", {
       document.getElementById("RadioInsertFace").disabled = true;
       document.getElementById("RadiosCheckExistance").disabled = true;
       document.getElementById("RadiosGetTrajectory").disabled = true;
-    },
-    resize: function(file) {
-      console.log("resize");
-      /*
-       * Crop rectangle range
-       * Those values are going to be used by ctx.drawImage().
-       */
-      return {"srcX":0, "srcY":0, "srcWidth":150, "srcHeight":150}
     },
     accept: function(file, done) {
       console.log("accept");
@@ -57,10 +48,9 @@ var myDropzone = new Dropzone("div#droparea", {
    */
   myDropzone.options.previewTemplate = '\
     <div class="dz-preview dz-file-preview">\
-      <div class="dz-details">\
-      <div class="dz-filename"><span data-dz-name></span></div>\
-      <div class="dz-size" data-dz-size></div>\
-      <img data-dz-thumbnail />\
+    <div class="dz-details">\
+    <div class="dz-filename"><span data-dz-name></span></div>\
+    <img data-dz-thumbnail />\
     </div>\
     <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>\
     <div class="dz-error-message"><span data-dz-errormessage></span></div>\
@@ -109,7 +99,11 @@ var myDropzone = new Dropzone("div#droparea", {
   myDropzone.on("complete", function(file) { console.log("complete"); });
   myDropzone.on("canceled", function(file) { console.log("canceled"); });
   myDropzone.on("maxfilesreached", function(file) { console.log("maxfilesreached"); });
-  myDropzone.on("maxfilesexceeded", function(file) { console.log("maxfilesexceeded"); });
+  myDropzone.on("maxfilesexceeded", function(file) {
+    console.log("maxfilesexceeded");
+    myDropzone.removeAllFiles();
+    myDropzone.addFile(file);
+  });
 
   /* receive a "list of files" as first parameter
    * only called if the uploadMultiple option is true:
@@ -134,3 +128,4 @@ var myDropzone = new Dropzone("div#droparea", {
      for(var i=0;i<ele.length;i++)
         ele[i].checked = (i==0)?(true):(false);
   };
+});

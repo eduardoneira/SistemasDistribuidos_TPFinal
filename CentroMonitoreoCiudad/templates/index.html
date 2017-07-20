@@ -1,34 +1,11 @@
-<!--<!DOCTYPE HTML>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
-</head>
-<body>
-
-<div id="selectImage">Select Image</div>
-<div id="fileSubmit">Submit</div>
-
-<div id="droparea">
-	<p>droparea</p>
-	<div id="previewsContainer">
-		<p>previewsContainer</p>
-	</div>
-</div>
-
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="js/dropzone.js"></script>
-<script type="text/javascript" src="{{url_for('js_static', filename='app.js')}}"></script>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>Citizen Tracking</title>
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
-    <link rel="stylesheet" href="css/dropzone.css">
+    <link rel="stylesheet" href="{{url_for('css_static', filename='bootstrap.min.css')}}" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="{{url_for('css_static', filename='dropzone.css')}}">
 		<link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
   </head>
   <body>
@@ -38,15 +15,11 @@
       </div>
     </header>
     <br>
-    <main>
-        <section>
-            <div id="droparea" class="dropzone dz-clickable">
-							<div id="previewsContainer">
-							</div>
-            </div>
-        </section>
-    </main>
     <section>
+      <div id="droparea" class="dropzone dz-clickable">
+        <div id="previewsContainer">
+        </div>
+      </div>
       <div id="actions" class="container">
         <h2>Choose the operation</h2>
         <input type="radio" name="Choose" id="RadioInsertFace" value="No">
@@ -67,8 +40,8 @@
         </div>
         </div>
     </section>
-		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-		<script type="text/javascript" src="js/dropzone.js"></script>
+		<script type="text/javascript" src="{{url_for('js_static', filename='jquery-3.2.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('js_static', filename='dropzone.js')}}"></script>
 		<script type="text/javascript" src="{{url_for('js_static', filename='app.js')}}"></script>
   </body>
 </html>
