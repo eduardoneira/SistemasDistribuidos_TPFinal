@@ -18,16 +18,16 @@ footer{
   color:#fff;
 }
 #droparea{
-	width: 500px;
-	min-height: 500px;
-	margin: 20px auto 0;
+	width: 350px;
+	min-height: 300px;
+	margin: 0 auto 0;
 	padding: 0 20px;
 	border: 4px solid rgba(0, 82, 156, 0.8);
 }
 
 #previewsContainer {
-	width: 300px;
-	min-height: 280px;
+	width: 250px;
+	min-height: 260px;
 	background: #FFF;
-	margin: 0 auto 0;
+	margin: 20 auto 10;
 }

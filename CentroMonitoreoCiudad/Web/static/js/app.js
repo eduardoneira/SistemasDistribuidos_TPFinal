@@ -15,8 +15,6 @@ var myDropzone = new Dropzone("div#droparea", {
     maxFilesize: 2, // in MB
     paramName: "file", // The name that will be used to transfer the file
     uploadMultiple: true, // This option will also trigger additional events (like processingmultiple).
-    addRemoveLinks: true, // add an <a class="dz-remove">Remove file</a> element to the file preview that will remove the file, and it will change to Cancel upload
-    dictRemoveFile: "Delete",
     previewsContainer: "#previewsContainer",
     createImageThumbnails: true,
     maxThumbnailFilesize: 2, // in MB
@@ -28,6 +26,7 @@ var myDropzone = new Dropzone("div#droparea", {
     forceFallback: false,
     init: function(){
       document.querySelector("#actions .start").disabled = true;
+      document.querySelector("#actions .refresh").disabled = true;
       document.getElementById("RadioInsertFace").disabled = true;
       document.getElementById("RadiosCheckExistance").disabled = true;
       document.getElementById("RadiosGetTrajectory").disabled = true;
@@ -38,6 +37,20 @@ var myDropzone = new Dropzone("div#droparea", {
     },
     fallback: function() {
       console.log("fallback");
+    },
+    resize: function(file) {
+        var resizeInfo = {
+            srcX: 0,
+            srcY: 0,
+            trgX: 0,
+            trgY: 0,
+            srcWidth: file.width,
+            srcHeight: file.height,
+            trgWidth: this.options.thumbnailWidth,
+            trgHeight: this.options.thumbnailHeight
+        };
+
+        return resizeInfo;
     }
   });
 
@@ -74,23 +87,31 @@ var myDropzone = new Dropzone("div#droparea", {
     console.log("addedfile");
     console.log(file);
     document.querySelector("#actions .start").disabled = false;
+    document.querySelector("#actions .refresh").disabled = false;
     document.getElementById("RadioInsertFace").disabled = false;
     document.getElementById("RadiosCheckExistance").disabled = false;
     document.getElementById("RadiosGetTrajectory").disabled = false;
     $('#actions .start').click(function(){
         myDropzone.processQueue(); //processes the queue
     });
+    $('#actions .refresh').click(function(){
+      myDropzone.removeAllFiles(true);
+    });
   });
   myDropzone.on("removedfile", function(file) {
     console.log("removedfile");
-    myDropzone.removeAllFiles(true);
     document.querySelector("#actions .start").disabled = true;
+    document.querySelector("#actions .refresh").disabled = true;
     document.getElementById("RadioInsertFace").disabled = true;
     document.getElementById("RadiosCheckExistance").disabled = true;
     document.getElementById("RadiosGetTrajectory").disabled = true;
     var ele = document.getElementsByName("Choose");
      for(var i=0;i<ele.length;i++)
         ele[i].checked = (i==0)?(true):(false);
+    var response = document.getElementById("response");
+    while (response.firstChild) {
+        response.removeChild(response.firstChild);
+    }
   });
   myDropzone.on("selectedfiles", function(file) { console.log("selectedfiles"); });
   myDropzone.on("thumbnail", function(file) { console.log("thumbnail"); });
@@ -106,8 +127,11 @@ var myDropzone = new Dropzone("div#droparea", {
     console.log(file);
     console.log(response);
     var image = document.createElement('img');
+    var answer = document.createTextNode(response.answer);
+    linebreak = document.createElement("br");
     image.src = "data:image/jpg;base64," + response.img;
-    //document.getElementById("response").appendChild(response.answer);
+    document.getElementById("response").appendChild(answer);
+    document.getElementById("response").appendChild(linebreak);
     document.getElementById("response").appendChild(image);
   });
   myDropzone.on("complete", function(file) { console.log("complete"); });

@@ -64,9 +64,6 @@ def css_static(filename):
 def img_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-@app.route('/return-files/')
-def get_image():
-    return send_file('/home/LuisAli22/Huevito.jpg', attachment_filename='Huevito.jpg')
 @app.route('/js/<path:filename>')
 def js_static(filename):
     return send_from_directory(app.root_path + '/static/js/', filename)
@@ -89,7 +86,7 @@ def checkFileExistanceAndSendResply(basedir, f):
         data = imageFile.read();
         outJson = {}
         outJson['img']=data.encode('base64')
-        outJson['answer']="This person is already in the system"
+        outJson['answer']="This person is already in the system with the following picture:"
         imageFile.close()
         return jsonify(outJson);
     f.save(os.path.join(updir, filename))
