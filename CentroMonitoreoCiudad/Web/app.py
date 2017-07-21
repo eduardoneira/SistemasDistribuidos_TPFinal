@@ -3,12 +3,12 @@ from flask import (
     request,
     render_template,
     send_from_directory,
+    send_file,
     url_for,
     jsonify
 )
-from werkzeug import secure_filename
 import os
-
+from werkzeug import secure_filename
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ handler.setFormatter(
 )
 app.logger.addHandler(handler)
 
-
+app.config['UPLOAD_FOLDER'] = app.root_path +'/upload'
 app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'gif', 'PNG', 'JPG', 'JPEG', 'GIF'])
 
 
@@ -60,7 +60,13 @@ def dated_url_for(endpoint, **values):
 def css_static(filename):
     return send_from_directory(app.root_path + '/static/css/', filename)
 
+@app.route('/upload/<path:filename>')
+def img_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+@app.route('/return-files/')
+def get_image():
+    return send_file('/home/LuisAli22/Huevito.jpg', attachment_filename='Huevito.jpg')
 @app.route('/js/<path:filename>')
 def js_static(filename):
     return send_from_directory(app.root_path + '/static/js/', filename)
@@ -73,6 +79,22 @@ def fonts_static(filename):
 def index():
     return render_template('index.html')
 
+def checkFileExistanceAndSendResply(basedir, f):
+    filename = secure_filename(f.filename)
+    if not os.path.exists('upload'):
+        os.makedirs('upload')
+    updir = os.path.join(basedir, 'upload/')
+    if os.path.isfile(os.path.join(updir, filename)):
+        imageFile=open(os.path.join(updir, filename), "r")
+        data = imageFile.read();
+        outJson = {}
+        outJson['img']=data.encode('base64')
+        outJson['answer']="This person is already in the system"
+        imageFile.close()
+        return jsonify(outJson);
+    f.save(os.path.join(updir, filename))
+    file_size = os.path.getsize(os.path.join(updir, filename))
+    return jsonify(name=filename, size=file_size)
 
 @app.route('/uploadajax', methods=['POST'])
 def upldfile():
@@ -80,17 +102,10 @@ def upldfile():
         files = request.files.getlist('file[]')
         for f in files:
             if f and allowed_file(f.filename):
-                checkFileExistanceAndSendResply()
-                filename = secure_filename(f.filename)
-                if not os.path.exists('upload'):
-                    os.makedirs('upload')
-                updir = os.path.join(basedir, 'upload/')
-                f.save(os.path.join(updir, filename))
-                file_size = os.path.getsize(os.path.join(updir, filename))
+                return checkFileExistanceAndSendResply(basedir, f)
             else:
                 app.logger.info('ext name error')
                 return jsonify(error='ext name error')
-        return jsonify(name=filename, size=file_size)
 
 
 if __name__ == '__main__':

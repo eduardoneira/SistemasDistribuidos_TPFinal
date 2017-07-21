@@ -101,7 +101,15 @@ var myDropzone = new Dropzone("div#droparea", {
     var operation = setOperation();
     formData.append('operation',operation);
   });
-  myDropzone.on("success", function(file) { console.log("success"); });
+  myDropzone.on("success", function(file, response) {
+    console.log("success");
+    console.log(file);
+    console.log(response);
+    var image = document.createElement('img');
+    image.src = "data:image/jpg;base64," + response.img;
+    //document.getElementById("response").appendChild(response.answer);
+    document.getElementById("response").appendChild(image);
+  });
   myDropzone.on("complete", function(file) { console.log("complete"); });
   myDropzone.on("canceled", function(file) { console.log("canceled"); });
   myDropzone.on("maxfilesreached", function(file) { console.log("maxfilesreached"); });

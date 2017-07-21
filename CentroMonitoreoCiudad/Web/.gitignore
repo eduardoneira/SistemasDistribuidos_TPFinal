@@ -6,4 +6,5 @@ upload/*.PNG
 upload/*.JPG
 upload/*.JPEG
 upload/*.GIF
+*.pyc
 log.txt
