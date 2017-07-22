@@ -1,11 +1,15 @@
+/*global ResponseDisplayerFactory */
+const REQUESTEXISTANCE = 4;
+const REQUESTUPLOAD = 5;
+const REQUESTTRAJECTORY=6;
 function setOperation(){
   if ((document.getElementById("RadioInsertFace").checked == true)){
-    return 0;
+    return REQUESTUPLOAD;
   }
   if ((document.getElementById("RadiosCheckExistance").checked == true)){
-    return 1;
+    return REQUESTEXISTANCE;
   }
-  return 2;
+  return REQUESTTRAJECTORY;
 }
 Dropzone.autoDiscover= false;
 $(function() {
@@ -49,7 +53,6 @@ var myDropzone = new Dropzone("div#droparea", {
             trgWidth: this.options.thumbnailWidth,
             trgHeight: this.options.thumbnailHeight
         };
-
         return resizeInfo;
     }
   });
@@ -85,7 +88,9 @@ var myDropzone = new Dropzone("div#droparea", {
   /* receive the "file" as first parameter */
   myDropzone.on("addedfile", function(file) {
     console.log("addedfile");
-    console.log(file);
+    if (this.files[1]!=null){
+        this.removeFile(this.files[0]);
+      }
     document.querySelector("#actions .start").disabled = false;
     document.querySelector("#actions .refresh").disabled = false;
     document.getElementById("RadioInsertFace").disabled = false;
@@ -93,6 +98,10 @@ var myDropzone = new Dropzone("div#droparea", {
     document.getElementById("RadiosGetTrajectory").disabled = false;
     $('#actions .start').click(function(){
         myDropzone.processQueue(); //processes the queue
+        document.querySelector("#actions .start").disabled = true;
+        document.getElementById("RadioInsertFace").disabled = true;
+        document.getElementById("RadiosCheckExistance").disabled = true;
+        document.getElementById("RadiosGetTrajectory").disabled = true;
     });
     $('#actions .refresh').click(function(){
       myDropzone.removeAllFiles(true);
@@ -123,24 +132,15 @@ var myDropzone = new Dropzone("div#droparea", {
     formData.append('operation',operation);
   });
   myDropzone.on("success", function(file, response) {
-    console.log("success");
-    console.log(file);
-    console.log(response);
-    var image = document.createElement('img');
-    var answer = document.createTextNode(response.answer);
-    linebreak = document.createElement("br");
-    image.src = "data:image/jpg;base64," + response.img;
-    document.getElementById("response").appendChild(answer);
-    document.getElementById("response").appendChild(linebreak);
-    document.getElementById("response").appendChild(image);
+    displayerFactory = new ResponseDisplayerFactory(response);
+    displayer = displayerFactory.createDisplayer();
+    displayer.show();
   });
   myDropzone.on("complete", function(file) { console.log("complete"); });
   myDropzone.on("canceled", function(file) { console.log("canceled"); });
   myDropzone.on("maxfilesreached", function(file) { console.log("maxfilesreached"); });
   myDropzone.on("maxfilesexceeded", function(file) {
     console.log("maxfilesexceeded");
-    myDropzone.removeAllFiles();
-    myDropzone.addFile(file);
   });
 
   /* receive a "list of files" as first parameter

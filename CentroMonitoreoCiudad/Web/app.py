@@ -8,7 +8,8 @@ from flask import (
     jsonify
 )
 import os
-from werkzeug import secure_filename
+import const
+from RequestManager import RequestManagerFactory
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
@@ -76,34 +77,21 @@ def fonts_static(filename):
 def index():
     return render_template('index.html')
 
-def checkFileExistanceAndSendResply(basedir, f):
-    filename = secure_filename(f.filename)
-    if not os.path.exists('upload'):
-        os.makedirs('upload')
-    updir = os.path.join(basedir, 'upload/')
-    if os.path.isfile(os.path.join(updir, filename)):
-        imageFile=open(os.path.join(updir, filename), "r")
-        data = imageFile.read();
-        outJson = {}
-        outJson['img']=data.encode('base64')
-        outJson['answer']="This person is already in the system with the following picture:"
-        imageFile.close()
-        return jsonify(outJson);
-    f.save(os.path.join(updir, filename))
-    file_size = os.path.getsize(os.path.join(updir, filename))
-    return jsonify(name=filename, size=file_size)
-
 @app.route('/uploadajax', methods=['POST'])
 def upldfile():
     if request.method == 'POST':
         files = request.files.getlist('file[]')
         for f in files:
             if f and allowed_file(f.filename):
-                return checkFileExistanceAndSendResply(basedir, f)
+                formData = request.form;
+                requestManager= RequestManagerFactory.RequestManagerFactory.createRequestManager(int(formData['operation']), f, basedir);
+                return requestManager.processRequest();
             else:
                 app.logger.info('ext name error')
                 return jsonify(error='ext name error')
 
 
 if __name__ == '__main__':
+    if not os.path.exists('upload'):
+        os.makedirs('upload')
     app.run(debug=True)
