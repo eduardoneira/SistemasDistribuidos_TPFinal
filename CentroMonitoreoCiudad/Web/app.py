@@ -9,7 +9,7 @@ from flask import (
 )
 import os
 import const
-from RequestManager import RequestManagerFactory
+from Factory import *
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
@@ -84,7 +84,7 @@ def upldfile():
         for f in files:
             if f and allowed_file(f.filename):
                 formData = request.form;
-                requestManager= RequestManagerFactory.RequestManagerFactory.createRequestManager(int(formData['operation']), f, basedir);
+                requestManager= RequestManagerFactory.createRequestManager(int(formData['operation']), f, basedir);
                 return requestManager.processRequest();
             else:
                 app.logger.info('ext name error')
