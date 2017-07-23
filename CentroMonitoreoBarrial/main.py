@@ -13,19 +13,31 @@ with open('config.json') as config_file:
 set_logger(config['logging_level'])
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+logging.debug('Se creo una conexion a rabbitmq broker en localhost')
 channel = connection.channel()
+
+channel.exchange_declare(exchange=config['topic'],
+                         type='topic')
 
 killer = GracefulKiller(channel)
 
-channel.queue_declare(queue=config['queue_camara'])
+result = channel.queue_declare(exclusive=True)
+
+queue_name = result.method.queue
+logging.debug('Se va a escuchar de la cola: '+ queue_name)
+
+channel.queue_bind(exchange=config['topic'],
+                   queue=queue_name,
+                   routing_key='#')
+
 
 def callback(ch, method, properties, body):
-  #TODO: OPENCV
+  #TODO: OPENCV AND RESEND
   logging.debug('Message received: %s', body)
   print(" [x] Received %r" % body)
 
 tag = channel.basic_consume(callback,
-                            queue=config['queue_camara'],
+                            queue=queue_name,
                             no_ack=True)
 
 killer.add_queue(tag)

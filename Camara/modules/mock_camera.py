@@ -12,7 +12,7 @@ class MockCamera(AbstractCamera):
     if not os.path.exists(self.PATH_IMG_PROCESSED()):
       os.mkdir(self.PATH_IMG_PROCESSED())
     
-    logging.debug('Inicializando mock camara que agarra imagenes de '+ self.PATH_IMG_PROCESSED())
+    logging.debug('Inicializando mock camara que agarra imagenes de '+ self.PATH_IMG())
 
   def get_frame(self):
     folder = os.listdir(self.PATH_IMG())

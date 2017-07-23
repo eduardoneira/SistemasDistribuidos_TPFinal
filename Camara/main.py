@@ -1,12 +1,11 @@
 #!/bin/python3
 
 import json
-from time import sleep
 from modules.graceful_killer import *
 from modules.logger import *
 from modules.mock_camera import *
+from modules.pika_wrapper import *
 from datetime import datetime
-import pika
 
 print('Configurando camara')
 
@@ -17,18 +16,15 @@ set_logger(config['logging_level'])
 
 logging.debug('Creando conexión a servidor CMB en host %s usando la cola %s',config['host'],config['queue'])
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['host']))
-channel = connection.channel()
-
-channel.queue_declare(queue=config['queue'])
+client = PikaWrapper(config['host'],config['topic'],config['queue'])
 
 print('Configuración terminada. Comenzando envió de mensajes')
 
-killer = GracefulKiller()
 sleep_time = 1 / config['FPS']
 payload = {}
 
 camera = MockCamera()
+killer = GracefulKiller()
 
 while True:  
   payload['location'] = config['location']
@@ -36,20 +32,18 @@ while True:
   payload['frame'] = str(camera.get_frame())
 
   if payload['frame'] != camera.INVALID():
+    client.send(json.dumps(payload))
 
-    channel.basic_publish(  exchange='',
-                            routing_key=config['queue'],
-                            body=json.dumps(payload))
     print('Mensaje de frame enviado')
-    logging.debug('Se envió: \'{'+payload['location']+','+payload['timestamp']+'}\'')
+    logging.debug('Se envió: \'{'+str(payload['location'])+','+payload['timestamp']+'}\'')
 
-  sleep(sleep_time)
+  client.sleep(sleep_time)
 
   if killer.kill_now:
     break
 
 print('Se recibió una señal de salida, cerrando conexión')
 
-connection.close()
+client.close()
 
 print('Proceso terminado')
