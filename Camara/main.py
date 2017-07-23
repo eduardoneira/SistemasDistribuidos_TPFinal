@@ -22,11 +22,11 @@ client = PikaWrapper(config['host'],config['queue'])
 
 print('Configuración terminada. Comenzando envió de mensajes')
 
-killer = GracefulKiller()
 sleep_time = 1 / config['FPS']
 payload = {}
 
 camera = MockCamera()
+killer = GracefulKiller()
 
 while True:  
   payload['location'] = config['location']
@@ -37,7 +37,7 @@ while True:
     client.send(json.dumps(payload))
 
     print('Mensaje de frame enviado')
-    logging.debug('Se envió: \'{'+payload['location']+','+payload['timestamp']+'}\'')
+    logging.debug('Se envió: \'{'+str(payload['location'])+','+payload['timestamp']+'}\'')
 
   sleep(sleep_time)
 
@@ -46,6 +46,6 @@ while True:
 
 print('Se recibió una señal de salida, cerrando conexión')
 
-  client.close()
+client.close()
 
 print('Proceso terminado')
