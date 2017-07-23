@@ -4,8 +4,9 @@ import json
 from modules.graceful_killer import *
 from modules.logger import *
 from modules.mock_camera import *
-from modules.pika_wrapper import *
+from modules.mqtt_wrapper import *
 from datetime import datetime
+from time import sleep
 
 print('Configurando camara')
 
@@ -16,7 +17,7 @@ set_logger(config['logging_level'])
 
 logging.debug('Creando conexión a servidor CMB en host %s usando la cola %s',config['host'],config['queue'])
 
-client = PikaWrapper(config['host'],config['topic'],config['queue'])
+client = MqttWrapper(config['host'])
 
 print('Configuración terminada. Comenzando envió de mensajes')
 
@@ -32,12 +33,12 @@ while True:
   payload['frame'] = str(camera.get_frame())
 
   if payload['frame'] != camera.INVALID():
-    client.send(json.dumps(payload))
+    client.send(config['topic'],json.dumps(payload))
 
     print('Mensaje de frame enviado')
     logging.debug('Se envió: \'{'+str(payload['location'])+','+payload['timestamp']+'}\'')
 
-  client.sleep(sleep_time)
+  sleep(sleep_time)
 
   if killer.kill_now:
     break

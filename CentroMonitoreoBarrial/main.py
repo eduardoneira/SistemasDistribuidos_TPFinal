@@ -16,14 +16,12 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost')
 logging.debug('Se creo una conexion a rabbitmq broker en localhost')
 channel = connection.channel()
 
-channel.exchange_declare(exchange=config['topic'],
-                         type='topic')
-
 killer = GracefulKiller(channel)
 
-result = channel.queue_declare(exclusive=True)
+queue_name = config['queue_camara']
+channel.queue_declare(queue=queue_name,
+                      exclusive=True)
 
-queue_name = result.method.queue
 logging.debug('Se va a escuchar de la cola: '+ queue_name)
 
 channel.queue_bind(exchange=config['topic'],

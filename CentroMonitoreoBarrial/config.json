@@ -3,5 +3,5 @@
   "queue_camara": "camToCMB",
   "queue_CBC": "CMBToCMC",
   "logging_level" : 10,
-  "topic": "camera/feed"
+  "topic": "amq.topic"
 }

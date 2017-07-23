@@ -7,14 +7,17 @@ import logging
 class MqttWrapper:
 
   def __init__(self,host):
-    self.client = mqtt.Client(uuid.uuid1().hex,clean_session=False)
+    self.client = mqtt.Client(client_id=uuid.uuid1().hex,
+                              clean_session=True)
     self.client.connect(host)
     self.client.loop_start()
 
   def send(self,topic,message):
-    self.client.subscribe(topic)
-    result = self.client.publish(topic,message,qos=1,retain=False)
-    logging.debug('Se publico y obtuvo los siguientes resultados: '+ str(result[0] == MQTT_ERR_SUCCESS ))
+    result = self.client.publish( topic=topic,
+                                  payload=message,
+                                  qos=1)
+
+    logging.debug('Se publico en '+topic+' con return value: '+str(result[0]))
 
   def close(self):
     self.client.loop_stop()
