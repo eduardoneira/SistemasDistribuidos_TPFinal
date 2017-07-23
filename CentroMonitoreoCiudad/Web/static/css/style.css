@@ -31,3 +31,6 @@ footer{
 	background: #FFF;
 	margin: 20 auto 10;
 }
+#map {
+        height: 100%;
+      }

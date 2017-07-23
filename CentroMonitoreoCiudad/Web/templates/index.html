@@ -6,6 +6,14 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{url_for('css_static', filename='bootstrap.min.css')}}" media="screen" title="no title" charset="utf-8">
 		<link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
+    <style>
+     /* Always set the map height explicitly to define the size of the div
+      * element that contains the map. */
+     #map {
+       height: 100%;
+     }
+   </style>
+
   </head>
   <body>
     <header>
@@ -37,11 +45,12 @@
               <span>Home</span>
           </button>
         </div>
-        </div>
+      </div>
     </section>
     <br>
     <section>
     <div id="response" class="container">
+      <div id="map" style="height: 300px; width: 300px;"></div>
     </div>
   </section>
 		<script type="text/javascript" src="{{url_for('js_static', filename='jquery-3.2.1.min.js')}}"></script>
@@ -52,5 +61,28 @@
     <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/TrajectoryDisplayer.js')}}"></script>
     <script type="text/javascript" src="{{url_for('js_static', filename='ResponseDisplayerFactory/ResponseDisplayerFactory.js')}}"></script>
     <script type="text/javascript" src="{{url_for('js_static', filename='app.js')}}"></script>
+    <script type="text/javascript">
+      var mymap;
+      function initMap() {
+        console.log("initMap");
+        mymap = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(-34.618696, -58.435593),
+        zoom: 11
+      });
+      function AgregarPuntos(locations){
+        console.log("Agrego puntos");
+        var points = JSON.parse(locations);
+        var marker;
+        for (var i = 0; i < points.length; i++) {
+            marker = new google.maps.Marker({
+              position: new google.maps.LatLng(points[i].lat, points[i].lng),
+              map: mymap
+            });
+        }
+      }
+    }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4&callback=initMap"></script>
+
   </body>
 </html>

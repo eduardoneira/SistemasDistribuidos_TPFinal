@@ -1,9 +1,11 @@
 from flask import (
-    jsonify
+    jsonify, render_template
 )
 import os
 import const
+import json
 from werkzeug import secure_filename
+from flask_googlemaps import Map, icons
 class Manager(object):
     def __init__(self, file, basedir):
         self.file=file
@@ -25,7 +27,8 @@ class TrajectoryManager(Manager):
     def processRequest(self):
         if not self.fileExists:
             return jsonify(operation=const.RESPONSEDOESNTEXIST)
-        return jsonify(operation=const.RESPONSETRAJECTORY)
+        points = [{"lat": -34.621622, "lng": -58.423759}, {"lat": -34.63186608060463, "lng": -58.42525005340576}];
+        return jsonify(operation=const.RESPONSETRAJECTORY, points=json.dumps(points));
 class UploadManager(Manager):
     def __init__(self, file, basedir):
         super(UploadManager, self).__init__(file, basedir)

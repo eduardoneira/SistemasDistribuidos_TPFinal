@@ -106,7 +106,8 @@ var myDropzone = new Dropzone("div#droparea", {
         document.getElementById("RadiosGetTrajectory").disabled = true;
     });
     $('#actions .home').click(function(){
-      myDropzone.removeAllFiles(true);
+      //myDropzone.removeAllFiles(true);
+      window.location.reload();
     });
   });
   myDropzone.on("removedfile", function(file) {
