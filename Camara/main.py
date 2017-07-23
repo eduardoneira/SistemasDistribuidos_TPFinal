@@ -15,7 +15,7 @@ with open('config.json') as config_file:
 
 set_logger(config['logging_level'])
 
-logging.debug('Creando conexión a servidor CMB en host %s usando la cola %s',config['host'],config['queue'])
+logging.debug('Creando conexión a servidor CMB en host: %s usando topic: %s',config['host'],config['topic'])
 
 client = MqttWrapper(config['host'])
 

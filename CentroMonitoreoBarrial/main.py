@@ -3,7 +3,12 @@
 import json
 from modules.graceful_killer import *
 from modules.logger import *
-import pika
+from modules.pika_wrapper_subscriber import *
+
+def callback(ch, method, properties, body):
+  #TODO: OPENCV AND RESEND
+  logging.debug('Message received: %s', body)
+  print(" [x] Received %r" % body)
 
 print('Configurando CMB')
 
@@ -12,33 +17,14 @@ with open('config.json') as config_file:
 
 set_logger(config['logging_level'])
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-logging.debug('Se creo una conexion a rabbitmq broker en localhost')
-channel = connection.channel()
+server = PikaWrapperSubscriber( host='localhost',
+                                topic=config['topic'],
+                                queue=config['queue_camara'])
 
-killer = GracefulKiller(channel)
+killer = GracefulKiller()
+killer.add_connection(server)
 
-queue_name = config['queue_camara']
-channel.queue_declare(queue=queue_name,
-                      exclusive=True)
+server.set_receive_callback(callback)
 
-logging.debug('Se va a escuchar de la cola: '+ queue_name)
-
-channel.queue_bind(exchange=config['topic'],
-                   queue=queue_name,
-                   routing_key='#')
-
-
-def callback(ch, method, properties, body):
-  #TODO: OPENCV AND RESEND
-  logging.debug('Message received: %s', body)
-  print(" [x] Received %r" % body)
-
-tag = channel.basic_consume(callback,
-                            queue=queue_name,
-                            no_ack=True)
-
-killer.add_queue(tag)
-
-print(' [*] Waiting for messages. To exit press CTRL+C')
-channel.start_consuming()
+print(' [*] Esperando mensajes para procesar. Para salir usar CTRL+C')
+server.start_consuming()
