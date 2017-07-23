@@ -1,7 +1,6 @@
 #!/bin/python3
 
 import json
-from time import sleep
 from modules.graceful_killer import *
 from modules.logger import *
 from modules.mock_camera import *
@@ -17,8 +16,7 @@ set_logger(config['logging_level'])
 
 logging.debug('Creando conexión a servidor CMB en host %s usando la cola %s',config['host'],config['queue'])
 
-#TODO: change client to mqtt
-client = PikaWrapper(config['host'],config['queue'])
+client = PikaWrapper(config['host'],config['topic'],config['queue'])
 
 print('Configuración terminada. Comenzando envió de mensajes')
 
@@ -39,7 +37,7 @@ while True:
     print('Mensaje de frame enviado')
     logging.debug('Se envió: \'{'+str(payload['location'])+','+payload['timestamp']+'}\'')
 
-  sleep(sleep_time)
+  client.sleep(sleep_time)
 
   if killer.kill_now:
     break
