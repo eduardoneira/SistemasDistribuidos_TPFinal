@@ -9,4 +9,4 @@ client.connect(broker_address) #connect to broker
 print("Subscribing to topic","house/bulbs/bulb1")
 client.subscribe("house/bulbs/bulb1")
 print("Publishing message to topic","house/bulbs/bulb1")
-client.publish("house/bulbs/bulb1","OFF",qos=1,retain=True)
+client.publish("house/bulbs/bulb1","OFF",qos=1,retain=False)
