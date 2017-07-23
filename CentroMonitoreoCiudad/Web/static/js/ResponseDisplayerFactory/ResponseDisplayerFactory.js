@@ -21,9 +21,7 @@ const RESPONSETRAJECTORY=3;
     if (this.type == RESPONSEDOESNTEXIST){
       return new DoesntExistDisplayer(this.response);
     }
-    if (this.type == RESPONSETRAJECTORY) {
-      return new TrajectoryDisplayer(this.response);
-    }
-    return NULL;
+    console.log(this.response);
+    return new TrajectoryDisplayer(this.response);
   };
 }());

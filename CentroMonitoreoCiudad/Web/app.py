@@ -7,12 +7,19 @@ from flask import (
     url_for,
     jsonify
 )
+from flask_googlemaps import GoogleMaps, Map
 import os
 import const
+import json
 from Factory import *
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
+# you can set key as config
+app.config['GOOGLEMAPS_KEY'] = "AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4"
+
+# Initialize the extension
+GoogleMaps(app)
 
 from logging import Formatter, FileHandler
 handler = FileHandler(os.path.join(basedir, 'log.txt'), encoding='utf8')
@@ -56,7 +63,6 @@ def dated_url_for(endpoint, **values):
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
 
-
 @app.route('/css/<path:filename>')
 def css_static(filename):
     return send_from_directory(app.root_path + '/static/css/', filename)
@@ -73,9 +79,10 @@ def js_static(filename):
 def fonts_static(filename):
     return send_from_directory(app.root_path + '/static/fonts/', filename)
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def index():
-    return render_template('index.html')
+    points = [{"lat": -34.618696, "lng": -58.435593}]
+    return render_template("index.html", points=json.dumps(points))
 
 @app.route('/uploadajax', methods=['POST'])
 def upldfile():
