@@ -21,12 +21,7 @@ class PikaWrapperSubscriber:
     self.queue = queue
     self.topic = topic
 
-    logging.debug('Se establecio una conexion con el host: '+ host+' con topic: '+topic+' y escuchando de la cola: '+queue)
-
-  # def send(self,message):
-  #   self.channel.basic_publish(exchange=self.topic,
-  #                              routing_key=self.queue,
-  #                              body=message)
+    logging.debug('Se establecio una conexion como subscriber con el host: '+ host+' con topic: '+topic+' y escuchando de la cola: '+queue)
 
   def set_receive_callback(self,callback):
     self.tag = self.channel.basic_consume(callback,
@@ -36,9 +31,6 @@ class PikaWrapperSubscriber:
 
   def start_consuming(self):
     self.channel.start_consuming()
-
-  # def sleep(self,time):
-  #   self.connection.sleep(time)
 
   def close(self):
     self.channel.basic_cancel(self.tag)
