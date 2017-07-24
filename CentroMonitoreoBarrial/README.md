@@ -18,4 +18,9 @@ python3 main.py
 
 # Overview
 
-Basado en https://gist.github.com/jpanganiban/3844261
+El CMB recibe usando un cliente AMQP los mensajes de las camaras. Luego utiliza el CascadeClassifier con haarcascade de OpenCV para encontrar rostros y cortarlos. Luego envia en un mensaje json :
+
+```javascript
+{ "timestamp": "17-07-2017||01:09:07.434053", "location": [-34.5884843, -58.3962122], "frame": "base64_image", "faces": [base64_face1, base64_face2, ...]}
+```
+Este mensaje solo se envia si se detecto alguna cara. Utiliza AMQP como protocolo ya que estamos asumiendo que los CMB van a ser computadoras con mas recursos que las camaras.

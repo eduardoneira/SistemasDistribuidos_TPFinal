@@ -7,6 +7,8 @@ from modules.mock_camera import *
 from modules.mqtt_wrapper import *
 from datetime import datetime
 from time import sleep
+import pdb
+import base64
 
 print('Configurando camara')
 
@@ -30,9 +32,11 @@ killer = GracefulKiller()
 while True:  
   payload['location'] = config['location']
   payload['timestamp'] = datetime.now().strftime('%d-%m-%Y||%H:%M:%S.%f')
-  payload['frame'] = str(camera.get_frame())
+  payload['frame'] = camera.get_frame()
 
   if payload['frame'] != camera.INVALID():
+    payload['frame'] = payload['frame'].decode('utf-8')
+    
     client.send(config['topic'],json.dumps(payload))
 
     print('Mensaje de frame enviado')

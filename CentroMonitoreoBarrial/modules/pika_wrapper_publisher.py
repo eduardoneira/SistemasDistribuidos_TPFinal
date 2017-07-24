@@ -10,8 +10,8 @@ class PikaWrapperPublisher:
     
     self.channel = self.connection.channel()
 
-    channel.exchange_declare(exchange=topic,
-                             type='topic')
+    self.channel.exchange_declare(exchange=topic,
+                                  type='topic')
 
     self.host = host
     self.topic = topic
