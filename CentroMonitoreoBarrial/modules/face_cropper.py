@@ -11,11 +11,11 @@ class FaceCropper():
     self.face_cascade = cv2.CascadeClassifier('./haarcascade/haarcascade_frontalface_alt.xml')
     # self.body_cascade = cv2.CascadeClassifier('../haarcascade/haarcascade_fullbody.xml')
 
-  #Receives in base64 and return in base64
+  
   def crop(self,image):
     images=[]
     
-    nparr = np.fromstring(base64.b64decode(image), np.uint8)
+    nparr = np.fromstring(image, np.uint8)
     img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
 
@@ -25,14 +25,27 @@ class FaceCropper():
       cropped = img_np[y:y+h,x:x+w]
       logging.debug('face found: [%d,%d,%d,%d]',y,y+h,x,x+w)
       
-      images.append(base64.b64encode(cv2.imencode('.jpg', cropped)[1].tostring()).decode('utf-8'))
-      # cv2.imwrite('img'+str(i)+'.jpg',cropped)
-      # cv2.rectangle(img_np,(x,y),(x+w,y+h),(255,0,0),2)
+      images.append(cv2.imencode('.jpg', cropped)[1].tostring())
 
     return images
 
-  def __show(self,image):
+  #Receives in base64 and returns in base64
+  def crop_base_64(self,image):
+    images = self.crop(base64.b64decode(image))
+    for img in images:
+      img = base64.b64encode(img).decode('utf-8')
+
+    return images
+
+  def bytes_to_image(self,image):
+    nparr = np.fromstring(image, np.uint8)
+    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    return img_np
+
+  def show(self,image):
     cv2.imshow('image',image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+  def save_image(self,filename,image):
+    cv2.imwrite(filename,image)

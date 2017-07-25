@@ -13,7 +13,7 @@ def callback(ch, method, properties, body):
   print("Se recibio mensaje de frame. Comienza el cropeo")
 
   payload['faces'] = []
-  for img in cropper.crop(payload['frame']):
+  for img in cropper.crop_base_64(payload['frame']):
     payload['faces'].append(img)
   
   if len(payload['faces']) > 0:
