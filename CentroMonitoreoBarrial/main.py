@@ -12,6 +12,7 @@ def callback(ch, method, properties, body):
   logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
   print("Se recibio mensaje de frame. Comienza el cropeo")
 
+  payload['type'] = 'CMB_feed'
   payload['faces'] = []
   for img in cropper.crop_base_64(payload['frame']):
     payload['faces'].append(img)

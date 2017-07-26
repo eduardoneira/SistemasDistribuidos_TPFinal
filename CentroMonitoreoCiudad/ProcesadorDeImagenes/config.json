@@ -1,0 +1,8 @@
+{
+  "host_CMB": "127.0.0.1",
+  "host_HTTP": "127.0.0.1",
+  "logging_level" : 10,
+  "topic_cmc": "img/cropped",
+  "MIN_MATCH_PROBABILITY": 50,
+  "MIN_UPDATE_PROBABILITY": 80
+}
