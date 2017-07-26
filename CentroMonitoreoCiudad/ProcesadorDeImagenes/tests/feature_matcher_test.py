@@ -1,4 +1,4 @@
-#!/bin/python2.7
+#!/bin/python3
 
 import unittest
 import sys
