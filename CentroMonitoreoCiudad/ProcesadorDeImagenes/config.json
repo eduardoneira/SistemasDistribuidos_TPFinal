@@ -3,6 +3,12 @@
   "host_HTTP": "127.0.0.1",
   "logging_level" : 10,
   "topic_cmc": "img/cropped",
+  "queue_http": "http_rpc",
   "MIN_MATCH_PROBABILITY": 50,
-  "MIN_UPDATE_PROBABILITY": 80
+  "MIN_UPDATE_PROBABILITY": 80,
+  "requests": {
+    "existance": 4,
+    "upload": 5,
+    "trajectory":6
+  }
 }
