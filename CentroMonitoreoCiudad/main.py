@@ -7,6 +7,7 @@ def startServer(execute_server_command):
         s._exit(0)
     return pid;
 def main():
+    #crear predictor
     pid_web_server= startServer("./Web/app.py 1")
     pid_common_server= startServer("./CommonServer/CommonServer.py 1")
     user_input = '0'
@@ -16,6 +17,5 @@ def main():
     os.kill(pid_common_server, signal.SIGINT)
     os.waitpid(pid_web_server, 0)
     os.waitpid(pid_common_server,0)
-    # crear predictor
 if __name__ == '__main__':
     main()

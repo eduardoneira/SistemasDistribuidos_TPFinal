@@ -1,5 +1,7 @@
-import const
 from RequestManager import *
+import sys
+sys.path.insert(0, '../../')
+import Utils.const
 class RequestManagerFactory:
     @staticmethod
     def createRequestManager(type, file, basedir):

@@ -9,7 +9,9 @@ from flask import (
 )
 from flask_googlemaps import GoogleMaps, Map
 import os
-import const
+import sys
+sys.path.insert(0, '../../')
+import Utils.const
 import json
 from Factory import *
 basedir = os.path.abspath(os.path.dirname(__file__))
