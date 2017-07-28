@@ -28,7 +28,7 @@ if [[ "$1" == "fedora" ]]; then
   dnf install postgresql-server postgresql postgresql-contrib
   postgresql-setup --initdb
   systemctl start postgresql
-  echo "Ingrese un password para el superusuario postgres"
+  echo "Ingrese un password para postgres (poner de contraseña: postgres)"
   echo "Ingrese: \password postgres"
   echo "Siga las instrucciones. Para salir ingrese: \q. Luego cuando quede en bash$ ingrese el comando logout"
   cd ~postgres/
