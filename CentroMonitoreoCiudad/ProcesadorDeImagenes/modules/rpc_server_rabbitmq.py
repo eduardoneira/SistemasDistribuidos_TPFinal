@@ -17,8 +17,8 @@ class RPCServer:
 
     self.channel.queue_declare(queue=queue)
 
-    self.channel.basic_qos(self.PREFETCH_COUNT)
-    self.channel.basic_consume(request_callback, queue=queue)
+    # self.channel.basic_qos(self.PREFETCH_COUNT)
+    self.channel.basic_consume(self.request_callback, queue=queue)
 
     self.database = database
     self.recognizer = recognizer
@@ -36,6 +36,6 @@ class RPCServer:
 
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
-  def start():
+  def start(self):
     logging.debug('Comenzando server rpc. Esperando request RPC')
     self.channel.start_consuming() 

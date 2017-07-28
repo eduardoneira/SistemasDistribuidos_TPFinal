@@ -12,7 +12,7 @@ def set_logger(logging_level):
   logging.basicConfig(  level=logging_level,
                         format='%(asctime)s %(levelname)-8s Camera   '+ str(os.getpid()) +'    %(message)s',
                         datefmt='%a, %d %b %Y %H:%M:%S',
-                        filename='./log/Camara'+str(id)+'.log',
+                        filename='./log/HTTP_query_handler'+str(id)+'.log',
                         filemode='w')
 
   logging.getLogger('pika').setLevel(logging.WARNING)
