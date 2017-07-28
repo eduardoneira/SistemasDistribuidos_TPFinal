@@ -49,6 +49,5 @@ def HTTP_query_handler_run(face_recognizer):
 
   print('Comenzando a escuchar mensajes rpc')
   server.start()
-
-if __name__ == '__main__':
+def HTTP_query_handler_start():
     HTTP_query_handler_run(ConcurrentLBPHWrapper(config['MIN_MATCH_PROBABILITY'],config['MIN_UPDATE_PROBABILITY']))

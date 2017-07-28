@@ -1,21 +1,18 @@
-import psycopg2
-import os
-def startServer(execute_server_command):
-    pid = os.fork()
-    if pid == 0:
-        os.system(execute_server_command)
-        s._exit(0)
-    return pid;
+from multiprocessing import Process
+from ProcesadorDeImagenes.image_listener import image_listener_start
+from ProcesadorDeImagenes.HTTP_query_handler import HTTP_query_handler_start
+
 def main():
     #crear predictor
-    pid_web_server= startServer("./ProcesadorDeImagenes/HTTP_query_handler.py 1")
-    pid_common_server= startServer("./ProcesadorDeImagenes/image_listener.py 1")
+    http_query_handler_process = Process(target=HTTP_query_handler_start)
+    image_listener_process = Process(target= image_listener_start)
+    http_query_handler_process.start()
+    image_listener_process.start()
     user_input = '0'
     while not user_input == 'q':
         user_input = input("Ingrese q para terminar:")
-    os.kill(pid_web_server, signal.SIGINT)
-    os.kill(pid_common_server, signal.SIGINT)
-    os.waitpid(pid_web_server, 0)
-    os.waitpid(pid_common_server,0)
+    http_query_handler_process.terminate()
+    image_listener_process.terminate()
+    p.join()
 if __name__ == '__main__':
     main()

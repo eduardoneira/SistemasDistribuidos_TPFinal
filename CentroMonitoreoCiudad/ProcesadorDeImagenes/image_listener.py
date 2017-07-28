@@ -37,7 +37,8 @@ def callback(ch, method, properties, body):
         connection.close()
 
 # https://stackoverflow.com/questions/3671666/sharing-a-complex-object-between-python-processes
-if __name__ == '__main__':
+#if __name__ == '__main__':
+def image_listener_start():
   print('Configurando CMB')
 
   with open('config.json') as config_file:
