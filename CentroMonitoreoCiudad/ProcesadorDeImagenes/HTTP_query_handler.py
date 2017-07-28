@@ -21,12 +21,11 @@ def handle(request,database,face_recognizer):
   elif (request.type == config['requests']['upload']):
     face_recognizer.predict_base64(request.image)
     response['id'] = str(id)
-    #TODO: map to db
+    database.execute('INSERT INTO person (hashperson,state) VALUES (%s,%s)',(str(id),request['state']))
   elif (request.type == config['requests']['trajectory']):
     id = face_recognizer.predict_base64(request.image)
     if id is not None:
-      database.execute('SELECT DISTINCT latitude, longitude FROM cmcdatabase.CropFace WHERE HashPerson == '+str(id))
-      #TODO: join with HashBigPic
+      database.execute('SELECT DISTINCT B.lat, B.lng FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)',str(id))
       response['coordinates'] = database.fetchone()
   else:
     response['status'] = 'ERROR'
@@ -34,17 +33,15 @@ def handle(request,database,face_recognizer):
 
   return json.dumps(response)
 
-def HTTP_query_handler_run(face_recognizer):
+def HTTP_query_handler_run(face_recognizer,database):
   print('Configurando CMC Query Handler')
-
-  database_connection = psycopg2.connect("dbname='cmcdatabase' user='postgres' host='localhost' password='postgres'")
 
   set_logger(config['logging_level'])
 
   server = RPCServer( host=config['host_HTTP'],
                       queue=config['queue_http'],
                       request_callback_main=handle,
-                      database=database_connection.cursor(),
+                      database=database,
                       recognizer=face_recognizer)
 
   print('Comenzando a escuchar mensajes rpc')
