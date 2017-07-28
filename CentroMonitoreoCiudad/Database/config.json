@@ -1,0 +1,6 @@
+{
+  "dbname": "cmcdatabase",
+  "user": "postgres",
+  "host": "localhost",
+  "password": "postgres"
+}

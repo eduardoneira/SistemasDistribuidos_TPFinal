@@ -3,6 +3,7 @@
 import unittest
 import sys
 import psycopg2
+import json
 from datetime import datetime
 sys.path.insert(0, '../../../')
 from Utils.Hash import Sha1
@@ -10,7 +11,10 @@ LEGALPROBLEMS= 0
 class TestDatabase(unittest.TestCase):
 
     def setUp(self):
-        self.connection = psycopg2.connect("dbname='cmcdatabase' user='postgres' host='localhost' password='postgres'")
+        with open('../config.json') as f:
+            conf = json.load(f)
+            connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
+            self.connection = psycopg2.connect(connection_str)
         self.cursor = self.connection.cursor()
         self.sha1 = Sha1()
         self.hash_big_pic = self.sha1.compute('got.jpg');
