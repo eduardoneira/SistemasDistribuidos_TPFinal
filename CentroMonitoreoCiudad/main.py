@@ -8,8 +8,8 @@ def startServer(execute_server_command):
     return pid;
 def main():
     #crear predictor
-    pid_web_server= startServer("./Web/app.py 1")
-    pid_common_server= startServer("./CommonServer/CommonServer.py 1")
+    pid_web_server= startServer("./ProcesadorDeImagenes/HTTP_query_handler.py 1")
+    pid_common_server= startServer("./ProcesadorDeImagenes/image_listener.py 1")
     user_input = '0'
     while not user_input == 'q':
         user_input = input("Ingrese q para terminar:")

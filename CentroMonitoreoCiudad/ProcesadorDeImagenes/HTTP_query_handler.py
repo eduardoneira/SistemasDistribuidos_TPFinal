@@ -7,7 +7,7 @@ from modules.logger import *
 from modules.rpc_server_rabbitmq import *
 from modules.LBPH_wrapper import *
 
-with open('config.json') as config_file:    
+with open('config.json') as config_file:
   config = json.load(config_file)
 
 def handle(request,database,face_recognizer):
@@ -19,7 +19,7 @@ def handle(request,database,face_recognizer):
     id = face_recognizer.predict_base64(request.image)
     respone['found'] = (id is not None)
   elif (request.type == config['requests']['upload']):
-    face_recognizer.predict_base64(request.image)    
+    face_recognizer.predict_base64(request.image)
     response['id'] = str(id)
     #TODO: map to db
   elif (request.type == config['requests']['trajectory']):
@@ -50,5 +50,5 @@ def HTTP_query_handler_run(face_recognizer):
   print('Comenzando a escuchar mensajes rpc')
   server.start()
 
-
-HTTP_query_handler_run(ConcurrentLBPHWrapper(config['MIN_MATCH_PROBABILITY'],config['MIN_UPDATE_PROBABILITY']))
+if __name__ == '__main__':
+    HTTP_query_handler_run(ConcurrentLBPHWrapper(config['MIN_MATCH_PROBABILITY'],config['MIN_UPDATE_PROBABILITY']))

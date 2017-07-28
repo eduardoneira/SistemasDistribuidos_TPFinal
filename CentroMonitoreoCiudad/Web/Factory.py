@@ -1,13 +1,13 @@
 from RequestManager import *
 import sys
 sys.path.insert(0, '../../')
-import Utils.const
+import Utils.const as CONST
 class RequestManagerFactory:
     @staticmethod
     def createRequestManager(type, file, basedir):
-        if type == const.REQUESTUPLOAD:
+        if type == CONST.REQUESTUPLOAD:
             return UploadManager(file, basedir);
-        elif type == const.REQUESTEXISTANCE:
+        elif type == CONST.REQUESTEXISTANCE:
             return ExistanceManager(file, basedir);
-        elif type == const.REQUESTTRAJECTORY:
+        elif type == CONST.REQUESTTRAJECTORY:
             return TrajectoryManager(file, basedir);

@@ -7,30 +7,40 @@ from modules.logger import *
 from modules.pika_wrapper_subscriber import *
 from modules.pika_wrapper_publisher import *
 from modules.LBPH_wrapper import *
-
+sys.path.insert(0, '../../../')
+from Utils.Hash import Sha1
 def callback(ch, method, properties, body):
-  payload = json.loads(body)
-  logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
-  print("Se recibio mensaje de frame. Comienza el cropeo")
-
-  # payload['faces'] = []
-  # for img in cropper.crop_base_64(payload['frame']):
-  #   payload['faces'].append(img)
-  
-  # if len(payload['faces']) > 0:
-  #   client.send(json.dumps(payload))
-  #   logging.debug('Se encontraron %d caras, enviando mensaje a CMC con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
-  #   print('Se envio al CMC la foto con las caras encontradas')
-  # else:
-  #   logging.debug('No se encontraron caras en la foto con %s, %s',payload['location'],payload['timestamp'])
-  #   print('No se encontraron caras luego de cropear')
-
+    payload = json.loads(body)
+    logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
+    print("Se recibio mensaje de frame. Comienza el cropeo")
+    with open('../Database/config.json') as f:
+        conf = json.load(f)
+        connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
+        connection = psycopg2.connect(connection_str)
+        cursor = connection.cursor()
+        payload = json.loads(body)
+        logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
+        sha1= Sha1()
+        #hash_big_pic = sha1.compute(payload['frame'])
+        #location = payload['location']
+        #latitude = location[0]
+        #longitude = location[1]
+        #timestamp = location['timestamp']
+        #cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, latitude, longitude, timestamp))
+        for crop_face in payload['faces']:
+            #if feature_matcher.compare_to_all_faces(crop_face) == ONEMATCH:
+            #     img = feature_matcher.getMatch()
+            #     hash_person = sha1.compute(img)
+            #     hash_crop = sha1.compute(crop_face)
+            #     cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s, %s);""",(hash_crop,hash_person, hash_big_pic))
+        cursor.close()
+        connection.close()
 
 # https://stackoverflow.com/questions/3671666/sharing-a-complex-object-between-python-processes
 if __name__ == '__main__':
   print('Configurando CMB')
 
-  with open('config.json') as config_file:    
+  with open('config.json') as config_file:
     config = json.load(config_file)
 
   set_logger(config['logging_level'])
