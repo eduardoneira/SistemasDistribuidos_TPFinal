@@ -16,13 +16,14 @@ if [[ "$1" != "fedora" ]] && [[ "$1" != "arch" ]] && [[ "$1" != "ubuntu" ]] &&  
   exit
 fi
 
-pip install flask
-pip install flask-googlemaps
-pip install psycopg2
+pip3 install --user flask
+pip3 install --user flask-googlemaps
+pip3 install --user psycopg2
 
 #Postgresql
 
-echo "Instalando python 3"
+echo "Instalando Postgresql"
+
 if [[ "$1" == "fedora" ]]; then
   dnf install postgresql-server postgresql postgresql-contrib
   postgresql-setup --initdb
