@@ -1,16 +1,16 @@
 import sys
 import hashlib
-import const
+import Utils.const as CONST
 
-class Hash:
-    def __init__(self, file_path):
-        self.file_path= file_path
+class Sha1:
+    def __init__(self):
         self.sha1 = hashlib.sha1()
-    def compute(self):
-        with open(self.file_Path) as f:
+    def compute(self, file_path):
+        self.file_path= file_path
+        with open(self.file_path, 'rb') as f:
             while True:
-                data = f.read(BUFFER_SIZE)
+                data = f.read(CONST.BUFFER_SIZE)
                 if not data:
                     break
-                sha1.update(data)
-        return sha1.hexdigest()
+                self.sha1.update(data)
+        return self.sha1.hexdigest()
