@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-pip install flask
-pip install flask-googlemaps
+pip3 install --user flask 
+pip3 install --user flask-googlemaps 
