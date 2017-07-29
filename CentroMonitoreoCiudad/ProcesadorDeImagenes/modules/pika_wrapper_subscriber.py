@@ -7,7 +7,7 @@ class PikaWrapperSubscriber:
 
   def __init__(self,host,topic):
     self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=host))
-    
+
     self.channel = self.connection.channel()
 
     self.channel.exchange_declare(exchange=topic,
@@ -18,13 +18,13 @@ class PikaWrapperSubscriber:
 
     self.channel.queue_bind(exchange=topic,
                             queue=queue_name,
-                            routing_key='#')  
+                            routing_key='#')
 
     self.host = host
     self.queue = queue_name
     self.topic = topic
 
-    logging.debug('Se establecio una conexion como subscriber con el host: '+ host+' con topic: '+topic+' y escuchando de la cola: '+queue)
+    logging.debug('Se establecio una conexion como subscriber con el host: '+ host+' con topic: '+topic+' y escuchando de la cola: '+ queue_name)
 
   def set_receive_callback(self,callback):
     self.tag = self.channel.basic_consume(callback,

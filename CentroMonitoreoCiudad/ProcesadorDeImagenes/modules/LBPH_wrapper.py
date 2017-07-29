@@ -20,16 +20,16 @@ class LBPHWrapper:
     self.id+=1
     self.recognizer.update([img],np.array([self.id]))
     self.images_processed+=1
-    
+
     return self.id
 
   def predict(self,img):
     nrb_predicted, conf = self.recognizer.predict(img)
-    
+
     print("La imagen que es mas cercana es "+str(nrb_predicted)+" con confianza "+str(conf))
     if (conf>=self.MIN_MATCH_PROBABILITY):
       if (conf >= self.MIN_UPDATE_PROBABILITY):
-        self.update(img,nrb_predicted)  
+        self.update(img,nrb_predicted)
       return str(nrb_predicted)
 
     return None
@@ -38,11 +38,11 @@ class LBPHWrapper:
     self.recognizer.train(images,np.array(labels))
     self.images_processed+=len(images)
 
-  def save():
+  def save(self):
     self.recognizer.save(self.FILENAME)
 
-  def load():
-    self.recognizer.load(self.FILENAME)    
+  def load(self):
+    self.recognizer.load(self.FILENAME)
 
   def predict_base64(self,image_base64):
     image = self.base64_to_img(image_base64)
@@ -50,7 +50,7 @@ class LBPHWrapper:
 
   def update_base64(self,image_base64):
     image = self.base64_to_img(image_base64)
-    return self.update(image) 
+    return self.update(image)
 
   def bytes_to_img(self,image_bytes):
     nparr = np.fromstring(image_bytes, np.uint8)
@@ -59,7 +59,7 @@ class LBPHWrapper:
 
   def base64_to_img(self,image_base64):
     return self.bytes_to_img(base64.b64decode(image_base64))
- 
+
 
 class ConcurrentLBPHWrapper:
   def __init__(self,min_match_probability,min_update_probability):
