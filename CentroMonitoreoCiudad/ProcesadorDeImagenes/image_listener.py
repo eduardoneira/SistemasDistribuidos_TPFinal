@@ -2,18 +2,19 @@
 
 
 import json
-from modules.graceful_killer import *
-from modules.logger import *
-from modules.pika_wrapper_subscriber import *
-from modules.pika_wrapper_publisher import *
-from modules.LBPH_wrapper import *
-sys.path.insert(0, '../../../')
+import sys
+from ProcesadorDeImagenes.modules.graceful_killer import *
+from ProcesadorDeImagenes.modules.logger import *
+from ProcesadorDeImagenes.modules.pika_wrapper_subscriber import *
+#from ProcesadorDeImagenes.modules.pika_wrapper_publisher import *
+from ProcesadorDeImagenes.modules.LBPH_wrapper import *
+sys.path.insert(0, '../')
 from Utils.Hash import Sha1
 def callback(ch, method, properties, body):
     payload = json.loads(body)
     logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
     print("Se recibio mensaje de frame. Comienza el cropeo")
-    with open('../Database/config.json') as f:
+    with open('./Database/config.json') as f:
         conf = json.load(f)
         connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
         connection = psycopg2.connect(connection_str)
@@ -43,7 +44,7 @@ def callback(ch, method, properties, body):
 def image_listener_start():
   print('Configurando CMB')
 
-  with open('config.json') as config_file:
+  with open('./ProcesadorDeImagenes/config.json') as config_file:
     config = json.load(config_file)
 
   set_logger(config['logging_level'])

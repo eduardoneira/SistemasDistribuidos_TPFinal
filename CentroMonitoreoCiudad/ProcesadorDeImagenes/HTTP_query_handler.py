@@ -3,20 +3,20 @@
 import json
 import psycopg2
 
-from modules.logger import *
-from modules.rpc_server_rabbitmq import *
-from modules.LBPH_wrapper import *
+from ProcesadorDeImagenes.modules.logger import *
+from ProcesadorDeImagenes.modules.rpc_server_rabbitmq import *
+from ProcesadorDeImagenes.modules.LBPH_wrapper import *
 
-with open('config.json') as config_file:
+with open('./ProcesadorDeImagenes/config.json') as config_file:
   config = json.load(config_file)
 
 def handle(request,database,face_recognizer):
     request = json.load(request)
     response = {}
     response['status'] = 'OK'
-    with open('../Database/config.json') as f:
-        conf = json.load(f)
-        connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
+    with open('./Database/config.json') as f:
+        conf_database = json.load(f)
+        connection_str = "dbname={} user={} host={} password={}".format(conf_database['dbname'], conf_database['user'], conf_database['host'], conf_database['password'])
         connection = psycopg2.connect(connection_str)
         cursor = connection.cursor()
         if (request.type == config['requests']['existance']):
@@ -42,7 +42,7 @@ def handle(request,database,face_recognizer):
         connection.close()
     return json.dumps(response)
 
-def HTTP_query_handler_run(face_recognizer,database):
+def HTTP_query_handler_run(face_recognizer):
   print('Configurando CMC Query Handler')
 
   set_logger(config['logging_level'])
@@ -50,7 +50,6 @@ def HTTP_query_handler_run(face_recognizer,database):
   server = RPCServer( host=config['host_HTTP'],
                       queue=config['queue_http'],
                       request_callback_main=handle,
-                      database=database,
                       recognizer=face_recognizer)
 
   print('Comenzando a escuchar mensajes rpc')

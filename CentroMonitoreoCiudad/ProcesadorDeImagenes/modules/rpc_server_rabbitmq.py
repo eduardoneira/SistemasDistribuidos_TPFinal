@@ -1,4 +1,4 @@
-#!/bin/python3 
+#!/bin/python3
 
 import pika
 import logging
@@ -8,7 +8,7 @@ class RPCServer:
 
   PREFETCH_COUNT = 1
 
-  def __init__(self,host,queue,request_callback_main,database,recognizer):
+  def __init__(self,host,queue,request_callback_main,recognizer):
     self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=host))
 
     self.channel = self.connection.channel()
@@ -20,12 +20,11 @@ class RPCServer:
     # self.channel.basic_qos(self.PREFETCH_COUNT)
     self.channel.basic_consume(self.request_callback, queue=queue)
 
-    self.database = database
     self.recognizer = recognizer
 
     logging.debug('Inicializando rpc server en host %s escuchando de la cola %s',host,queue)
 
-  def request_callback(self,ch, method, props, body):    
+  def request_callback(self,ch, method, props, body):
     response = self.request_callback_main(body,database,recognizer)
 
     ch.basic_publish(exchange='',
@@ -38,4 +37,4 @@ class RPCServer:
 
   def start(self):
     logging.debug('Comenzando server rpc. Esperando request RPC')
-    self.channel.start_consuming() 
+    self.channel.start_consuming()

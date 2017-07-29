@@ -13,6 +13,7 @@ def main():
         user_input = input("Ingrese q para terminar:")
     http_query_handler_process.terminate()
     image_listener_process.terminate()
-    p.join()
+    http_query_handler_process.join()
+    image_listener_process.join()
 if __name__ == '__main__':
     main()
