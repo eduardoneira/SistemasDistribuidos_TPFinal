@@ -6,7 +6,7 @@ import psycopg2
 import json
 from datetime import datetime
 sys.path.insert(0, '../../../')
-import Utils.Hash as Sha1
+from Utils.Hash import compute_sha1_from_file
 LEGALPROBLEMS= 0
 class TestDatabase(unittest.TestCase):
 
@@ -16,9 +16,9 @@ class TestDatabase(unittest.TestCase):
             connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
             self.connection = psycopg2.connect(connection_str)
         self.cursor = self.connection.cursor()
-        self.hash_big_pic = Sha1.compute_sha1_from_file('got.jpg');
-        self.hash_person = Sha1.compute_sha1_from_file('jon_snow3.jpg')
-        self.hash_crop = Sha1.compute_sha1_from_file('jon_snow2.jpg')
+        self.hash_big_pic = compute_sha1_from_file('got.jpg');
+        self.hash_person = compute_sha1_from_file('jon_snow3.jpg')
+        self.hash_crop = compute_sha1_from_file('jon_snow2.jpg')
         self.lat = -34.5884843
         self.lng = -58.3962122
         self.timestamp= datetime.now()
@@ -65,8 +65,8 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(rows[0][2], self.lng)
         self.assertEqual(rows[0][3], self.timestamp)
     def test_person_in_new_bigpic(self):
-        self.hash_big_pic_new = Sha1.compute_sha1_from_file('got2.jpg');
-        self.hash_crop_new = Sha1.compute_sha1_from_file('jon_snow1.jpg')
+        self.hash_big_pic_new = compute_sha1_from_file('got2.jpg');
+        self.hash_crop_new = compute_sha1_from_file('jon_snow1.jpg')
         self.lat_new = -34.5895876
         self.lng_new = -58.3562457
         self.timestamp_new= datetime.now()

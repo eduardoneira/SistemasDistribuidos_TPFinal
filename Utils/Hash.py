@@ -13,5 +13,5 @@ def compute_sha1_from_file(file_path):
     return sha1.hexdigest()
 def compute_sha1_hole_byte_at_once(image_byte):
     sha1 = hashlib.sha1()
-    sha1.update(image_byte)
+    sha1.update(image_byte.encode('utf-8'))
     return sha1.hexdigest()
