@@ -11,7 +11,7 @@ from ProcesadorDeImagenes.modules.LBPH_wrapper import *
 sys.path.insert(0, '../')
 from Utils.Hash import Sha1
 def callback(ch, method, properties, body):
-    payload = json.loads(body)
+    payload = json.loads(body.decode('utf-8'))
     logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
     print("Se recibio mensaje de frame. Comienza el cropeo")
     with open('./Database/config.json') as f:

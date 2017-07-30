@@ -8,7 +8,7 @@ from modules.pika_wrapper_publisher import *
 from modules.face_cropper import *
 
 def callback(ch, method, properties, body):
-  payload = json.loads(body)
+  payload = json.loads(body.decode('utf-8'))
   logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
   print("Se recibio mensaje de frame. Comienza el cropeo")
 
@@ -16,7 +16,7 @@ def callback(ch, method, properties, body):
   payload['faces'] = []
   for img in cropper.crop_base_64(payload['frame']):
     payload['faces'].append(img)
-  
+  test_json= json.dumps(payload['faces'])
   if len(payload['faces']) > 0:
     client.send(json.dumps(payload))
     logging.debug('Se encontraron %d caras, enviando mensaje a CMC con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
@@ -28,7 +28,7 @@ def callback(ch, method, properties, body):
 if __name__ == '__main__':
   print('Configurando CMB')
 
-  with open('config.json') as config_file:    
+  with open('config.json') as config_file:
     config = json.load(config_file)
 
   set_logger(config['logging_level'])

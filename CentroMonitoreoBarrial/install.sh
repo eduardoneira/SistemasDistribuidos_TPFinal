@@ -18,4 +18,3 @@ cd setup/
 ./python_opencv.sh
 
 cd ..
-
