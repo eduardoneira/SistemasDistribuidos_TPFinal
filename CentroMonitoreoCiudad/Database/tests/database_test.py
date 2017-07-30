@@ -6,7 +6,7 @@ import psycopg2
 import json
 from datetime import datetime
 sys.path.insert(0, '../../../')
-from Utils.Hash import Sha1
+import Utils.Hash as Sha1
 LEGALPROBLEMS= 0
 class TestDatabase(unittest.TestCase):
 
@@ -16,10 +16,9 @@ class TestDatabase(unittest.TestCase):
             connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
             self.connection = psycopg2.connect(connection_str)
         self.cursor = self.connection.cursor()
-        self.sha1 = Sha1()
-        self.hash_big_pic = self.sha1.compute('got.jpg');
-        self.hash_person = self.sha1.compute('jon_snow3.jpg')
-        self.hash_crop = self.sha1.compute('jon_snow2.jpg')
+        self.hash_big_pic = Sha1.compute_sha1_from_file('got.jpg');
+        self.hash_person = Sha1.compute_sha1_from_file('jon_snow3.jpg')
+        self.hash_crop = Sha1.compute_sha1_from_file('jon_snow2.jpg')
         self.lat = -34.5884843
         self.lng = -58.3962122
         self.timestamp= datetime.now()
@@ -66,8 +65,8 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(rows[0][2], self.lng)
         self.assertEqual(rows[0][3], self.timestamp)
     def test_person_in_new_bigpic(self):
-        self.hash_big_pic_new = self.sha1.compute('got2.jpg');
-        self.hash_crop_new = self.sha1.compute('jon_snow1.jpg')
+        self.hash_big_pic_new = Sha1.compute_sha1_from_file('got2.jpg');
+        self.hash_crop_new = Sha1.compute_sha1_from_file('jon_snow1.jpg')
         self.lat_new = -34.5895876
         self.lng_new = -58.3562457
         self.timestamp_new= datetime.now()
@@ -75,14 +74,14 @@ class TestDatabase(unittest.TestCase):
         self.cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s)""",(self.hash_crop_new,self.hash_person, self.hash_big_pic_new))
         self.cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.HashPerson = %s)", (self.hash_person,))
         rows = self.cursor.fetchall()
-        self.assertEqual(rows[0][0], self.hash_big_pic)
-        self.assertEqual(rows[0][1], self.lat)
-        self.assertEqual(rows[0][2], self.lng)
-        self.assertEqual(rows[0][3], self.timestamp)
-        self.assertEqual(rows[1][0], self.hash_big_pic_new)
-        self.assertEqual(rows[1][1], self.lat_new)
-        self.assertEqual(rows[1][2], self.lng_new)
-        self.assertEqual(rows[1][3], self.timestamp_new)
+        self.assertEqual(rows[1][0], self.hash_big_pic)
+        self.assertEqual(rows[1][1], self.lat)
+        self.assertEqual(rows[1][2], self.lng)
+        self.assertEqual(rows[1][3], self.timestamp)
+        self.assertEqual(rows[0][0], self.hash_big_pic_new)
+        self.assertEqual(rows[0][1], self.lat_new)
+        self.assertEqual(rows[0][2], self.lng_new)
+        self.assertEqual(rows[0][3], self.timestamp_new)
     def test_delete_Person(self):
         self.cursor.execute("DELETE FROM Person WHERE Person.HashPerson= %s",(self.hash_person,))
         self.cursor.execute("SELECT Person.HashPerson FROM Person WHERE  Person.HashPerson = %s", (self.hash_person,))

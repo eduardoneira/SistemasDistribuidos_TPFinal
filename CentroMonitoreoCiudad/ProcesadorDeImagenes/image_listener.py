@@ -26,7 +26,7 @@ def store_crop_faces(payload, cursor):
             matcher = Matcher()
             prediction_filename = matcher.predict(filepath)
             if not prediction_filename == None:
-               hash_person = sha1.compute(prediction_filename)
+               hash_person = Sha1.compute_sha1_from_file(prediction_filename)
                cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s, %s);""",(hash_crop,hash_person, hash_big_pic))
                cursor.commit()
 def callback(ch, method, properties, body):
