@@ -10,32 +10,37 @@ from ProcesadorDeImagenes.modules.pika_wrapper_subscriber import *
 from ProcesadorDeImagenes.modules.LBPH_wrapper import *
 sys.path.insert(0, '../')
 from Utils.Hash import Sha1
+def store_big_pic(payload, cursor):
+    hash_big_pic, file_already_exists, filepath = save_data_to_file(payload['frame'], BIGPICIMAGECONTAINERFOLDER)
+    if not file_already_exists:
+            location = payload['location']
+            latitude = location[0]
+            longitude = location[1]
+            timestamp = location['timestamp']
+            cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, latitude, longitude, timestamp))
+            cursor.commit()
+def store_crop_faces(payload, cursor):
+    for crop_face in payload['faces']:
+        hash_crop, file_already_exists, filepath = save_data_to_file(crop_face, CROPIMAGECONTAINERFOLDER)
+        if not file_already_exists:
+            matcher = Matcher()
+            prediction_filename = matcher.predict(filepath)
+            if not prediction_filename == None:
+               hash_person = sha1.compute(prediction_filename)
+               cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s, %s);""",(hash_crop,hash_person, hash_big_pic))
+               cursor.commit()
 def callback(ch, method, properties, body):
     payload = json.loads(body.decode('utf-8'))
     logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
     print("Se recibio mensaje de frame. Comienza el cropeo")
+    logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
     with open('./Database/config.json') as f:
         conf = json.load(f)
         connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
         connection = psycopg2.connect(connection_str)
         cursor = connection.cursor()
-        payload = json.loads(body)
-        logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
-        #sha1= Sha1()
-        #hash_big_pic = sha1.compute(payload['frame'])
-        #location = payload['location']
-        #latitude = location[0]
-        #longitude = location[1]
-        #timestamp = location['timestamp']
-        #cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, latitude, longitude, timestamp))
-        #cursor.commit()
-        #for crop_face in payload['faces']:
-        #   if feature_matcher.compare_to_all_faces(crop_face) == ONEMATCH:
-        #   img = feature_matcher.getMatch()
-        #   hash_person = sha1.compute(img)
-        #   hash_crop = sha1.compute(crop_face)
-        #   cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s, %s);""",(hash_crop,hash_person, hash_big_pic))
-        #   cursor.commit()
+        store_big_pic(payload, cursor)
+        store_crop_faces(payload, cursor)
         cursor.close()
         connection.close()
 
