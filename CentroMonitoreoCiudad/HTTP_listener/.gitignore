@@ -2,4 +2,3 @@ log/
 modules/__pycache__
 setup/OpenCV
 tests/att_faces/
-LBPH_dump

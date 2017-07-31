@@ -2,7 +2,8 @@
   "stem_name_log": "face_recognizer",
   "logging_level" : 10,
   "queue_request": "face_recognizer_request",
-  "exchange_response": "face_recognizer_response",
+  "request_update": "update",
+  "request_predict": "predict",
   "MIN_MATCH_PROBABILITY": 50,
   "MIN_UPDATE_PROBABILITY": 80
 }
