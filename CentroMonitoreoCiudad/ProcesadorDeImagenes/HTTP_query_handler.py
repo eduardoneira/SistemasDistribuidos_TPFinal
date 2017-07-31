@@ -26,7 +26,7 @@ def handle(request,database,face_recognizer):
             face_recognizer.predict_base64(request.image)
             response['id'] = str(id)
             #database.execute('INSERT INTO person (hashperson,state) VALUES (%s,%s)',(str(id),request['state']))
-            cursor.execute("""INSERT INTO Person (HashPerson,state) VALUES (%s,%s)""", id,request['state'])
+            cursor.execute("""INSERT INTO Person (HashPerson,state) VALUES (%s,%s)""",id,request['state'])
             connection.commit()
         elif (request.type == config['requests']['trajectory']):
             id = face_recognizer.predict_base64(request.image)
