@@ -15,7 +15,7 @@ def store_data(payload, faces_data):
   longitude = location[1]
   timestamp = payload['timestamp']
   cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, latitude, longitude, timestamp))
-  
+
   for face_data in faces_data:
     hash_person = face_data['hash_person']
     hash_crop = face_data['hash_crop']
@@ -40,7 +40,7 @@ def callback(ch, method, properties, body):
 
   faces_found = faces_to_store(payload['faces'])
   if len(faces_found) > 0:
-    store_data(payload,faces_found) 
+    store_data(payload,faces_found)
 
 
 if __name__ == '__main__':

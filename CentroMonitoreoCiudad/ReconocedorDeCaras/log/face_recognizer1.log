@@ -1,0 +1,3 @@
+Tue, 01 Aug 2017 16:59:29 DEBUG      10814    Se establecio una conexion para recibir mensajes con el host: localhost y escuchando de la cola: face_recognizer_request
+Tue, 01 Aug 2017 16:59:44 DEBUG      10814    Llego señal de salida. Se va a cerrar el CMB
+Tue, 01 Aug 2017 16:59:44 WARNING    10814    Disconnected from RabbitMQ at localhost:5672 (200): Normal shutdown
