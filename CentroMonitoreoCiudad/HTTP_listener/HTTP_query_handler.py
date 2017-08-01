@@ -7,12 +7,7 @@ from modules.logger import *
 from modules.rpc_server_rabbitmq import *
 from modules.face_recognizer_client import *
 from modules.graceful_killer import *
-
-with open('./config.json') as config_file:
-  config = json.load(config_file)
-
-with open('../Database/config.json') as file:
-  conf_database = json.load(file)
+from modules.file_manager import *
 
 #TODO: save in FS
 def handle(request):
@@ -27,7 +22,8 @@ def handle(request):
     id = face_recognizer_client.update(request['image'])
     response['id'] = str(id)
     #database.execute('INSERT INTO person (hashperson,state) VALUES (%s,%s)',(str(id),request['state']))
-    cursor.execute("""INSERT INTO Person (HashPerson,state) VALUES (%s,%s)""",id,request['state'])
+    cursor.execute("""INSERT INTO Person (HashPerson,state) VALUES (%s,%s)""",str(id),request['state'])
+    file_manager.save_person_base64(request['image'],str(id))
   elif (request.type == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
@@ -40,10 +36,16 @@ def handle(request):
 
   return json.dumps(response)
 
-
 if __name__ == '__main__':
   print('Configurando CMC Query Handler')
 
+  with open('./config.json') as config_file:
+    config = json.load(config_file)
+
+  with open('../Database/config.json') as file:
+    conf_database = json.load(file)
+
+  file_manager = FileManager(config)
   set_logger(config['logging_level'])
 
   connection_str = "dbname={} user={} host={} password={}".format(conf_database['dbname'], conf_database['user'], conf_database['host'], conf_database['password'])
@@ -68,4 +70,4 @@ if __name__ == '__main__':
 
   print('Comenzando a escuchar mensajes rpc')
   server.start()
- 
+

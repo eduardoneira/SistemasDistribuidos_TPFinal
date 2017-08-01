@@ -4,7 +4,9 @@ import logging
 import glob
 import os
 
-def set_logger(logging_level):
+def set_logger(logging_level):  
+  if not os.path.exists('./log/'):
+    os.makedirs('./log/')
 
   #Para no sobreescribir
   id = len(glob.glob("./log/*.log")) +1
