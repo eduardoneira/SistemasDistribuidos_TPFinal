@@ -11,6 +11,20 @@ function setOperation(){
   }
   return REQUESTTRAJECTORY;
 }
+function setDefaultRadioButtonSelection(radioButtonsName){
+  var ele = document.getElementsByName(radioButtonsName);
+   for(var i=0;i<ele.length;i++)
+      ele[i].checked = (i==0)?(true):(false);
+}
+function disableButtonsAndRadio(setDisable){
+  document.querySelector(".start").disabled = setDisable;
+  document.querySelector(".home").disabled = setDisable;
+  document.getElementById("RadioInsertFace").disabled = setDisable;
+  document.getElementById("RadiosCheckExistance").disabled = setDisable;
+  document.getElementById("RadiosGetTrajectory").disabled = setDisable;
+  document.getElementById("RadiosCheckLegalProblems").disabled = setDisable;
+  document.getElementById("RadiosCheckMissing").disabled = setDisable;
+}
 Dropzone.autoDiscover= false;
 $(function() {
 var myDropzone = new Dropzone("div#droparea", {
@@ -29,13 +43,9 @@ var myDropzone = new Dropzone("div#droparea", {
     autoProcessQueue: false, // When set to false you have to call myDropzone.processQueue() yourself in order to upload the dropped files.
     forceFallback: false,
     init: function(){
-      document.querySelector("#actions .start").disabled = true;
-      document.querySelector("#actions .home").disabled = true;
-      document.getElementById("RadioInsertFace").disabled = true;
-      document.getElementById("RadiosCheckExistance").disabled = true;
-      document.getElementById("RadiosGetTrajectory").disabled = true;
-      var ele = document.getElementsByName("Choose");
-      ele[0].checked = (true);
+      disableButtonsAndRadio(true);
+      setDefaultRadioButtonSelection("Choose")
+      setDefaultRadioButtonSelection("ChooseState")
     },
     accept: function(file, done) {
       console.log("accept");
@@ -93,43 +103,31 @@ var myDropzone = new Dropzone("div#droparea", {
     if (this.files[1]!=null){
         this.removeFile(this.files[0]);
       }
-    document.querySelector("#actions .start").disabled = false;
-    document.querySelector("#actions .home").disabled = false;
-    document.getElementById("RadioInsertFace").disabled = false;
-    document.getElementById("RadiosCheckExistance").disabled = false;
-    document.getElementById("RadiosGetTrajectory").disabled = false;
-    $('#actions .start').click(function(){
+    disableButtonsAndRadio(false);
+    $('.start').click(function(){
         myDropzone.processQueue(); //processes the queue
-        document.querySelector("#actions .start").disabled = true;
-        document.getElementById("RadioInsertFace").disabled = true;
-        document.getElementById("RadiosCheckExistance").disabled = true;
-        document.getElementById("RadiosGetTrajectory").disabled = true;
+        disableButtonsAndRadio(true);
     });
-    $('#actions .home').click(function(){
+    $('.home').click(function(){
       //myDropzone.removeAllFiles(true);
       window.location.reload();
     });
   });
   myDropzone.on("removedfile", function(file) {
     console.log("removedfile");
-    document.querySelector("#actions .start").disabled = true;
-    document.querySelector("#actions .home").disabled = true;
-    document.getElementById("RadioInsertFace").disabled = true;
-    document.getElementById("RadiosCheckExistance").disabled = true;
-    document.getElementById("RadiosGetTrajectory").disabled = true;
-    var ele = document.getElementsByName("Choose");
-     for(var i=0;i<ele.length;i++)
-        ele[i].checked = (i==0)?(true):(false);
+    disableButtonsAndRadio(true);
+    setDefaultRadioButtonSelection("Choose")
+    setDefaultRadioButtonSelection("ChooseState")
     var response = document.getElementById("response");
     while (response.firstChild) {
         response.removeChild(response.firstChild);
     }
+    var spanInfo = document.createElement("SPAN");
+    spanInfo.setAttribute('style', 'color: blue');
+    var text = document.createTextNode("Best match will appear here.");
+    spanInfo.appendChild(text);
+    response.appendChild(spanInfo);
   });
-  myDropzone.on("selectedfiles", function(file) { console.log("selectedfiles"); });
-  myDropzone.on("thumbnail", function(file) { console.log("thumbnail"); });
-  myDropzone.on("error", function(file) { console.log("error"); });
-  myDropzone.on("processing ", function(file) { console.log("processing "); });
-  myDropzone.on("uploadprogress", function(file) { console.log("uploadprogress"); });
   myDropzone.on('sending', function(file, xhr, formData){
     var operation = setOperation();
     formData.append('operation',operation);
@@ -139,23 +137,4 @@ var myDropzone = new Dropzone("div#droparea", {
     displayer = displayerFactory.createDisplayer();
     displayer.show();
   });
-  myDropzone.on("complete", function(file) { console.log("complete"); });
-  myDropzone.on("canceled", function(file) { console.log("canceled"); });
-  myDropzone.on("maxfilesreached", function(file) { console.log("maxfilesreached"); });
-  myDropzone.on("maxfilesexceeded", function(file) {
-    console.log("maxfilesexceeded");
-  });
-
-  /* receive a "list of files" as first parameter
-   * only called if the uploadMultiple option is true:
-   */
-  myDropzone.on("processingmultiple", function(files) { console.log("processingmultiple") });
-  myDropzone.on("sendingmultiple", function(files) { console.log("sendingmultiple") });
-  myDropzone.on("successmultiple", function(files) { console.log("successmultiple") });
-  myDropzone.on("completemultiple", function(files) { console.log("completemultiple") });
-  myDropzone.on("canceledmultiple", function(files) { console.log("canceledmultiple") });
-
-  /* Special events */
-  myDropzone.on("totaluploadprogress", function() { console.log("totaluploadprogress") });
-  myDropzone.on("reset", function() { console.log("reset") });
 });

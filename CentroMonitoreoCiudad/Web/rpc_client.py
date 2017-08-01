@@ -1,7 +1,7 @@
 #!/bin/python3
 
 import pika
-
+import uuid
 class RpcClient(object):
   def __init__(self,host,queue_rpc):
     self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=host))
@@ -11,7 +11,7 @@ class RpcClient(object):
     result = self.channel.queue_declare(exclusive=True)
     self.callback_queue = result.method.queue
 
-    self.channel.basic_consume(self.on_response, 
+    self.channel.basic_consume(self.on_response,
                                no_ack=True,
                                queue=self.callback_queue)
     self.queue_rpc = queue_rpc
