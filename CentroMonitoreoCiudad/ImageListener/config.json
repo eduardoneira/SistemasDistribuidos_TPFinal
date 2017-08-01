@@ -1,0 +1,7 @@
+{
+  "host_CMB": "127.0.0.1",
+  "host_HTTP": "127.0.0.1",
+  "logging_level" : 10,
+  "topic_cmc": "img/cropped",
+  "queue_http": "http_rpc"
+}
