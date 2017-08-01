@@ -9,7 +9,7 @@ def set_logger(logging_level):
     os.makedirs('./log/')
 
   #Para no sobreescribir
-  id = len(glob.glob("./log/*.log")) +1
+  id = len(glob.glob("./log/HTTP_query_handler*.log")) +1
 
   logging.basicConfig(  level=logging_level,
                         format='%(asctime)s %(levelname)-8s QUERY    '+ str(os.getpid()) +'    %(message)s',

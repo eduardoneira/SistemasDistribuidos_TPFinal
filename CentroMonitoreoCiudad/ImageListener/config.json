@@ -1,7 +1,10 @@
 {
   "host_CMB": "127.0.0.1",
-  "host_HTTP": "127.0.0.1",
   "logging_level" : 10,
   "topic_cmc": "img/cropped",
-  "queue_http": "http_rpc"
+  "queue_send_face_recognizer": "face_recognizer_request",
+  "queue_receive_face_recognizer": "http_receive_face_recognizer",
+  "image_database": "../image_database",
+  "person": "/person/",
+  "bigpic": "/bigpic/"
 }
