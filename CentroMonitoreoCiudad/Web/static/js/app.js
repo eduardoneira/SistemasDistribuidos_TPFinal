@@ -2,6 +2,8 @@
 const REQUESTEXISTANCE = 4;
 const REQUESTUPLOAD = 5;
 const REQUESTTRAJECTORY=6;
+const STATELEGALPROBLEMS= 7;
+const STATEMISSING=8;
 function setOperation(){
   if ((document.getElementById("RadioInsertFace").checked == true)){
     return REQUESTUPLOAD;
@@ -10,6 +12,12 @@ function setOperation(){
     return REQUESTEXISTANCE;
   }
   return REQUESTTRAJECTORY;
+}
+function setState(){
+  if ((document.getElementById("RadiosCheckLegalProblems").checked == true)){
+    return STATELEGALPROBLEMS;
+  }
+  return STATEMISSING;
 }
 function setDefaultRadioButtonSelection(radioButtonsName){
   var ele = document.getElementsByName(radioButtonsName);
@@ -130,7 +138,9 @@ var myDropzone = new Dropzone("div#droparea", {
   });
   myDropzone.on('sending', function(file, xhr, formData){
     var operation = setOperation();
+    var state = setState();
     formData.append('operation',operation);
+    formData.append('state', state)
   });
   myDropzone.on("success", function(file, response) {
     displayerFactory = new ResponseDisplayerFactory(response);
