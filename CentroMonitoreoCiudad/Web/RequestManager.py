@@ -23,8 +23,8 @@ class Manager(object):
     return self.rpc_client.call(json.dumps(self.request))
 
 class TrajectoryManager(Manager):
-  def __init__(self, file, basedir,rpc_client,type):
-    super(TrajectoryManager, self).__init__(file, basedir,rpc_client,type)
+  def __init__(self, file,rpc_client,type):
+    super(TrajectoryManager, self).__init__(file,rpc_client,type)
 
   def processRequest(self):
     # points = [{"lat": -34.621622, "lng": -58.423759}, {"lat": -34.63186608060463, "lng": -58.42525005340576}];
@@ -39,8 +39,8 @@ class TrajectoryManager(Manager):
       return jsonify(operation=CONST.RESPONSEDOESNTEXIST, points="");
 
 class UploadManager(Manager):
-  def __init__(self, file, basedir,rpc_client,type):
-    super(UploadManager, self).__init__(file, basedir,rpc_client,type)
+  def __init__(self, file,rpc_client,type):
+    super(UploadManager, self).__init__(file,rpc_client,type)
 
   def processRequest(self):
     response = json.load(self.rpc_call())
@@ -49,8 +49,8 @@ class UploadManager(Manager):
       return jsonify(operation=CONST.RESPONSECORRECTLYUPLOADED)
 
 class ExistanceManager(Manager):
-  def __init__(self, file, basedir,rpc_client,type):
-    super(ExistanceManager, self).__init__(file, basedir,rpc_client,type)
+  def __init__(self, file,rpc_client,type):
+    super(ExistanceManager, self).__init__(file,rpc_client,type)
 
   def processRequest(self):
     response = json.load(self.rpc_call())
