@@ -21,14 +21,12 @@ def handle(request):
   elif (request.type == config['requests']['upload']):
     id = face_recognizer_client.update(request['image'])
     response['id'] = str(id)
-    #database.execute('INSERT INTO person (hashperson,state) VALUES (%s,%s)',(str(id),request['state']))
-    cursor.execute("""INSERT INTO Person (HashPerson,state) VALUES (%s,%s)""",str(id),request['state'])
+    cursor.execute("INSERT INTO Person (HashPerson,state) VALUES (%s,%s)",(str(id),request['state']))
     file_manager.save_person_base64(request['image'],str(id))
   elif (request.type == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
-      #database.execute('SELECT DISTINCT B.lat, B.lng FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)',str(id))
-      cursor.execute("SELECT DISTINCT B.lat, B.lng FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)", id)
+      cursor.execute("SELECT DISTINCT B.lat, B.lng FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)", (id))
       response['coordinates'] = cursor.fetchone()
   else:
     response['status'] = 'ERROR'

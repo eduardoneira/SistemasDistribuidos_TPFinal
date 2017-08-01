@@ -2,88 +2,79 @@
 
 import psycopg2
 import json
-import sys
-from ProcesadorDeImagenes.modules.graceful_killer import *
-from ProcesadorDeImagenes.modules.logger import *
-from ProcesadorDeImagenes.modules.pika_wrapper_subscriber import *
-from ProcesadorDeImagenes.modules.Matcher import Matcher
-#from ProcesadorDeImagenes.modules.pika_wrapper_publisher import *
-from ProcesadorDeImagenes.modules.LBPH_wrapper import *
-sys.path.insert(0, '../')
-from CentroMonitoreoBarrial.modules.face_cropper import FaceCropper
-from Utils.Hash import compute_sha1_from_file
-from Utils.File_Manager import save_data_to_file
-import Utils.const as CONST
-def store_big_pic(payload, cursor, connect, cropper):
-    img = cropper.bytes_to_image(payload['frame'])
-    hash_big_pic, file_already_exists, filepath = save_data_to_file(img, CONST.BIGPICIMAGECONTAINERFOLDER)
-    if not file_already_exists:
-        cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic = %s", (self.hash_big_pic,))
-        rows = cursor.fetchall()
-        if len(rows) == 0:
-            location = payload['location']
-            latitude = location[0]
-            longitude = location[1]
-            timestamp = payload['timestamp']
-            cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, latitude, longitude, timestamp))
-            connect.commit()
-        else:
-            cursor.execute("UPDATE BigPic SET  BigPic (Lat, Lng, Timestmp) VALUES (%s, %s, %s)", (latitude, longitude, timestamp))
-def store_crop_faces(payload, cursor, connect, cropper):
-    for crop_face in payload['faces']:
-        img = cropper.bytes_to_image(crop_face)
-        hash_crop, file_already_exists, filepath = save_data_to_file(img, CONST.CROPIMAGECONTAINERFOLDER)
-        if not file_already_exists:
-            cursor.execute("SELECT * FROM CropFace WHERE  CropFace.HashCrop = %s", (self.hash_crop,))
-            rows = cursor.fetchall()
-            if len(rows) == 0:
-                matcher = Matcher()
-                prediction_filename = matcher.predict(filepath)
-                if not prediction_filename == None:
-                   hash_person = compute_sha1_from_file(prediction_filename)
-                   cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s, %s);""",(hash_crop,hash_person, hash_big_pic))
-                   connect.commit()
+from modules.graceful_killer import *
+from modules.logger import *
+from modules.pika_wrapper_subscriber import *
+from modules.face_recognizer_client import *
+from modules.file_manager import *
+
+def store_data(payload, faces_data):
+  hash_big_pic = file_manager.save_bigpic_base64(payload['frame'])
+  location = payload['location']
+  latitude = location[0]
+  longitude = location[1]
+  timestamp = payload['timestamp']
+  cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, latitude, longitude, timestamp))
+  
+  for face_data in faces_data:
+    hash_person = face_data['hash_person']
+    hash_crop = face_data['hash_crop']
+    cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s);""",(hash_crop, hash_person, hash_big_pic))
+
+def faces_to_store(faces):
+  ids = face_recognizer_client.predict(faces)
+  img_to_store = []
+
+  for x in range(0,len(ids)):
+    if ids[x] is not None:
+      hash_crop = file_manager.save_person_base64(faces[x],ids[x])
+      img_to_store.append({ 'hash_person':str(ids[x]),
+                            'hash_crop': hash_crop })
+  return img_to_store
+
 def callback(ch, method, properties, body):
-    cropper = FaceCropper()
-    payload = json.loads(body.decode('utf-8'))
-    logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
-    print("Se recibio mensaje de frame. Guardo la imagen grupal y las caras individuales")
-    logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
-    with open('./Database/config.json') as f:
-        conf = json.load(f)
-        connection_str = "dbname={} user={} host={} password={}".format(conf['dbname'], conf['user'], conf['host'], conf['password'])
-        connection = psycopg2.connect(connection_str)
-        cursor = connection.cursor()
-        store_big_pic(payload, cursor, connection, cropper)
-        store_crop_faces(payload, cursor, connection, cropper)
-        cursor.close()
-        connection.close()
+  payload = json.loads(body)
+  logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
+  print("Se recibio mensaje de cara. Guardo la imagen grupal y las caras individuales")
+  logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
 
-# https://stackoverflow.com/questions/3671666/sharing-a-complex-object-between-python-processes
-#if __name__ == '__main__':
-def image_listener_start():
-  print('Configurando CMB')
+  faces_found = faces_to_store(payload['faces'])
+  if len(faces_found) > 0:
+    store_data(payload,faces_found) 
 
-  with open('./ProcesadorDeImagenes/config.json') as config_file:
+
+if __name__ == '__main__':
+  print('Configurando CMC Image Listener')
+
+  with open('./config.json') as config_file:
     config = json.load(config_file)
 
+  with open('../Database/config.json') as file:
+    conf_database = json.load(file)
+
+  file_manager = FileManager(config)
   set_logger(config['logging_level'])
+
+  connection_str = "dbname={} user={} host={} password={}".format(conf_database['dbname'], conf_database['user'], conf_database['host'], conf_database['password'])
+  connection_db = psycopg2.connect(connection_str)
+  connection_db.autocommit = True
+
+  cursor = connection_db.cursor()
 
   server = PikaWrapperSubscriber( host=config['host_CMB'],
                                   topic=config['topic_cmc'])
-  # client = PikaWrapperPublisher(host=config['host_HTTP'],
-  #                               topic=config['topic_'])
-
-  #Train or load if there is something from before
-  predictor = LBPHWrapper(config['MIN_MATCH_PROBABILITY'],
-                          config['MIN_UPDATE_PROBABILITY']
-                         )
-
-  killer = GracefulKiller()
-  killer.add_connection(server)
-  killer.add_predictor(predictor)
 
   server.set_receive_callback(callback)
 
+  face_recognizer_client = FaceRecognizerClient(host='localhost',
+                                                queue_send=config['queue_send_face_recognizer'],
+                                                queue_receive=config['queue_receive_face_recognizer'])
+
+  graceful_killer = GracefulKiller()
+  graceful_killer.add_connection(server)
+  graceful_killer.add_connection(face_recognizer_client)
+  graceful_killer.add_connection(cursor)
+  graceful_killer.add_connection(connection_db)
+
   print('[*] Esperando mensajes para procesar. Para salir usar CTRL+C')
-server.start_consuming()
+  server.start_consuming()

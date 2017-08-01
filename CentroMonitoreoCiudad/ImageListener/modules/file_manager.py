@@ -1,4 +1,4 @@
-#!/bin/python3base64.b64decode(image)
+#!/bin/python3
 
 import logging
 import os
@@ -9,9 +9,11 @@ class FileManager:
 
   def __init__(self,config):
     self.person_path = config['image_database']+config['person']
+    self.bigpic = config['image_database']+config['bigpic']
 
     self.__create_directory(config['image_database'])
     self.__create_directory(self.person_path)
+    self.__create_directory(self.bigpic)
 
   def __create_directory(self,path):
     if not os.path.exists(path):
@@ -19,17 +21,23 @@ class FileManager:
       os.makedirs(path)
 
 
-  def save_person(self,image,id):
-    directory = self.person_path+str(id)+'/'
+  def save_image(self,image,directory):    
     self.__create_directory(directory)
-    filename = str(self.__SHA1_byte_stream(image))+".jpg"
-    with open(filename,'wb') as file:
+    filename = self.SHA1_byte_stream(image)
+    filename_fullpath = directory+str(filename)+".jpg"
+    
+    with open(filename_fullpath,'wb') as file:
       file.write(image)
+    
+    return filename
 
   def save_person_base64(self,image,id):
-    self.save_person(base64.b64decode(image),id)
+    return self.save_image(base64.b64decode(image),self.person_path+str(id)+'/')
 
-  def __SHA1_byte_stream(byte_stream):
+  def save_bigpic_base64(self,image):
+    return self.save_image(base64.b64decode(image),self.bigpic)
+
+  def SHA1_byte_stream(byte_stream):
     sha1 = hashlib.sha1()
     sha1.update(byte_stream.encode('utf-8'))
     return sha1.hexdigest()
