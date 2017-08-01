@@ -1,4 +1,4 @@
-#!/bin/python3base64.b64decode(image)
+#!/bin/python3
 
 import logging
 import os
