@@ -28,7 +28,13 @@ class TrajectoryManager(Manager):
 
   def processRequest(self):
     # points = [{"lat": -34.621622, "lng": -58.423759}, {"lat": -34.63186608060463, "lng": -58.42525005340576}];
-    response = json.load(self.rpc_call())
+    file_bigpic1= "got.jpg"
+    file_bigpic2= "got2.jpg"
+    file_match = "jon_snow3.jpg"
+    points = [{"lat": -34.621622, "lng": -58.423759, 'image':file_bigpic1}, {"lat": -34.63186608060463, "lng": -58.42525005340576, 'image':file_bigpic2}];
+    json_response = jsonify(operation=CONST.RESPONSETRAJECTORY, match=file_match, points=json.dumps(points))
+    return json_response
+    """response = json.load(self.rpc_call())
 
     if response.status == 'OK':
       points =[]
@@ -36,7 +42,7 @@ class TrajectoryManager(Manager):
         points.append({ 'lat':p[0],'lng':p[1] })
       jsonify(operation=CONST.RESPONSETRAJECTORY,points=json.dumps(points))
     else:
-      return jsonify(operation=CONST.RESPONSEDOESNTEXIST, points="");
+      return jsonify(operation=CONST.RESPONSEDOESNTEXIST, points="");"""
 
 class UploadManager(Manager):
   def __init__(self, file,rpc_client,type,state):
