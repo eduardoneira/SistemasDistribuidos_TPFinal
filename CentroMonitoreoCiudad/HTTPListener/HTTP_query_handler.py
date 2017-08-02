@@ -19,7 +19,10 @@ def handle(body):
   elif (request['type'] == config['requests']['upload']):
     id = face_recognizer_client.update(request['image'])
     response['id'] = str(id)
-    state = request['state'] == config['requests']['missing'] ? 'missing' : 'legal_problems'
+    if (request['state'] == config['requests']['missing']):
+      state = 'missing' 
+    else: 
+      state = 'legal_problems'
     cursor.execute("INSERT INTO Person (HashPerson,state) VALUES (%s,%s)",(str(id),state))
     file_manager.save_person_base64(request['image'],str(id))
   elif (request['type'] == config['requests']['trajectory']):
