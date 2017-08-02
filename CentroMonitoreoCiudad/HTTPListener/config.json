@@ -9,6 +9,8 @@
   "requests": {
     "existance": 4,
     "upload": 5,
-    "trajectory":6
+    "trajectory":6,
+    "legal_problems":7,
+    "missing":8
   }
 }

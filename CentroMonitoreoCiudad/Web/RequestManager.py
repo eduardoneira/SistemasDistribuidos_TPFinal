@@ -39,8 +39,9 @@ class TrajectoryManager(Manager):
       return jsonify(operation=CONST.RESPONSEDOESNTEXIST, points="");
 
 class UploadManager(Manager):
-  def __init__(self, file,rpc_client,type):
+  def __init__(self, file,rpc_client,type,state):
     super(UploadManager, self).__init__(file,rpc_client,type)
+    self.request['state'] = state
 
   def processRequest(self):
     response = json.load(self.rpc_call())

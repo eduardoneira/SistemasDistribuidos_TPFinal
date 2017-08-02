@@ -99,7 +99,7 @@ def upldfile():
     for f in files:
       if f and allowed_file(f.filename):
         formData = request.form;
-        requestManager= RequestManagerFactory.createRequestManager(int(formData['operation']),f,rpc_client);
+        requestManager= RequestManagerFactory.createRequestManager(int(formData['operation']),f,rpc_client,int(formData['state']));
         return requestManager.processRequest();
       else:
         app.logger.info('ext name error')

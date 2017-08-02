@@ -1,6 +1,5 @@
 #!/bin/python3
 
-import json
 import psycopg2
 
 from modules.logger import *
@@ -14,15 +13,16 @@ def handle(body):
   response = {}
   response['status'] = 'OK'
     
-  if (request.type == config['requests']['existance']):
+  if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
     response['found'] = (id is not None)
-  elif (request.type == config['requests']['upload']):
+  elif (request['type'] == config['requests']['upload']):
     id = face_recognizer_client.update(request['image'])
     response['id'] = str(id)
-    cursor.execute("INSERT INTO Person (HashPerson,state) VALUES (%s,%s)",(str(id),request['state']))
+    state = request['state'] == config['requests']['missing'] ? 'missing' : 'legal_problems'
+    cursor.execute("INSERT INTO Person (HashPerson,state) VALUES (%s,%s)",(str(id),state))
     file_manager.save_person_base64(request['image'],str(id))
-  elif (request.type == config['requests']['trajectory']):
+  elif (request['type'] == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
       cursor.execute("SELECT DISTINCT B.lat, B.lng FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)", (id))
