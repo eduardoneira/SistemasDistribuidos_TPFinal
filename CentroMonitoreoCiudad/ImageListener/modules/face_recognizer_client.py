@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import pika
+import json
 
 class FaceRecognizerClient(object):
   def __init__(self,host,queue_send,queue_receive):
@@ -40,16 +41,16 @@ class FaceRecognizerClient(object):
                 'image': image
               }
 
-    response = json.load(self.publish(json.dumps(message)))
+    response = json.loads(self.publish(json.dumps(message)))
     return response['id']
 
-  def predict(self,images):
+  def predict(self,faces):
     message = { 
             'type': 'predict',
-            'image': images
+            'faces': faces
           }
               
-    response = json.load(self.publish(json.dumps(message)))
+    response = json.loads(self.publish(json.dumps(message)))
     return response['ids']
 
   def close(self):

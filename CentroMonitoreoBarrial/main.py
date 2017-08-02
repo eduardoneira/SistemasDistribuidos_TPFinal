@@ -16,7 +16,7 @@ def callback(ch, method, properties, body):
   payload['faces'] = []
   for img in cropper.crop_base_64(payload['frame']):
     payload['faces'].append(img)
-  test_json= json.dumps(payload['faces'])
+  
   if len(payload['faces']) > 0:
     client.send(json.dumps(payload))
     logging.debug('Se encontraron %d caras, enviando mensaje a CMC con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])

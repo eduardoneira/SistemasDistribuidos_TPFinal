@@ -3,6 +3,7 @@
 import numpy as np
 import cv2
 import threading
+import base64
 
 class LBPHWrapper:
 
@@ -24,13 +25,14 @@ class LBPHWrapper:
     return self.id
 
   def predict(self,img):
-    nrb_predicted, conf = self.recognizer.predict(img)
+    if self.images_processed > 0:
+      nrb_predicted, conf = self.recognizer.predict(img)
 
-    print("La imagen que es mas cercana es "+str(nrb_predicted)+" con confianza "+str(conf))
-    if (conf>=self.MIN_MATCH_PROBABILITY):
-      if (conf >= self.MIN_UPDATE_PROBABILITY):
-        self.update(img,nrb_predicted)
-      return str(nrb_predicted)
+      print("La imagen que es mas cercana es "+str(nrb_predicted)+" con confianza "+str(conf))
+      if (conf>=self.MIN_MATCH_PROBABILITY):
+        if (conf >= self.MIN_UPDATE_PROBABILITY):
+          self.update(img,nrb_predicted)
+        return str(nrb_predicted)
 
     return None
 

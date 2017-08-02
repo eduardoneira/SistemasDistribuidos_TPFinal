@@ -11,7 +11,7 @@ from modules.file_manager import *
 
 #TODO: save in FS
 def handle(request):
-  request = json.load(request)
+  request = json.loads(request)
   response = {}
   response['status'] = 'OK'
     

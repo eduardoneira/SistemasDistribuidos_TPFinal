@@ -11,7 +11,6 @@ class FaceCropper():
     self.face_cascade = cv2.CascadeClassifier('./haarcascade/haarcascade_frontalface_alt.xml')
     # self.body_cascade = cv2.CascadeClassifier('../haarcascade/haarcascade_fullbody.xml')
 
-
   def crop(self,image):
     images=[]
 

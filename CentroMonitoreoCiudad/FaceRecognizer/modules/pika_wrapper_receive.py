@@ -19,7 +19,7 @@ class PikaWrapperReceiver:
     logging.debug('Se establecio una conexion para recibir mensajes con el host: '+ host+' y escuchando de la cola: '+ queue)
 
   def template_callback(self,ch,method, props, body):
-    response = self.callback()
+    response = self.callback(body)
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      body=str(response))

@@ -1,13 +1,15 @@
 #!/bin/python3
 
 import json
+import pdb
 from modules.LBPH_wrapper import *
 from modules.pika_wrapper_receive import *
 from modules.logger import *
 from modules.graceful_killer import *
 
-def handle_message():
-  request = json.load(body)
+def handle_message(body):
+  # pdb.set_trace()
+  request = json.loads(body)
   response = {}
 
   if request['type'] == config['request_update']:
