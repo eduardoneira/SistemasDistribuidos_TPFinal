@@ -9,9 +9,8 @@ from modules.face_recognizer_client import *
 from modules.graceful_killer import *
 from modules.file_manager import *
 
-#TODO: save in FS
-def handle(request):
-  request = json.loads(request)
+def handle(body):
+  request = json.loads(body)
   response = {}
   response['status'] = 'OK'
     

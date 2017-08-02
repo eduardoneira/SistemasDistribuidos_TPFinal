@@ -33,3 +33,6 @@ class RpcClient(object):
     while self.response is None:
         self.connection.process_data_events()
     return self.response
+
+  def close(self):
+    self.connection.close()
