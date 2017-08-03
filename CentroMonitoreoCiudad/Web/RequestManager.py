@@ -34,7 +34,7 @@ class TrajectoryManager(Manager):
     points = [{"lat": -34.621622, "lng": -58.423759, 'image':file_bigpic1}, {"lat": -34.63186608060463, "lng": -58.42525005340576, 'image':file_bigpic2}];
     json_response = jsonify(operation=CONST.RESPONSETRAJECTORY, match=file_match, points=json.dumps(points))
     return json_response
-    """response = json.load(self.rpc_call())
+    """response = json.loads(self.rpc_call())
 
     if response.status == 'OK':
       points =[]
@@ -50,7 +50,7 @@ class UploadManager(Manager):
     self.request['state'] = state
 
   def processRequest(self):
-    response = json.load(self.rpc_call())
+    response = json.loads(self.rpc_call())
 
     if response.status == 'OK':
       return jsonify(operation=CONST.RESPONSECORRECTLYUPLOADED)
@@ -60,7 +60,7 @@ class ExistanceManager(Manager):
     super(ExistanceManager, self).__init__(file,rpc_client,type)
 
   def processRequest(self):
-    response = json.load(self.rpc_call())
+    response = json.loads(self.rpc_call())
 
     if response.status == 'OK' and response['found']:
       return jsonify(operation=CONST.RESPONSEALREADYEXISTS)
