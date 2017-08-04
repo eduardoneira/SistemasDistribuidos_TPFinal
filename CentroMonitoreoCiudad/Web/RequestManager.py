@@ -78,4 +78,4 @@ class ExistanceManager(Manager):
     if response.status == 'OK' and response['found']:
       return jsonify(operation=CONST.RESPONSEALREADYEXISTS)
     else:
-      return jsonify(operation=CONST.RESPONSEDOESNTEXIST)
+return jsonify(operation=CONST.RESPONSEDOESNTEXIST)
