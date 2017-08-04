@@ -21,15 +21,15 @@ class FileManager:
       os.makedirs(path)
 
 
-  def save_image(self,image,directory):    
+  def save_image(self,image,directory):
     self.__create_directory(directory)
     filename = self.SHA1_byte_stream(image)
     filename_fullpath = directory+str(filename)+".jpg"
-    
+
     with open(filename_fullpath,'wb') as file:
       file.write(image)
-    
-    return filename
+
+    return filename_fullpath
 
   def save_person_base64(self,image,id):
     return self.save_image(base64.b64decode(image),self.person_path+str(id)+'/')
