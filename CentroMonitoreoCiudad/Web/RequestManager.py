@@ -25,24 +25,37 @@ class Manager(object):
 class TrajectoryManager(Manager):
   def __init__(self, file,rpc_client,type):
     super(TrajectoryManager, self).__init__(file,rpc_client,type)
-
+  def __SHA1_byte_stream(byte_stream):
+    sha1 = hashlib.sha1()
+    sha1.update(byte_stream.encode('utf-8'))
+    return sha1.hexdigest()
   def processRequest(self):
     # points = [{"lat": -34.621622, "lng": -58.423759}, {"lat": -34.63186608060463, "lng": -58.42525005340576}];
-    file_bigpic1= "got.jpg"
+    """file_bigpic1= "got.jpg"
     file_bigpic2= "got2.jpg"
     file_match = "jon_snow3.jpg"
     points = [{"lat": -34.621622, "lng": -58.423759, 'image':file_bigpic1}, {"lat": -34.63186608060463, "lng": -58.42525005340576, 'image':file_bigpic2}];
     json_response = jsonify(operation=CONST.RESPONSETRAJECTORY, match=file_match, points=json.dumps(points))
-    return json_response
-    """response = json.loads(self.rpc_call())
+    return json_response"""
+    response = json.load(self.rpc_call())
 
     if response.status == 'OK':
       points =[]
-      for p in response.coordinates:
-        points.append({ 'lat':p[0],'lng':p[1] })
-      jsonify(operation=CONST.RESPONSETRAJECTORY,points=json.dumps(points))
+      image_path= "/static/images"
+      bestmatch_file_name = str(self.__SHA1_byte_stream(base64.b64decode(response.bestmatch)))+".jpg"
+      file_bestmatch= open(os.path.join(image_path, bestmatch_file_name), 'w')
+      file_bestmatch.write(base64.b64decode(response.bestmatch).encode('utf-8'))
+      file_bestmatch.close()
+      for point in response.coordinates:
+        filename = str(self.__SHA1_byte_stream(base64.b64decode(point.image)))+".jpg"
+        file_big_pic = open(os.path.join(image_path, filename), 'w')
+        file_big_pic.write(base64.b64decode(point.image).encode('utf-8'))
+        file_big_pic.close()
+        point.image = filename
+        points.append(point)
+      jsonify(operation=CONST.RESPONSETRAJECTORY,points=json.dumps(points), match=bestmatch_file_name)
     else:
-      return jsonify(operation=CONST.RESPONSEDOESNTEXIST, points="");"""
+      return jsonify(operation=CONST.RESPONSEDOESNTEXIST, points="");
 
 class UploadManager(Manager):
   def __init__(self, file,rpc_client,type,state):
@@ -50,7 +63,7 @@ class UploadManager(Manager):
     self.request['state'] = state
 
   def processRequest(self):
-    response = json.loads(self.rpc_call())
+    response = json.load(self.rpc_call())
 
     if response.status == 'OK':
       return jsonify(operation=CONST.RESPONSECORRECTLYUPLOADED)
@@ -60,9 +73,9 @@ class ExistanceManager(Manager):
     super(ExistanceManager, self).__init__(file,rpc_client,type)
 
   def processRequest(self):
-    response = json.loads(self.rpc_call())
+    response = json.load(self.rpc_call())
 
     if response.status == 'OK' and response['found']:
       return jsonify(operation=CONST.RESPONSEALREADYEXISTS)
     else:
-      return jsonify(operation=CONST.RESPONSEDOESNTEXIST)
+return jsonify(operation=CONST.RESPONSEDOESNTEXIST)

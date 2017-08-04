@@ -12,6 +12,7 @@ var TrajectoryDisplayer;
     var response= document.getElementById('response');
     var match = document.createElement("img");
     match.src= filepath;
+    match.style='height: 100%; width: 100%; object-fit: contain';
     response.appendChild(match);
   }
 }());
