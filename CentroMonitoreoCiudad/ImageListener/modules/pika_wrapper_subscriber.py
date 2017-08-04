@@ -36,6 +36,8 @@ class PikaWrapperSubscriber:
     self.channel.start_consuming()
 
   def close(self):
-    self.channel.basic_cancel(self.tag)
-    self.channel.stop_consuming()
-    self.connection.close()
+    try:
+      self.channel.basic_cancel(self.tag)
+      self.channel.stop_consuming()
+    finally:
+      self.connection.close()
