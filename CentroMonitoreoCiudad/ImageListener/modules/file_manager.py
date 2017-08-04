@@ -29,7 +29,7 @@ class FileManager:
     with open(filename_fullpath,'wb') as file:
       file.write(image)
 
-    return filename_fullpath
+    return filename
 
   def save_person_base64(self,image,id):
     return self.save_image(base64.b64decode(image),self.person_path+str(id)+'/')

@@ -24,8 +24,8 @@ class FileManager:
   def save_person(self,image,id):
     directory = self.person_path+str(id)+'/'
     self.__create_directory(directory)
-    filename = str(self.__SHA1_byte_stream(image))+".jpg"
-    with open(directory+filename,'wb') as file:
+    filename = str(self.__SHA1_byte_stream(image))
+    with open(directory+filename+".jpg",'wb') as file:
       file.write(image)
     return filename
 
@@ -35,15 +35,18 @@ class FileManager:
   def __SHA1_byte_stream(self,byte_stream):
     return hashlib.sha1(byte_stream).hexdigest()
 
-  def get_image_base64(self,filename,directory)
+  def get_image_base64(self,filename,directory):
     with open(directory+filename+".jpg", 'rb') as file:
       bestmatch_b64 =  base64.b64encode(file.read()).decode('utf-8')
 
     return bestmatch_b64
-
-  def get_person_base64(self,id,filename):
-    self.get_image_base64(filename,self.person_path+str(id)+'/')
+  def get_file_name(self, id, cursor):
+      cursor.execute("SELECT Person.Filename FROM Person WHERE  Person.Id  = %s", (id,))
+      row = cursor.fetchone()
+      return row[0]
+  def get_person_base64(self, id, cursor):
+    filename = self.get_file_name(id, cursor)
+    return self.get_image_base64(filename,self.person_path+str(id)+'/')
 
   def get_bigpic_base64(self,filename):
-    self.get_image_base64(filename,self.bigpic_path+'/')
-    
+    return self.get_image_base64(filename,self.bigpic_path+'/')

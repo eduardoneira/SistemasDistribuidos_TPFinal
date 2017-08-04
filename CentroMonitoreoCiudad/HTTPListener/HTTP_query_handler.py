@@ -16,7 +16,7 @@ def handle(body):
   if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
-        response['found'] =  get_person_base64(id,filename)
+        response['found'] =  get_person_base64(id,cursor)
     else:
         response['found'] = ''
   elif (request['type'] == config['requests']['upload']):
@@ -26,9 +26,8 @@ def handle(body):
       state = 'missing'
     else:
       state = 'legal_problems'
-    #TODO: Queriar a la base de datos para conseguir el verdero nombre
-    filepath= file_manager.save_person_base64(request['image'],str(id))
-    cursor.execute("INSERT INTO Person (Id,Filepath,state) VALUES (%s, %s,%s)",(id, filepath,state))
+    filename= file_manager.save_person_base64(request['image'],str(id))
+    cursor.execute("INSERT INTO Person (Id,Filepath,state) VALUES (%s, %s,%s)",(id, filename,state))
   elif (request['type'] == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
@@ -41,8 +40,7 @@ def handle(body):
         point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": row[3]}
         points.append(point)
       response['coordinates'] = points
-      #TODO: Queriar a la base de datos para conseguir el verdero nombre
-      response['bestmatch'] =  file_manager.get_person_base64(id,filename)
+      response['bestmatch'] =  file_manager.get_person_base64(id,cursor)
   else:
     response['status'] = 'ERROR'
     response['message'] = 'Tipo de mensaje invalido'
