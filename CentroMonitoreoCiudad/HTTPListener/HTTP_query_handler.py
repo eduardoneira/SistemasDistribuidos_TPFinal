@@ -29,13 +29,13 @@ def handle(body):
       state = 'missing'
     else:
       state = 'legal_problems'
-    cursor.execute("INSERT INTO Person (HashPerson,state) VALUES (%s,%s)",(str(id),state))
-    file_manager.save_person_base64(request['image'],str(id))
+    filepath= file_manager.save_person_base64(request['image'],str(id))
+    cursor.execute("INSERT INTO Person (Id, Filepath,state) VALUES (%s, %s,%s)",(id, filepath,state))
   elif (request['type'] == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
       #cursor.execute("SELECT DISTINCT B.lat, B.lng B.hashBigPic FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)", (id))
-      cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.HashPerson = %s)", (id,))
+      cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.Id = %s)", (id,))
       rows = cursor.fetchall()
       points=[]
       for row in rows:
