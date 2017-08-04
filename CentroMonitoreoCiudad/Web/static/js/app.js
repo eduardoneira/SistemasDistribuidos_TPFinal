@@ -59,9 +59,6 @@ var myDropzone = new Dropzone("div#droparea", {
       console.log("accept");
       done();
     },
-    fallback: function() {
-      console.log("fallback");
-    },
     resize: function(file) {
         var resizeInfo = {
             srcX: 0,
@@ -89,22 +86,6 @@ var myDropzone = new Dropzone("div#droparea", {
     <div class="dz-error-message"><span data-dz-errormessage></span></div>\
     </div>';
 
-
-  /*
-   * Available Events
-   */
-
-  /* receive the "event" as first parameter */
-  myDropzone.on("drop", function(event){
-    console.log(event.type);
-    console.log(event)
-  });
-  myDropzone.on("dragstart", function(event){ console.log(event.type); });
-  myDropzone.on("dragend", function(event){ console.log(event.type); });
-  myDropzone.on("dragenter", function(event){ console.log(event.type); });
-  myDropzone.on("dragover", function(event){ console.log(event.type); });
-  myDropzone.on("dragremove", function(event){ console.log(event.type); });
-
   /* receive the "file" as first parameter */
   myDropzone.on("addedfile", function(file) {
     console.log("addedfile");
@@ -115,6 +96,7 @@ var myDropzone = new Dropzone("div#droparea", {
     $('.start').click(function(){
         myDropzone.processQueue(); //processes the queue
         disableButtonsAndRadio(true);
+        document.querySelector(".home").disabled = false;
     });
     $('.home').click(function(){
       //myDropzone.removeAllFiles(true);

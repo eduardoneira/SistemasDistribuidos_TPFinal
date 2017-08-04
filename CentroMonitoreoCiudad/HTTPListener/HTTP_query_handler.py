@@ -12,24 +12,43 @@ def handle(body):
   request = json.loads(body)
   response = {}
   response['status'] = 'OK'
-    
+
   if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
-    response['found'] = (id is not None)
+    if id is not None:
+        file_bestmatch = open(id, 'rb');
+        bestmatch_b64 =  base64.b64encode(file_bestmatch.read()).decode('utf-8')
+        response['found'] =  bestmatch_b64
+        file_bestmatch.close();
+    else:
+        response['found'] = (id is not None)
   elif (request['type'] == config['requests']['upload']):
     id = face_recognizer_client.update(request['image'])
     response['id'] = str(id)
     if (request['state'] == config['requests']['missing']):
-      state = 'missing' 
-    else: 
+      state = 'missing'
+    else:
       state = 'legal_problems'
     cursor.execute("INSERT INTO Person (HashPerson,state) VALUES (%s,%s)",(str(id),state))
     file_manager.save_person_base64(request['image'],str(id))
   elif (request['type'] == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
-      cursor.execute("SELECT DISTINCT B.lat, B.lng FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)", (id))
-      response['coordinates'] = cursor.fetchone()
+      #cursor.execute("SELECT DISTINCT B.lat, B.lng B.hashBigPic FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)", (id))
+      cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.HashPerson = %s)", (id,))
+      rows = cursor.fetchall()
+      points=[]
+      for row in rows:
+          file_big_pic = open(row[0],'rb')
+          big_pic_b64 =  base64.b64encode(file_big_pic.read()).decode('utf-8')
+          point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": row[3]}
+          points.append(point)
+          file_big_pic.close()
+      response['coordinates'] = points
+      file_bestmatch = open(id, 'rb')
+      bestmatch_b64 =  base64.b64encode(file_bestmatch.read()).decode('utf-8')
+      response['bestmatch'] =  bestmatch_b64
+      file_bestmatch.close();
   else:
     response['status'] = 'ERROR'
     response['message'] = 'Tipo de mensaje invalido'
@@ -70,4 +89,3 @@ if __name__ == '__main__':
 
   print('Comenzando a escuchar mensajes rpc')
   server.start()
-

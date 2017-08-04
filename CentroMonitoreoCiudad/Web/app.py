@@ -109,3 +109,5 @@ if __name__ == '__main__':
   if not os.path.exists('upload'):
     os.makedirs('upload')
   app.run(debug=True)
+  print("voy a borrar")
+  print(os.system("ls ./static/images/"))
