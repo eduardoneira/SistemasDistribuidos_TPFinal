@@ -1,7 +1,6 @@
 #!/bin/python3
 
 import psycopg2
-import pdb
 from modules.graceful_killer import *
 from modules.logger import *
 from modules.pika_wrapper_subscriber import *
@@ -14,7 +13,6 @@ def store_data(payload, faces_data):
   latitude = location[0]
   longitude = location[1]
   timestamp = payload['timestamp']
-  # pdb.set_trace()
   cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, latitude, longitude, timestamp))
 
   for face_data in faces_data:
@@ -23,7 +21,6 @@ def store_data(payload, faces_data):
     cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s);""",(hash_crop, hash_person, hash_big_pic))
 
 def faces_to_store(faces):
-  # pdb.set_trace()
   ids = face_recognizer_client.predict(faces)
   img_to_store = []
 

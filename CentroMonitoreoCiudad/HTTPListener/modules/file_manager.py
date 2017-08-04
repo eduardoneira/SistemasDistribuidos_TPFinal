@@ -9,9 +9,11 @@ class FileManager:
 
   def __init__(self,config):
     self.person_path = config['image_database']+config['person']
+    self.bigpic_path = config['image_database']+config['bigpic']
 
     self.__create_directory(config['image_database'])
     self.__create_directory(self.person_path)
+    self.__create_directory(self.bigpic_path)
 
   def __create_directory(self,path):
     if not os.path.exists(path):
@@ -30,12 +32,18 @@ class FileManager:
   def save_person_base64(self,image,id):
     return self.save_person(base64.b64decode(image),id)
 
-<<<<<<< HEAD
-  def __SHA1_byte_stream(byte_stream):
-    sha1 = hashlib.sha1()
-    sha1.update(byte_stream.encode('utf-8'))
-    return sha1.hexdigest()
-=======
   def __SHA1_byte_stream(self,byte_stream):
     return hashlib.sha1(byte_stream).hexdigest()
->>>>>>> 205262003a94f4b247019bd6d847002f81eb83ec
+
+  def get_image_base64(self,filename,directory)
+    with open(directory+filename+".jpg", 'rb') as file:
+      bestmatch_b64 =  base64.b64encode(file.read()).decode('utf-8')
+
+    return bestmatch_b64
+
+  def get_person_base64(self,id,filename):
+    self.get_image_base64(filename,self.person_path+str(id)+'/')
+
+  def get_bigpic_base64(self,filename):
+    self.get_image_base64(filename,self.bigpic_path+'/')
+    

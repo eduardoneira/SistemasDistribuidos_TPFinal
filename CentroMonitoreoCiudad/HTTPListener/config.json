@@ -6,6 +6,7 @@
   "queue_receive_face_recognizer": "http_receive_face_recognizer",
   "image_database": "../image_database",
   "person": "/person/",
+  "bigpic": "/bigpic/",
   "requests": {
     "existance": 4,
     "upload": 5,

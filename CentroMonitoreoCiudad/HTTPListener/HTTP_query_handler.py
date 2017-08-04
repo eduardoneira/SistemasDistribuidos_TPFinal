@@ -16,12 +16,9 @@ def handle(body):
   if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
-        file_bestmatch = open(id, 'rb');
-        bestmatch_b64 =  base64.b64encode(file_bestmatch.read()).decode('utf-8')
-        response['found'] =  bestmatch_b64
-        file_bestmatch.close();
+        response['found'] =  get_person_base64(id,filename)
     else:
-        response['found'] = (id is not None)
+        response['found'] = ''
   elif (request['type'] == config['requests']['upload']):
     id = face_recognizer_client.update(request['image'])
     response['id'] = str(id)
@@ -29,8 +26,9 @@ def handle(body):
       state = 'missing'
     else:
       state = 'legal_problems'
+    #TODO: Queriar a la base de datos para conseguir el verdero nombre
     filepath= file_manager.save_person_base64(request['image'],str(id))
-    cursor.execute("INSERT INTO Person (Id, Filepath,state) VALUES (%s, %s,%s)",(id, filepath,state))
+    cursor.execute("INSERT INTO Person (Id,Filepath,state) VALUES (%s, %s,%s)",(id, filepath,state))
   elif (request['type'] == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
@@ -39,16 +37,12 @@ def handle(body):
       rows = cursor.fetchall()
       points=[]
       for row in rows:
-          file_big_pic = open(row[0],'rb')
-          big_pic_b64 =  base64.b64encode(file_big_pic.read()).decode('utf-8')
-          point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": row[3]}
-          points.append(point)
-          file_big_pic.close()
+        big_pic_b64 =  file_manager.get_bigpic_base64(row[0])
+        point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": row[3]}
+        points.append(point)
       response['coordinates'] = points
-      file_bestmatch = open(id, 'rb')
-      bestmatch_b64 =  base64.b64encode(file_bestmatch.read()).decode('utf-8')
-      response['bestmatch'] =  bestmatch_b64
-      file_bestmatch.close();
+      #TODO: Queriar a la base de datos para conseguir el verdero nombre
+      response['bestmatch'] =  file_manager.get_person_base64(id,filename)
   else:
     response['status'] = 'ERROR'
     response['message'] = 'Tipo de mensaje invalido'
