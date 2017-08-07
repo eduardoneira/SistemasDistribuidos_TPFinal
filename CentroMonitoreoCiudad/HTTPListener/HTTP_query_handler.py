@@ -13,12 +13,13 @@ def handle(body):
   response = {}
   response['status'] = 'OK'
 
+  #TODO: Refactor
   if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
         response['found'] =  get_person_base64(id,cursor)
     else:
-        response['found'] = ''
+        response['found'] = None
   elif (request['type'] == config['requests']['upload']):
     id = face_recognizer_client.update(request['image'])
     response['id'] = str(id)
@@ -27,12 +28,11 @@ def handle(body):
     else:
       state = 'legal_problems'
     filename= file_manager.save_person_base64(request['image'],str(id))
-    cursor.execute("INSERT INTO Person (Id,Filepath,state) VALUES (%s, %s,%s)",(id, filename,state))
+    cursor.execute("INSERT INTO Person (Id,Filepath,state) VALUES (%s, %s,%s)",(id,filename,state))
   elif (request['type'] == config['requests']['trajectory']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
-      #cursor.execute("SELECT DISTINCT B.lat, B.lng B.hashBigPic FROM cmcdatabase.cropface C, cmcdatabase.bigpic B WHERE C.hashBigPic = B.hashBigPic AND C.HashPerson == (%s)", (id))
-      cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.Id = %s)", (id,))
+      cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.Id = %s)", (id))
       rows = cursor.fetchall()
       points=[]
       for row in rows:
