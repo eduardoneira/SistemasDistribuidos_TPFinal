@@ -11,7 +11,7 @@ class RpcClient(object):
 
     self.__connect()
 
-  def __connect(self)
+  def __connect(self):
     self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host))
 
     self.channel = self.connection.channel()
@@ -46,7 +46,7 @@ class RpcClient(object):
     logging.debug('Se recibio la respuesta del server CMC')
     return self.response
 
-  def __publish(self,message)
+  def __publish(self,message):
     self.channel.basic_publish(exchange='',
                              routing_key=self.queue_rpc,
                              properties=pika.BasicProperties(

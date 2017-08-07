@@ -71,4 +71,5 @@ class FaceRecognizerClient(object):
     return response['ids']
 
   def close(self):
-    self.connection.close()
+    try:
+      self.connection.close()

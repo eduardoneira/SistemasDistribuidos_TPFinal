@@ -6,9 +6,10 @@ from flask import (
 import os
 import sys
 import base64
-sys.path.insert(0, '../../')
-import Utils.const as CONST
 import json
+sys.path.insert(0, '../')
+import Utils.const as CONST
+
 from werkzeug import secure_filename
 from flask_googlemaps import Map, icons
 
@@ -31,13 +32,6 @@ class TrajectoryManager(Manager):
     return sha1.hexdigest()
 
   def processRequest(self):
-    # points = [{"lat": -34.621622, "lng": -58.423759}, {"lat": -34.63186608060463, "lng": -58.42525005340576}];
-    """file_bigpic1= "got.jpg"
-    file_bigpic2= "got2.jpg"
-    file_match = "jon_snow3.jpg"
-    points = [{"lat": -34.621622, "lng": -58.423759, 'image':file_bigpic1}, {"lat": -34.63186608060463, "lng": -58.42525005340576, 'image':file_bigpic2}];
-    json_response = jsonify(operation=CONST.RESPONSETRAJECTORY, match=file_match, points=json.dumps(points))
-    return json_response"""
     response = json.loads(self.rpc_call())
 
     if response['status'] == 'OK':

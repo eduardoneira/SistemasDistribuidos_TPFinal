@@ -14,7 +14,7 @@ from flask_googlemaps import GoogleMaps, Map
 import os
 import sys
 import pdb
-sys.path.insert(0, '../../')
+sys.path.insert(0, '../')
 import Utils.const as CONST
 import json
 from Factory import *
