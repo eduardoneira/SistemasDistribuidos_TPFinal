@@ -12,3 +12,6 @@ pip3 install pygame --user
 echo "Instalando eclipse paho para cliente mqtt"
 pip install paho-mqtt
 cp -R /lib/python2.7/site-packages/paho /lib/python3.6/site-packages/
+
+echo "Instalando videosequence"
+pip3 install --user videosequence
