@@ -19,8 +19,8 @@ if [[ "$1" == "fedora" ]]; then
   echo "Ahora debe cambiar en el archivo ~postgres/data/pg_hba.conf"
   echo "Donde dice METHOD peer, ident, ident poner todo en md5"
   echo "Reiniciar el servcio con $ systemctl restart postgresql"
-  echo "Para crear la base de datos $ sudo -i -u postgres psql -c \"CREATE DATABASE srpl\""
-  echo "Luego $ sudo -i -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE srpl to postgres\""
+  echo "Para crear la base de datos $ sudo -i -u postgres psql -c \"CREATE DATABASE cmcdatabase\""
+  echo "Luego $ sudo -i -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE cmcdatabase to postgres\""
 
 elif [[ "$1" == "arch" ]]; then
   pacman -S postgresql

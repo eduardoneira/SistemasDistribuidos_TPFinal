@@ -9,6 +9,7 @@ echo "Instalando python 3"
 if [[ "$1" == "fedora" ]]; then
   dnf install python3
   dnf install python3-tkinter
+  dnf install python3-flask
 elif [[ "$1" == "arch" ]]; then
   pacman -S python3
 elif [[ "$1" == "debian" ]] || [[ "$1" == "ubuntu" ]]; then
