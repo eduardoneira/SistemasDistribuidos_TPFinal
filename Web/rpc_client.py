@@ -44,7 +44,7 @@ class RpcClient(object):
         self.connection.process_data_events()
 
     logging.debug('Se recibio la respuesta del server CMC')
-    return self.response
+    return self.response.decode('utf-8')
 
   def __publish(self,message):
     self.channel.basic_publish(exchange='',
