@@ -17,13 +17,12 @@ class FaceRecognizerClient(object):
 
     self.channel = self.connection.channel()
 
-    self.channel.queue_declare( queue=self.queue_receive,
-                                exclusive=True)
+    self.channel.queue_declare( queue=self.queue_receive)
 
-    self.channel.basic_consume(self.on_response, 
+    self.channel.basic_consume(self.on_response,
                                no_ack=True,
                                queue=self.queue_receive)
-    
+
   def on_response(self, ch, method, props, body):
     self.response = body
 
@@ -41,7 +40,7 @@ class FaceRecognizerClient(object):
         self.connection.process_data_events()
 
     logging.debug('El face recognizer respondio %s',self.response)
-    
+
     return self.response
 
   def __publish(self,message):
@@ -53,23 +52,25 @@ class FaceRecognizerClient(object):
                            body=message)
 
   def update(self,image):
-    message = { 
+    message = {
                 'type': 'update',
                 'image': image
               }
 
-    response = json.loads(self.publish(json.dumps(message)))
+    response = json.loads(self.publish(json.dumps(message)).decode('utf-8'))
     return response['id']
 
   def predict(self,faces):
-    message = { 
+    message = {
             'type': 'predict',
             'faces': faces
           }
-              
-    response = json.loads(self.publish(json.dumps(message)))
+
+    response = json.loads(self.publish(json.dumps(message)).decode('utf-8'))
     return response['ids']
 
   def close(self):
-    try:
-      self.connection.close()
+      try:
+          self.connection.close()
+      except pika.exceptions.ConnectionClosed:
+          logging.warning('La conexion ya estaba cerrada')

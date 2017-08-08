@@ -32,7 +32,7 @@ def faces_to_store(faces):
   return img_to_store
 
 def callback(ch, method, properties, body):
-  payload = json.loads(body)
+  payload = json.loads(body.decode('utf-8'))
   logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
   print("Se recibio mensaje de cara. Guardo la imagen grupal y las caras individuales")
   logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])

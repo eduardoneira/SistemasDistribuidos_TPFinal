@@ -9,7 +9,7 @@ from modules.graceful_killer import *
 from modules.file_manager import *
 
 def handle(body):
-  request = json.loads(body)
+  request = json.loads(body.decode('utf-8'))
   response = {}
   response['status'] = 'OK'
 

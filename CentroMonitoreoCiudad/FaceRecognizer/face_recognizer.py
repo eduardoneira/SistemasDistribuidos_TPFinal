@@ -9,7 +9,7 @@ from modules.graceful_killer import *
 
 def handle_message(body):
   # pdb.set_trace()
-  request = json.loads(body)
+  request = json.loads(body.decode('utf-8'))
   response = {}
 
   if request['type'] == config['request_update']:
@@ -22,7 +22,7 @@ def handle_message(body):
     response['ids'] = ids
 
   return json.dumps(response)
-  
+
 
 if __name__ == '__main__':
   print('Configurando face recognizer.')
