@@ -4,6 +4,6 @@
   "queue_request": "face_recognizer_request",
   "request_update": "update",
   "request_predict": "predict",
-  "MIN_MATCH_PROBABILITY": 50,
-  "MIN_UPDATE_PROBABILITY": 80
+  "MIN_MATCH_DISTANCE": 60,
+  "MIN_UPDATE_DISTANCE": 35
 }

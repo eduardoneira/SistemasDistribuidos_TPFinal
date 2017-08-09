@@ -9,12 +9,12 @@ class LBPHWrapper:
 
   FILENAME = 'LBPH_dump'
 
-  def __init__(self,min_match_probability,min_update_probability):
+  def __init__(self,min_match_distance,min_update_distance):
     self.recognizer = cv2.face.LBPHFaceRecognizer_create()
     self.images_processed = 0
     self.id = 0
-    self.MIN_MATCH_PROBABILITY = min_match_probability
-    self.MIN_UPDATE_PROBABILITY = min_update_probability
+    self.MIN_MATCH_DISTANCE = min_match_distance
+    self.MIN_UPDATE_DISTANCE = min_update_distance
 
   def update_with_id(self,img,id):
     self.recognizer.update([img],np.array([id]))
@@ -31,8 +31,8 @@ class LBPHWrapper:
       nrb_predicted, conf = self.recognizer.predict(img)
 
       print("La imagen que es mas cercana es "+str(nrb_predicted)+" con confianza "+str(conf))
-      if (conf>=self.MIN_MATCH_PROBABILITY):
-        if (conf >= self.MIN_UPDATE_PROBABILITY):
+      if (conf <= self.MIN_MATCH_DISTANCE):
+        if (conf <= self.MIN_UPDATE_DISTANCE):
           self.update_with_id(img,nrb_predicted)
         return str(nrb_predicted)
 
@@ -66,8 +66,8 @@ class LBPHWrapper:
 
 
 class ConcurrentLBPHWrapper:
-  def __init__(self,min_match_probability,min_update_probability):
-    self.lbph = LBPHWrapper(min_match_probability,min_update_probability)
+  def __init__(self,min_match_distance,min_update_distance):
+    self.lbph = LBPHWrapper(min_match_distance,min_update_distance)
     self.lock = threading.Lock()
 
   def lock_control():
