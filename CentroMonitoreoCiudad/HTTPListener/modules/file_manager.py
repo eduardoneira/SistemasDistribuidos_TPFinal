@@ -41,7 +41,7 @@ class FileManager:
 
     return bestmatch_b64
   def get_file_name(self, id, cursor):
-      cursor.execute("SELECT Person.Filename FROM Person WHERE  Person.Id  = %s", (id,))
+      cursor.execute("SELECT Person.Filepath FROM Person WHERE  Person.Id  = %s", (id,))
       row = cursor.fetchone()
       return row[0]
   def get_person_base64(self, id, cursor):

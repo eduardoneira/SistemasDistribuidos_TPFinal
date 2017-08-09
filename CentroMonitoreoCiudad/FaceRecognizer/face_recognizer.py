@@ -8,8 +8,8 @@ from modules.logger import *
 from modules.graceful_killer import *
 
 def handle_message(body):
-  # pdb.set_trace()
   request = json.loads(body.decode('utf-8'))
+  print('Recibi un mensaje de tipo '+ request['type'])
   response = {}
 
   if request['type'] == config['request_update']:

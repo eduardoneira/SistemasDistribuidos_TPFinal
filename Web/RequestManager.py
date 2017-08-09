@@ -7,6 +7,8 @@ import os
 import sys
 import base64
 import json
+import hashlib
+import pdb
 sys.path.insert(0, '../')
 import Utils.const as CONST
 
@@ -26,32 +28,36 @@ class Manager(object):
 class TrajectoryManager(Manager):
   def __init__(self, file,rpc_client,type):
     super(TrajectoryManager, self).__init__(file,rpc_client,type)
-  def __SHA1_byte_stream(byte_stream):
-    sha1 = hashlib.sha1()
-    sha1.update(byte_stream.encode('utf-8'))
+  
+  def __SHA1_byte_stream(self,byte_stream):
+    sha1 = hashlib.sha1(byte_stream)
     return sha1.hexdigest()
 
   def processRequest(self):
     response = json.loads(self.rpc_call())
 
+    # pdb.set_trace()
+
     if response['status'] == 'OK':
       points = []
-      image_path = "/static/images"
+      image_path = "/static/images/"
       image_decoded = base64.b64decode(response['bestmatch'])
-      bestmatch_file_name = str(self.__SHA1_byte_stream())+".jpg"
+      bestmatch_file_name = str(self.__SHA1_byte_stream(image_decoded))+".jpg"
 
-      with open(os.path.join(image_path, bestmatch_file_name), 'wb') as file:
-        file.write(image_decoded.encode('utf-8'))
+      with open('./'+image_path+bestmatch_file_name, 'wb') as file:
+        file.write(image_decoded)
 
       for point in response['coordinates']:
         image_decoded = base64.b64decode(point['image'])
         filename = str(self.__SHA1_byte_stream(image_decoded))+".jpg"
         #TODO: Check if it was already cached
-        with open(os.path.join(image_path, filename), 'wb') as file:
-          file_big_pic.write(image_decoded.encode('utf-8'))          
+        with open('./'+image_path+filename, 'wb') as file:
+          file_big_pic.write(image_decoded)          
         points.append(point)
 
-      jsonify(operation=CONST.RESPONSETRAJECTORY,points=json.dumps(points), match=bestmatch_file_name)
+      # pdb.set_trace()
+
+      return jsonify(operation=CONST.RESPONSETRAJECTORY,points=json.dumps(points), match=bestmatch_file_name)
     else:
       return jsonify(operation=CONST.RESPONSEDOESNTEXIST, points="");
 

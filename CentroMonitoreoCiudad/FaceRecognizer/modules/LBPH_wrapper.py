@@ -16,10 +16,12 @@ class LBPHWrapper:
     self.MIN_MATCH_PROBABILITY = min_match_probability
     self.MIN_UPDATE_PROBABILITY = min_update_probability
 
+  def update_with_id(self,img,id):
+    self.recognizer.update([img],np.array([id]))
+
   def update(self,img):
-    # img_array = np.array(img,'uint8')
     self.id+=1
-    self.recognizer.update([img],np.array([self.id]))
+    self.update_with_id(img,self.id)
     self.images_processed+=1
 
     return self.id
@@ -31,7 +33,7 @@ class LBPHWrapper:
       print("La imagen que es mas cercana es "+str(nrb_predicted)+" con confianza "+str(conf))
       if (conf>=self.MIN_MATCH_PROBABILITY):
         if (conf >= self.MIN_UPDATE_PROBABILITY):
-          self.update(img,nrb_predicted)
+          self.update_with_id(img,nrb_predicted)
         return str(nrb_predicted)
 
     return None

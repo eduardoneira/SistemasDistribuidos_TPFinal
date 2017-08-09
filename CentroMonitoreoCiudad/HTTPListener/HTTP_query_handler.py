@@ -17,7 +17,7 @@ def handle(body):
   if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
-        response['found'] =  get_person_base64(id,cursor)
+        response['found'] =  file_manager.get_person_base64(id,cursor)
     else:
         response['found'] = None
   elif (request['type'] == config['requests']['upload']):
