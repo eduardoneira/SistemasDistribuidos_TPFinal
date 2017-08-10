@@ -8,5 +8,6 @@ upload/*.JPEG
 upload/*.GIF
 *.pyc
 log.txt
+static/images/
 
 __pycache__/

@@ -37,7 +37,6 @@ class FileManager:
   def save_bigpic_base64(self,image):
     return self.save_image(base64.b64decode(image),self.bigpic)
 
-  def SHA1_byte_stream(byte_stream):
-    sha1 = hashlib.sha1()
-    sha1.update(byte_stream.encode('utf-8'))
+  def SHA1_byte_stream(self,byte_stream):
+    sha1 = hashlib.sha1(byte_stream)
     return sha1.hexdigest()

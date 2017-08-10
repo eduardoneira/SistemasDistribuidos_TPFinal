@@ -8,8 +8,8 @@ from modules.logger import *
 from modules.graceful_killer import *
 
 def handle_message(body):
-  # pdb.set_trace()
   request = json.loads(body.decode('utf-8'))
+  print('Recibi un mensaje de tipo '+ request['type'])
   response = {}
 
   if request['type'] == config['request_update']:
@@ -34,8 +34,8 @@ if __name__ == '__main__':
 
   graceful_killer = GracefulKiller()
 
-  face_recognizer = LBPHWrapper(config['MIN_MATCH_PROBABILITY'],
-                                config['MIN_UPDATE_PROBABILITY'])
+  face_recognizer = LBPHWrapper(config['MIN_MATCH_DISTANCE'],
+                                config['MIN_UPDATE_DISTANCE'])
 
   server = PikaWrapperReceiver('localhost',config['queue_request'])
   server.set_receive_callback(handle_message)

@@ -18,7 +18,7 @@ def store_data(payload, faces_data):
   for face_data in faces_data:
     hash_person = face_data['hash_person']
     hash_crop = face_data['hash_crop']
-    cursor.execute("""INSERT INTO CropFace (HashCrop, HashPerson, HashBigPic) VALUES (%s, %s, %s);""",(hash_crop, hash_person, hash_big_pic))
+    cursor.execute("""INSERT INTO CropFace (HashCrop, Id, HashBigPic) VALUES (%s, %s, %s);""",(hash_crop, hash_person, hash_big_pic))
 
 def faces_to_store(faces):
   ids = face_recognizer_client.predict(faces)

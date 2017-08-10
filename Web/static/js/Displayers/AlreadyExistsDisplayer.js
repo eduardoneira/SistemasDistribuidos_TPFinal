@@ -5,12 +5,16 @@ var AlreadyExistsDisplayer;
     this.response = response;
   };
   AlreadyExistsDisplayer.prototype.show = function(){
-    var image = document.createElement('img');
+    var match = document.createElement('img');
     var answer = document.createTextNode("This person already exits in the databse with the following picture");
     var linebreak = document.createElement("br");
-    image.src = "data:image/jpg;base64," + this.response.img;
+    var filepath="/static/images/"+this.response.match;
+    console.log("Match: "+filepath);
+    match.src= filepath;
+    match.style='height: 100%; width: 100%; object-fit: contain';
     document.getElementById("response").appendChild(answer);
     document.getElementById("response").appendChild(linebreak);
-    document.getElementById("response").appendChild(image);
+    document.getElementById("response").appendChild(match);
+    $("#preview_photos").show();
   }
 }());

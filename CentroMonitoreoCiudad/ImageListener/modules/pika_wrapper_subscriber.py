@@ -40,4 +40,7 @@ class PikaWrapperSubscriber:
       self.channel.basic_cancel(self.tag)
       self.channel.stop_consuming()
     finally:
-      self.connection.close()
+      try:
+        self.connection.close()
+      except pika.exceptions.ConnectionClosed:
+        logging.warning('La conexion ya estaba cerrada')

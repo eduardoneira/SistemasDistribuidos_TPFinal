@@ -56,4 +56,7 @@ class RpcClient(object):
                              body=message)
 
   def close(self):
-    self.connection.close()
+    try:
+      self.connection.close()
+    except pika.exceptions.ConnectionClosed:
+      logging.warning('La conexion ya estaba cerrada')

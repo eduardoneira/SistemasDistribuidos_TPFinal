@@ -38,4 +38,7 @@ class PikaWrapperPublisher:
     self.connection.sleep(time)
 
   def close(self):
-    self.connection.close()
+    try:
+      self.connection.close()
+    except pika.exceptions.ConnectionClosed:
+      logging.warning('Ya se habia cerrado la conexion')

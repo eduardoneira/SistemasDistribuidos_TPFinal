@@ -33,6 +33,7 @@ function disableButtonsAndRadio(setDisable){
   document.getElementById("RadiosCheckLegalProblems").disabled = setDisable;
   document.getElementById("RadiosCheckMissing").disabled = setDisable;
 }
+
 Dropzone.autoDiscover= false;
 $(function() {
 var myDropzone = new Dropzone("div#droparea", {
@@ -125,6 +126,8 @@ var myDropzone = new Dropzone("div#droparea", {
     formData.append('state', state)
   });
   myDropzone.on("success", function(file, response) {
+    //TODO: ver aca
+    // disableButtonsAndRadio(false);
     displayerFactory = new ResponseDisplayerFactory(response);
     displayer = displayerFactory.createDisplayer();
     displayer.show();

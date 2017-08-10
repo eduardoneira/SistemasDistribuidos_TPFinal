@@ -3,7 +3,7 @@
   "logging_level" : 10,
   "topic_cmc": "img/cropped",
   "queue_send_face_recognizer": "face_recognizer_request",
-  "queue_receive_face_recognizer": "http_receive_face_recognizer",
+  "queue_receive_face_recognizer": "img_receive_face_recognizer",
   "image_database": "../image_database",
   "person": "/person/",
   "bigpic": "/bigpic/"

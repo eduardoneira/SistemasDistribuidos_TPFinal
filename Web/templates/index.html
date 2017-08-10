@@ -3,13 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Citizen Tracking</title>
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{url_for('css_static', filename='bootstrap.min.css')}}" media="screen" title="no title" charset="utf-8">
-		<link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
+    <link rel="stylesheet" href="../static/css/font-awesome/font-awesome.min.css" >
+    <link rel="stylesheet" href="../static/css/stylesheet.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="../static/css/footer-distributed.css" type="text/css" charset="utf-8" />
     <style>
-     #map {
-       height: 100%;
-     }
+      #map {
+        height: 100%;
+      }
    </style>
 
   </head>
@@ -21,147 +24,162 @@
     </header>
     <div class="container">
       <br>
-    <div class="row">
-      <div class="col-xs-6">
-        <div id="droparea" class="dropzone dz-clickable">
-          <div id="previewsContainer"></div>
-          <div class="dz-message" data-dz-message><span style="color:blue">Drop your files here or click to upload</span></div>
-        </div>
-      </div>
-      <div class="col-xs-3">
-        <div class="row">
-          <div id="actions" class="color1">
-            <h2>Choose an operation</h2>
-            <input type="radio" name="Choose" id="RadioInsertFace" value="No">
-            Insert new face to the system<br>
-            <input type="radio" name="Choose" id="RadiosCheckExistance" value="No">
-            Check face existance<br>
-            <input type="radio" name="Choose" id="RadiosGetTrajectory" value="No">
-            Get face 's trajectory
+      <div id="select_what_to_do_row" class="row">
+        <div class="col-sm-6">
+          <div id="droparea" class="dropzone dz-clickable photo-uploader">
+            <div id="previewsContainer"></div>          
           </div>
         </div>
-        <div class = "row ">
-          <aside>
-            <h2>Select state</h2>
-            <input type="radio" name="ChooseState" id="RadiosCheckLegalProblems" value="No">
-            Legal problems<br>
-            <input type="radio" name="ChooseState" id="RadiosCheckMissing" value="No">
-            Missing
-          </aside>
-          <br>
+        <div class="col-sm-3">
+          <div class="row">
+            <div id="actions" class="panel panel-primary">
+              <div id="panel-heading-actions" class="panel-heading"> Choose an operation </div>
+              <div class="panel-body">
+                <input type="radio" name="Choose" id="RadioInsertFace" value="No">
+                Insert new face to the system<br>
+                <input type="radio" name="Choose" id="RadiosCheckExistance" value="No">
+                Check face existance<br>
+                <input type="radio" name="Choose" id="RadiosGetTrajectory" value="No">
+                Get face 's trajectory
+              </div>
+            </div>
+          </div>
+          <div class = "row ">
+            <div id="state" class="panel panel-default">
+              <div id="panel-heading-actions" class="panel-heading"> Select state </div>
+              <div class="panel-body">
+                <input type="radio" name="ChooseState" id="RadiosCheckLegalProblems" value="No">
+                Legal problems<br>
+                <input type="radio" name="ChooseState" id="RadiosCheckMissing" value="No">
+                Missing
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <button type="submit" class="btn btn-success start">
+                <i class="glyphicon glyphicon-upload"></i>
+                <span>Submit</span>
+            </button>
+            <button type="reset" class="btn btn-default home">
+                <i class="glyphicon glyphicon-home"></i>
+                <span>Home</span>
+            </button>
+          </div>
         </div>
-        <div class="row">
-          <button type="submit" class="btn btn-primary start">
-              <i class="glyphicon glyphicon-upload"></i>
-              <span>Submit</span>
-          </button>
-          <button type="reset" class="btn btn-default home">
-              <i class="glyphicon glyphicon-home"></i>
-              <span>Home</span>
-          </button>
+      </div>
+      <br>
+      <hr/>
+      <div id="preview_photos" class="row" style="display:none">
+        <div id="myCarousel" class="col-sm-6 carousel slide" style="height: 270px; width: 400px;border:1px solid #000; margin-left: 150px;margin-right:50px;">
+          <!-- Indicators -->
+          <ol class="carousel-indicators"></ol>
+          <div class="carousel-inner"></div>
+          <!-- Carousel controls -->
+          <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+          <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+        <div id="response" class="col-sm-3 best-match-preview" >
+         <!--  <span style="color:black">Best match will appear here.</span> -->
         </div>
       </div>
-    </div>
-    <br>
-    <hr />
-    <div class="row">
-      <div id="myCarousel" class="col-xs-6 carousel slide" style="height: 270px; width: 400px;border:1px solid #00F;margin-right:50px;">
-        <!-- Indicators -->
-        <ol class="carousel-indicators"></ol>
-        <div class="carousel-inner"></div>
-        <!-- Carousel controls -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+      <br>
+-      <div id="trajectory_map" class="row" style="display:none">
+-        <div id="map" class="col-xs-12" style="height: 800px; width: 1200px;border:1px solid #000;"></div>
       </div>
-      <div id="response" class="col-xs-3"  style="width:250px;height:270px;border:1px solid #00F;">
-        <span style="color:blue">Best match will appear here.</span>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div id="map" class="col-xs-12" style="height: 800px; width: 1200px;border:1px solid #00F;"></div>
-  </div>
-</div>
-		<script type="text/javascript" src="{{url_for('js_static', filename='jquery-3.2.1.min.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='dropzone.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/AlreadyExistsDisplayer.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/CorrectlyUploadedDisplayer.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/DoesntExistDisplayer.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/TrajectoryDisplayer.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='ResponseDisplayerFactory/ResponseDisplayerFactory.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('js_static', filename='app.js')}}"></script>
-    <script type="text/javascript">
-      var directionsDisplay;
-      var directionsService;
-      var mymap;
-      function initMap() {
-        console.log("initMap");
-        directionsService = new google.maps.DirectionsService();
-        directionsDisplay = new google.maps.DirectionsRenderer();
-        mymap = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(-34.618696, -58.435593),
-        zoom: 13
-        });
-      }
-      function updateMarker(marker, points, idx) {
-          console.log("update marker lat: "+points[idx].lat+" lng: "+points[idx].lng);
-          marker.setPosition(new google.maps.LatLng(points[idx].lat, points[idx].lng));
-          mymap.panTo(marker.getPosition());
-      }
-      function calculateRoute(start, end) {
-        var bounds = new google.maps.LatLngBounds();
-        bounds.extend(start);
-        bounds.extend(end);
-        mymap.fitBounds(bounds);
-        var request = {
-            origin: start,
-            destination: end,
-            travelMode: google.maps.TravelMode.WALKING
-        };
-        directionsService.route(request, function (response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
-                directionsDisplay.setOptions( { suppressMarkers: true } );
-                directionsDisplay.setMap(mymap);
-            } else {
-                alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
-            }
-        });
-      }
-      function loadImageToCarouselAndDrawRoute(points){
-        console.log("loadImageToCarousel");
-        for (var i = 0; i < points.length; i++){
-          var filepath="/static/images/"+points[i].image;
-          $('<div class="item"><img src="'+filepath+'"><div class="carousel-caption"></div>   </div>').appendTo('.carousel-inner');
-          $('<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>').appendTo('.carousel-indicators')
-          if (i >0){
-            var start = new google.maps.LatLng(points[i-1].lat, points[i-1].lng);
-            var end = new google.maps.LatLng(points[i].lat, points[i].lng);
-            calculateRoute(start, end)
-          }
+
+      <script type="text/javascript" src="{{url_for('js_static', filename='jquery-3.2.1.min.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='dropzone.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='bootstrap.min.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/AlreadyExistsDisplayer.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/CorrectlyUploadedDisplayer.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/DoesntExistDisplayer.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/TrajectoryDisplayer.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='ResponseDisplayerFactory/ResponseDisplayerFactory.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='app.js')}}"></script>
+      <script type="text/javascript">
+        var directionsDisplay;
+        var directionsService;
+        var mymap;
+        function initMap() {
+          console.log("initMap");
+          directionsService = new google.maps.DirectionsService();
+          directionsDisplay = new google.maps.DirectionsRenderer();
+          mymap = new google.maps.Map(document.getElementById('map'), {
+          center: new google.maps.LatLng(-34.618696, -58.435593),
+          zoom: 13
+          });
         }
-        $('.item').first().addClass('active');
-        $('.carousel-indicators > li').first().addClass('active');
-        $('.carousel').carousel('pause')
-      }
-      function AgregarPuntos(locations){
-        var points = JSON.parse(locations);
-        var marker = new google.maps.Marker({
-        animation: google.maps.Animation.BOUNCE,
-        map: mymap});
-        loadImageToCarouselAndDrawRoute(points);
-        updateMarker(marker, points, 0);
-        $('#myCarousel').bind('slide.bs.carousel', function (e) {
-          console.log("Bind carousel");
-          console.log("points: "+ points);
-          var slideIdx = $(e.relatedTarget).index();
-          updateMarker(marker, points, slideIdx);
-        });
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4&callback=initMap"></script>
-    <br>
-<footer>Eduardo Neira - Luis Ali</footer>
+        function updateMarker(marker, points, idx) {
+            console.log("update marker lat: "+points[idx].lat+" lng: "+points[idx].lng);
+            marker.setPosition(new google.maps.LatLng(points[idx].lat, points[idx].lng));
+            mymap.panTo(marker.getPosition());
+        }
+        function calculateRoute(start, end) {
+          var bounds = new google.maps.LatLngBounds();
+          bounds.extend(start);
+          bounds.extend(end);
+          mymap.fitBounds(bounds);
+          var request = {
+              origin: start,
+              destination: end,
+              travelMode: google.maps.TravelMode.WALKING
+          };
+          directionsService.route(request, function (response, status) {
+              if (status == google.maps.DirectionsStatus.OK) {
+                  directionsDisplay.setDirections(response);
+                  directionsDisplay.setOptions( { suppressMarkers: true } );
+                  directionsDisplay.setMap(mymap);
+              } else {
+                  alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+              }
+          });
+        }
+        function loadImageToCarouselAndDrawRoute(points){
+          console.log("loadImageToCarousel");
+          for (var i = 0; i < points.length; i++){
+            var filepath="/static/images/"+points[i].image;
+            $('<div class="item"><img src="'+filepath+'"><div class="carousel-caption"></div>   </div>').appendTo('.carousel-inner');
+            $('<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>').appendTo('.carousel-indicators')
+            if (i >0){
+              var start = new google.maps.LatLng(points[i-1].lat, points[i-1].lng);
+              var end = new google.maps.LatLng(points[i].lat, points[i].lng);
+              calculateRoute(start, end)
+            }
+          }
+          $('.item').first().addClass('active');
+          $('.carousel-indicators > li').first().addClass('active');
+          $('.carousel').carousel('pause')
+        }
+        function AgregarPuntos(locations){
+          var points = JSON.parse(locations);
+          var marker = new google.maps.Marker({
+          animation: google.maps.Animation.BOUNCE,
+          map: mymap});
+          loadImageToCarouselAndDrawRoute(points);
+          updateMarker(marker, points, 0);
+          $('#myCarousel').bind('slide.bs.carousel', function (e) {
+            console.log("Bind carousel");
+            console.log("points: "+ points);
+            var slideIdx = $(e.relatedTarget).index();
+            updateMarker(marker, points, slideIdx);
+          });
+        }
+      </script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4&callback=initMap"></script>
+      <br>
+    </div>
+    
+
+
+
+    <footer class="footer-distributed">
+      <div class="footer-left">
+        <p class="footer-company-name">
+          Eduardo Neira - Luis Ali
+        </p>
+      </div>
+    </footer>
+
+
   </body>
-</html>
+</html

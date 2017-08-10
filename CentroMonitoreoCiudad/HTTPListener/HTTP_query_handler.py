@@ -1,7 +1,7 @@
 #!/bin/python3
 
 import psycopg2
-
+import pdb
 from modules.logger import *
 from modules.rpc_server_rabbitmq import *
 from modules.face_recognizer_client import *
@@ -14,10 +14,12 @@ def handle(body):
   response['status'] = 'OK'
 
   #TODO: Refactor
+  print(request['image'])
+  #pdb.set_trace()
   if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
     if id is not None:
-        response['found'] =  get_person_base64(id,cursor)
+        response['found'] =  file_manager.get_person_base64(id,cursor)
     else:
         response['found'] = None
   elif (request['type'] == config['requests']['upload']):
@@ -40,11 +42,11 @@ def handle(body):
         point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": row[3]}
         points.append(point)
       response['coordinates'] = points
-      response['bestmatch'] =  file_manager.get_person_base64(id,cursor)
+      response['found'] =  file_manager.get_person_base64(id,cursor)
   else:
     response['status'] = 'ERROR'
     response['message'] = 'Tipo de mensaje invalido'
-
+  print(response)
   return json.dumps(response)
 
 if __name__ == '__main__':
