@@ -24,7 +24,7 @@
     </header>
     <div class="container">
       <br>
-      <div id="select_what_to_do_row"class="row">
+      <div id="select_what_to_do_row" class="row">
         <div class="col-sm-6">
           <div id="droparea" class="dropzone dz-clickable photo-uploader">
             <div id="previewsContainer"></div>          
@@ -69,8 +69,8 @@
       </div>
       <br>
       <hr/>
-      <div class="row" >
-        <div id="myCarousel" class="col-xs-6 carousel slide" style="height: 270px; width: 400px;border:1px solid #00F;margin-right:50px;">
+      <div id="preview_photos" class="row" style="display:none">
+        <div id="myCarousel" class="col-sm-6 carousel slide" style="height: 270px; width: 400px;border:1px solid #000; margin-left: 150px;margin-right:50px;">
           <!-- Indicators -->
           <ol class="carousel-indicators"></ol>
           <div class="carousel-inner"></div>
@@ -78,13 +78,13 @@
           <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
           <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
-        <div id="response" class="col-xs-3"  style="width:250px;height:270px;border:1px solid #00F;">
-          <span style="color:blue">Best match will appear here.</span>
+        <div id="response" class="col-sm-3 best-match-preview" >
+         <!--  <span style="color:black">Best match will appear here.</span> -->
         </div>
       </div>
       <br>
-      <div class="row" >
-        <div id="map" class="col-xs-12" style="height: 800px; width: 1200px;border:1px solid #00F;"></div>
+-      <div id="trajectory_map" class="row" style="display:none">
+-        <div id="map" class="col-xs-12" style="height: 800px; width: 1200px;border:1px solid #000;"></div>
       </div>
 
       <script type="text/javascript" src="{{url_for('js_static', filename='jquery-3.2.1.min.js')}}"></script>

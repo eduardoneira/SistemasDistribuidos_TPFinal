@@ -15,5 +15,6 @@ var AlreadyExistsDisplayer;
     document.getElementById("response").appendChild(answer);
     document.getElementById("response").appendChild(linebreak);
     document.getElementById("response").appendChild(match);
+    $("#preview_photos").show();
   }
 }());
