@@ -12,6 +12,7 @@ var AlreadyExistsDisplayer;
     console.log("Match: "+filepath);
     match.src= filepath;
     match.style='height: 100%; width: 100%; object-fit: contain';
+    //$("#preview_photos").append('<div id="response" class="col-xs-3"  style="width:250px;height:270px;border:1px solid #00F;"><span style="color:blue">Best match will appear here.</span></div>')
     document.getElementById("response").appendChild(answer);
     document.getElementById("response").appendChild(linebreak);
     document.getElementById("response").appendChild(match);
