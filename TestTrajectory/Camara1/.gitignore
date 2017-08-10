@@ -1,0 +1,6 @@
+log/
+modules/__pycache__
+img/
+img_processed/
+tests/*.mp4
+tests/frames/
