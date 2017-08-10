@@ -38,4 +38,7 @@ class RPCServer:
     self.channel.start_consuming()
 
   def close(self):
-    self.connection.close()
+    try:
+      self.connection.close()
+    except pika.exceptions.ConnectionClosed:
+      logging.warning('La conexion ya estaba cerrada')

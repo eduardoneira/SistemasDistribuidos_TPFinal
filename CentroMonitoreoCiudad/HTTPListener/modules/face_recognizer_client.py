@@ -71,6 +71,6 @@ class FaceRecognizerClient(object):
 
   def close(self):
       try:
-          self.connection.close()
+        self.connection.close()
       except pika.exceptions.ConnectionClosed:
-          logging.warning('La conexion ya estaba cerrada')
+        logging.warning('La conexion ya estaba cerrada')
