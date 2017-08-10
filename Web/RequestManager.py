@@ -35,8 +35,6 @@ class TrajectoryManager(Manager):
   def processRequest(self):
     response = json.loads(self.rpc_call())
 
-    #pdb.set_trace()
-
     if response['status'] == 'OK':
       points = []
       image_path = "/static/images/"
@@ -50,11 +48,10 @@ class TrajectoryManager(Manager):
         image_decoded = base64.b64decode(point['image'])
         filename = str(self.sha1_byte_stream(image_decoded))+".jpg"
         #TODO: Check if it was already cached
-        with open('./'+image_path+filename, 'wb') as file:
+        with open('./'+image_path+filename, 'wb') as file_big_pic:
           file_big_pic.write(image_decoded)
+        point['image'] = filename
         points.append(point)
-
-      # pdb.set_trace()
 
       return jsonify(operation=CONST.RESPONSETRAJECTORY,points=json.dumps(points), match=bestmatch_file_name)
     else:

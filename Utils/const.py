@@ -14,5 +14,5 @@ ENCODING = 'utf-8'
 PERSONIMAGECONTAINERFOLDER= "/PersonImageContainer"
 CROPIMAGECONTAINERFOLDER= "/CropImageContainer"
 BIGPICIMAGECONTAINERFOLDER= "/BigPicImageContainer"
-HOST_CMC="localhost"
+HOST_CMC="0.0.0.0"
 QUEUE_RPC="http_rpc"

@@ -4,6 +4,7 @@ import logging
 import os
 import base64
 import hashlib
+import pdb
 
 class FileManager:
 
@@ -44,9 +45,10 @@ class FileManager:
       cursor.execute("SELECT Person.Filepath FROM Person WHERE  Person.Id  = %s", (id,))
       row = cursor.fetchone()
       return row[0]
+
   def get_person_base64(self, id, cursor):
-    filename = self.get_file_name(id, cursor)
+    filename = self.get_file_name(id, cursor).strip()
     return self.get_image_base64(filename,self.person_path+str(id)+'/')
 
   def get_bigpic_base64(self,filename):
-    return self.get_image_base64(filename,self.bigpic_path+'/')
+    return self.get_image_base64(filename.strip(),self.bigpic_path)

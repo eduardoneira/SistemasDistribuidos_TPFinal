@@ -14,7 +14,6 @@ def handle(body):
   response['status'] = 'OK'
 
   #TODO: Refactor
-  print(request['image'])
   #pdb.set_trace()
   if (request['type'] == config['requests']['existance']):
     id = face_recognizer_client.predict([request['image']])[0]
@@ -39,14 +38,14 @@ def handle(body):
       points=[]
       for row in rows:
         big_pic_b64 =  file_manager.get_bigpic_base64(row[0])
-        point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": row[3]}
+        point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": str(row[3])}
         points.append(point)
       response['coordinates'] = points
       response['found'] =  file_manager.get_person_base64(id,cursor)
   else:
     response['status'] = 'ERROR'
     response['message'] = 'Tipo de mensaje invalido'
-  print(response)
+
   return json.dumps(response)
 
 if __name__ == '__main__':

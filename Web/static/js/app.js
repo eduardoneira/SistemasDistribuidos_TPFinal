@@ -68,8 +68,8 @@ var myDropzone = new Dropzone("div#droparea", {
             trgY: 0,
             srcWidth: file.width,
             srcHeight: file.height,
-            trgWidth: this.options.thumbnailWidth,
-            trgHeight: this.options.thumbnailHeight
+            trgWidth: 342,
+            trgHeight: 292
         };
         return resizeInfo;
     }
