@@ -1,4 +1,4 @@
-html,body{background-color:#e3f2fd;}
+html,body{background-color:#e3f2fd;font-family: 'Cantarell', cursive;}
 hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -9,6 +9,7 @@ hr {
 header{
   background: #2c3e50;
   color:#fff;
+  font-family: 'Lobster', cursive;
 }
 .main{
   background: #f2f2f2;
