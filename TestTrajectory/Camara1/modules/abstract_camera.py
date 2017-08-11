@@ -9,11 +9,8 @@ class AbstractCamera:
 
   CONST_PATH_IMG = './img/'
   CONST_INVALID = 'INVALID'
-  
+
   def __init__(self):
-    shutil.rmtree(path = self.PATH_IMG(),
-                  ignore_errors = True)
-    os.mkdir(self.PATH_IMG())
 
     self.__id = 1
 

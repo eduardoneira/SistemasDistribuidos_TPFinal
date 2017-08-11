@@ -15,7 +15,7 @@ var TrajectoryDisplayer;
     match.src= filepath;
     match.style='height: 100%; width: 100%; object-fit: contain';
     response.appendChild(match);
-    $("#trajectory_map").show();
+    //$("#trajectory_map").show();
     $("#preview_photos").show();
   }
 }());

@@ -29,14 +29,14 @@ payload = {}
 camera = MockCamera()
 killer = GracefulKiller()
 
-while True:  
+while True:
   payload['location'] = config['location']
   payload['timestamp'] = datetime.now().strftime('%d-%m-%Y||%H:%M:%S.%f')
   payload['frame'] = camera.get_frame()
 
   if payload['frame'] != camera.INVALID():
     payload['frame'] = payload['frame'].decode('utf-8')
-    
+
     client.send(config['topic'],json.dumps(payload))
 
     print('Mensaje de frame enviado')
