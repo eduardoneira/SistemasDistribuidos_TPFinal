@@ -1,0 +1,6 @@
+Fri, 11 Aug 2017 13:49:59 DEBUG    Camera   14055    Creando conexión a servidor CMB en host: 127.0.0.1 usando topic: camera/feed
+Fri, 11 Aug 2017 13:49:59 DEBUG    Camera   14055    Inicializando mock camara que agarra imagenes de ./img/
+Fri, 11 Aug 2017 13:49:59 DEBUG    Camera   14055    Imagen movida a procesada en ./img_processed/6.jpg
+Fri, 11 Aug 2017 13:49:59 DEBUG    Camera   14055    Se publico en camera/feed con return value: 0
+Fri, 11 Aug 2017 13:49:59 DEBUG    Camera   14055    Se envió: '{[-34.58512, -58.391604],11-08-2017||13:49:59.569057}'
+Fri, 11 Aug 2017 13:50:00 DEBUG    Camera   14055    Llego señal de salida. Se va a terminar la captura de fotos
