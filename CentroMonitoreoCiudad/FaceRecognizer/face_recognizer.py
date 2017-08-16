@@ -37,7 +37,7 @@ if __name__ == '__main__':
   face_recognizer = LBPHWrapper(config['MIN_MATCH_DISTANCE'],
                                 config['MIN_UPDATE_DISTANCE'])
 
-  server = PikaWrapperReceiver('localhost',config['queue_request'])
+  server = PikaWrapperReceiver(config['host_FaceRecog'],config['queue_request'])
   server.set_receive_callback(handle_message)
 
   graceful_killer.add_predictor(face_recognizer)

@@ -1,7 +1,8 @@
 {
   "host_CMB": "127.0.0.1",
-  "logging_level" : 10,
   "topic_cmc": "img/cropped",
+  "host_FaceRecog":"localhost",
+  "logging_level" : 10,
   "queue_send_face_recognizer": "face_recognizer_request",
   "queue_receive_face_recognizer": "img_receive_face_recognizer",
   "image_database": "../image_database",

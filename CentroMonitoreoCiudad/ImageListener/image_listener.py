@@ -65,7 +65,7 @@ if __name__ == '__main__':
 
   server.set_receive_callback(callback)
 
-  face_recognizer_client = FaceRecognizerClient(host='localhost',
+  face_recognizer_client = FaceRecognizerClient(host=config['host_FaceRecog'],
                                                 queue_send=config['queue_send_face_recognizer'],
                                                 queue_receive=config['queue_receive_face_recognizer'])
 

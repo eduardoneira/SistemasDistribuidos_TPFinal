@@ -1,4 +1,5 @@
 {
+  "host_FaceRecog": "localhost",
   "stem_name_log": "face_recognizer",
   "logging_level" : 10,
   "queue_request": "face_recognizer_request",
