@@ -1,7 +1,9 @@
-{
-  "host": "127.0.0.1",
+{ 
+  "host_camera" : "localhost",
+  "topic_camera": "amq.topic",
+  "routing_key_camera": "camera.barrio1",
+  "host_cmc": "127.0.0.1",
   "queue": "camToCMB",
   "logging_level" : 10,
-  "topic_camera": "amq.topic",
   "topic_cmc": "img/cropped"
 }

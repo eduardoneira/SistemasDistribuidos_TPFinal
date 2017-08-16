@@ -33,11 +33,12 @@ if __name__ == '__main__':
 
   set_logger(config['logging_level'])
 
-  server = PikaWrapperSubscriber( host='localhost',
+  server = PikaWrapperSubscriber( host=config['host_camera'],
                                   topic=config['topic_camera'],
-                                  queue=config['queue'])
+                                  queue=config['queue'],
+                                  routing_key=config['routing_key_camera'])
 
-  client = PikaWrapperPublisher(host=config['host'],
+  client = PikaWrapperPublisher(host=config['host_cmc'],
                                 topic=config['topic_cmc'])
 
   cropper = FaceCropper()

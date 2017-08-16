@@ -7,9 +7,10 @@ import logging
 
 class FaceCropper():
 
+  PATH_HAAR = './haarcascade/haarcascade_frontalface_alt.xml'
+
   def __init__(self):
-    self.face_cascade = cv2.CascadeClassifier('./haarcascade/haarcascade_frontalface_alt.xml')
-    # self.body_cascade = cv2.CascadeClassifier('../haarcascade/haarcascade_fullbody.xml')
+    self.face_cascade = cv2.CascadeClassifier(self.PATH_HAAR)
 
   def crop(self,image):
     images=[]
@@ -20,6 +21,7 @@ class FaceCropper():
 
     #Parametros para imagen un poco clara
     faces = self.face_cascade.detectMultiScale(gray,1.1,2,0,(20,20))
+    
     for (x,y,w,h) in faces:
       cropped = img_np[y:y+h,x:x+w]
       logging.debug('face found: [%d,%d,%d,%d]',y,y+h,x,x+w)

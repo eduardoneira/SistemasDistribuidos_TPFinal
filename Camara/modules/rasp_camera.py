@@ -19,6 +19,6 @@ class RaspCamera(AbstractCamera):
     with open(filepath,'rb') as image:
       img_b64 = self.base64(image)
 
-  os.rm(filepath)      
+    os.remove(filepath)      
 
     return img_b64
