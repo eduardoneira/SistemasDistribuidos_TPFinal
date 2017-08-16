@@ -1,5 +1,6 @@
 {
   "host_HTTP": "127.0.0.1",
+  "host_FaceRecog": "localhost",
   "logging_level" : 10,
   "queue_http": "http_rpc",
   "queue_send_face_recognizer": "face_recognizer_request",
