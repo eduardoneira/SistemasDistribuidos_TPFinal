@@ -7,7 +7,7 @@ from modules.pika_wrapper_subscriber import *
 from modules.pika_wrapper_publisher import *
 from modules.face_cropper import *
 
-def callback(ch, method, properties, body):
+def handle_message(ch, method, properties, body):
   payload = json.loads(body.decode('utf-8'))
   logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
   print("Se recibio mensaje de frame. Comienza el cropeo")
@@ -33,20 +33,20 @@ if __name__ == '__main__':
 
   set_logger(config['logging_level'])
 
-  server = PikaWrapperSubscriber( host=config['host_camera'],
-                                  topic=config['topic_camera'],
-                                  queue=config['queue'],
-                                  routing_key=config['routing_key_camera'])
+  cropper = FaceCropper()
 
   client = PikaWrapperPublisher(host=config['host_cmc'],
                                 topic=config['topic_cmc'])
 
-  cropper = FaceCropper()
-
+  server = PikaWrapperSubscriber( host=config['host_camera'],
+                                  topic=config['topic_camera'],
+                                  queue=config['queue'],
+                                  routing_key=config['routing_key_camera'])
+  
+  server.set_receive_callback(handle_message)
+  
   killer = GracefulKiller()
   killer.add_connection(server)
-
-  server.set_receive_callback(callback)
 
   print('[*] Esperando mensajes para procesar. Para salir usar CTRL+C')
   server.start_consuming()
