@@ -5,7 +5,6 @@ from modules.graceful_killer import *
 from modules.logger import *
 from modules.mock_camera import *
 from modules.mqtt_wrapper import *
-from modules.rasp_camera import *
 from datetime import datetime
 from time import sleep
 import pdb
@@ -27,7 +26,12 @@ print('Configuración terminada. Comenzando envió de mensajes')
 sleep_time = 1 / config['FPS']
 payload = {}
 
-camera = RaspCamera()
+if config['camera'] == "mock": 
+  camera = MockCamera() 
+elif config['camera'] == "rasppi":
+  from modules.rasp_camera import *
+  camera = RaspCamera()
+
 killer = GracefulKiller()
 
 while True:  
