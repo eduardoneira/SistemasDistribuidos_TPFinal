@@ -26,7 +26,12 @@ print('Configuración terminada. Comenzando envió de mensajes')
 sleep_time = 1 / config['FPS']
 payload = {}
 
-camera = MockCamera()
+if config['camera'] == "mock": 
+  camera = MockCamera() 
+elif config['camera'] == "rasppi":
+  from modules.rasp_camera import *
+  camera = RaspCamera()
+
 killer = GracefulKiller()
 
 while True:  
