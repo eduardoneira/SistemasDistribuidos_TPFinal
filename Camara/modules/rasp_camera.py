@@ -1,7 +1,7 @@
 #!/bin/python3
 
 import picamera
-import abstract_camera
+from modules.abstract_camera import *
 
 class RaspCamera(AbstractCamera):
 
@@ -13,7 +13,7 @@ class RaspCamera(AbstractCamera):
     #TODO: config camera
 
   def get_frame(self):
-    filepath = self.PATH_IMG + self.CAPTURE_FILENAME
+    filepath = self.PATH_IMG() + self.CAPTURE_FILENAME
     self.camera.capture(filepath)
 
     with open(filepath,'rb') as image:
