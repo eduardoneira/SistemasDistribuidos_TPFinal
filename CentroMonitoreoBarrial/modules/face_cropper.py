@@ -9,8 +9,11 @@ class FaceCropper():
 
   PATH_HAAR = './haarcascade/haarcascade_frontalface_alt.xml'
 
-  def __init__(self):
+  def __init__(self,config):
     self.face_cascade = cv2.CascadeClassifier(self.PATH_HAAR)
+    self.scale_factor = config['scale_factor']
+    self.min_neighbours = config['min_neighbours']
+    self.min_size = (tuple(config['min_size']))
 
   def crop(self,image):
     images=[]
@@ -19,8 +22,8 @@ class FaceCropper():
     img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
 
-    #Parametros para imagen un poco clara
-    faces = self.face_cascade.detectMultiScale(gray,1.1,2,0,(20,20))
+    #Params: image, scale_factor, min_neighbours, flags, min_size
+    faces = self.face_cascade.detectMultiScale(gray,self.scale_factor,self.min_neighbours,0,self.min_size)
     
     for (x,y,w,h) in faces:
       cropped = img_np[y:y+h,x:x+w]

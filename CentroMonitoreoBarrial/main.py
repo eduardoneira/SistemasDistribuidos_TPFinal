@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
   set_logger(config['logging_level'])
 
-  cropper = FaceCropper()
+  cropper = FaceCropper(config['face_cropper'])
 
   client = PikaWrapperPublisher(host=config['host_cmc'],
                                 topic=config['topic_cmc'])
