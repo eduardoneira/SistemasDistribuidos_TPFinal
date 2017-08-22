@@ -69,27 +69,27 @@ header{
   width: 100%;
   object-fit: cover; /*magic*/
 }
+
 .nav {
     background-color: #202020 !important;
     font-family: 'Museo_Slab_500_2';
     font-weight: bold;
 }
 .nav>li>a {
-    background-color: #606060 !important;
-    color: #ff8000;
+    background-color: #a0a0a0 !important;
+    color: #ffcc99;
     font-family: 'Museo_Slab_500_2';
-    font-weight: bold;
 }
 .nav>li>a:hover {
-    background-color: #606060 !important;
+    background-color: #808080 !important;
     color: white;
     font-family: 'Museo_Slab_500_2';
-    font-weight: bold;
 }
 .nav>li.active>a{
-    background-color: white !important;
+    background-color: #606060 !important;
+    color: #ff8000 !important;
     font-family: 'Museo_Slab_500_2';
-    font-weight: bold;
+    font-weight: bold !important;
 }
 .tab-content {
   background-color: #606060;
