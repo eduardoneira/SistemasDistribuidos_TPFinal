@@ -40,7 +40,7 @@ handler.setFormatter(
 app.logger.addHandler(handler)
 
 app.config['UPLOAD_FOLDER'] = app.root_path +'/upload'
-app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'gif', 'PNG', 'JPG', 'JPEG', 'GIF'])
+app.config['ALLOWED_EXTENSIONS'] = set(['jpg', 'jpeg', 'JPG', 'JPEG'])
 
 def allowed_file(filename):
   return '.' in filename and \

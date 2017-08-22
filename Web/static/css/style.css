@@ -1,19 +1,18 @@
-html,body{    
+html,body{
   margin:0px;
-  padding:0px;
-  width:100%;
-  height: 100%;
-  min-height: 100%;
-  background: url("../static/abstract-mosaic-background.png");
+  padding: 0px;
+  background-color: #404040;
+  /*background: url("../static/trafficpeople.jpg");
   background-size:100%;
-  font-family: Arial, Helvetica, sans-serif;
+  background-repeat: no-repeat, no-repeat;*/
+  /*font-family: Arial, Helvetica, sans-serif;*/
 }
-hr {
+/*hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
   border: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
+}*/
 
 h1 {
   font-family: 'Museo_Slab_500_2';
@@ -24,66 +23,88 @@ h1 {
   font-weight: bold;
 }
 
-.photo-uploader{
-  background: url("../static/drop-files.jpg");
-  background-repeat:no-repeat;
-  background-size: 348px 300px;
-}
 
 .best-match-preview{
-  height: 250px; 
+  height: 250px;
   width: 270px;
   border: 1px solid #000;
-  background: url("../static/no-preview-available.png"); 
+  background: url("../static/no-preview-available.png");
   background-size: 270px 250px;
   background-repeat: no-repeat;
 }
 
 .google-map-preview{
-  height: 800px; 
+  height: 800px;
   width: 1200px;
   border: 1px solid #000;
 }
 
 header{
-  background: #2c3e50;
-  color:#fff;
-}
-.main{
-  background: #f2f2f2;
-}
-.color1{
-  background: #34495e;
-  color:#fff;
-}
-aside{
-  background: #00695c;
-  color: #fff;
-}
-footer{
-  background: #16a085;
-  color:#fff;
-  position: fixed;
-  height: 50px;
-  background-color: red;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  margin-bottom: 0px;
+  background: #202020;
+  color:#00ffff;
 }
 
-#droparea{
-  width: 350px;
-  height: 300px;
-  margin: 0 auto 0;
-  border: 4px solid rgba(0, 0, 0, 0.8);
-}
+#previewsContainer{ width:300px; white-space:nowrap; overflow-x: auto; border: 2px solid #c0c0c0;margin-left:30%}
+#previewsContainer .pic{ width:120px; height:120px; text-align:center; border:1px solid #000; border-radius: 5px; margin:8px; display: inline-block; vertical-align:top; position:relative; overflow:hidden;}
+#previewsContainer .pic img { width:120px; height: 120px; text-align:center;}
+#previewsContainer .pic .remove{cursor: pointer; position:absolute; top:0; right: 0; width:20px; height:20px; background: #eee; z-index:1030; }
+#previewsContainer .pic-list{ overflow-x: scroll; overflow-y: hidden;}
+#previewsContainer .addfile{cursor: pointer; border: 2px dashed #32A336; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
+#previewsContainer .add-file { position: relative; overflow: hidden;  height: 48px; font-size:2em; }
+#previewsContainer .add-file input[type="file"]{ height: 20px; position: absolute; top: 0; right: 0; bottom:5px; margin: 0 auto; opacity: 0; cursor: pointer; width: 100%;}
 
-#previewsContainer {
-  width: 350px;
-  height: 300px;
-}
-
+#previewsContainerAddPerson{ width:100%; white-space:nowrap; overflow-x: auto; border: 2px solid #c0c0c0;}
+#previewsContainerAddPerson .pic{ width:120px; height:120px; text-align:center; border:1px solid #000; border-radius: 5px; margin:8px; display: inline-block; vertical-align:top; position:relative; overflow:hidden;}
+#previewsContainerAddPerson .pic img { width:120px; height:120px; text-align:center;}
+#previewsContainerAddPerson .pic .remove{cursor: pointer; position:absolute; top:0; right: 0; width:20px; height:20px; background: #eee; z-index:1030; }
+#previewsContainerAddPerson .pic-list{ overflow-x: scroll; overflow-y: hidden;}
+#previewsContainerAddPerson .addfile{cursor: pointer; border: 2px dashed #32A336; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
+#previewsContainerAddPerson .add-file { position: relative; overflow: hidden;  height: 48px; font-size:2em; }
+#previewsContainerAddPerson .add-file input[type="file"]{ height: 20px; position: absolute; top: 0; right: 0; bottom:5px; margin: 0 auto; opacity: 0; cursor: pointer; width: 100%;}
 #map {
   height: 100%;
+}
+.object-fit-cover{
+  max-height: 300px;
+  width: 100%;
+  object-fit: cover; /*magic*/
+}
+.nav {
+    background-color: #202020 !important;
+    font-family: 'Museo_Slab_500_2';
+    font-weight: bold;
+}
+.nav>li>a {
+    background-color: #606060 !important;
+    color: #ff8000;
+    font-family: 'Museo_Slab_500_2';
+    font-weight: bold;
+}
+.nav>li>a:hover {
+    background-color: #606060 !important;
+    color: white;
+    font-family: 'Museo_Slab_500_2';
+    font-weight: bold;
+}
+.nav>li.active>a{
+    background-color: white !important;
+    font-family: 'Museo_Slab_500_2';
+    font-weight: bold;
+}
+.tab-content {
+  background-color: #606060;
+}
+label {
+  /*background-color: #99ccff;*/
+  color: #ff8000;
+  font-family: 'Museo_Slab_500_2';
+  padding: 4px;
+}
+legend {
+  color: #00cc00;
+  font-family: 'Museo_Slab_500_2';
+  font-weight: bold;
+}
+form{
+  padding-left: 25px;
 }
