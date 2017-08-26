@@ -9,6 +9,6 @@
   "face_cropper" : {
     "scale_factor" : 1.1,
     "min_neighbours" : 2,
-    "min_size" : [20,20]
+    "min_size" : [100,100]
   }
 }

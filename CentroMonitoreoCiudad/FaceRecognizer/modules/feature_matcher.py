@@ -2,32 +2,28 @@
 
 import numpy as np
 import cv2
+import base64
 from tkinter import *
 from matplotlib import pyplot as plt 
 
 class FeatureMatcher:
 
-  def __init__(self,min_match_count):
+  def __init__(self,min_match_count,threshold):
     self.MIN_MATCH_COUNT = min_match_count
-    self.sift = cv2.xfeatures2d.SIFT_create()
+    self.feature_finder = cv2.xfeatures2d.SURF_create(threshold)
 
     #Setting FLANN matcher
-    FLANN_INDEX_KDTREE = 1
+    FLANN_INDEX_KDTREE = 0
     index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 5)
-    search_params = dict(checks = 50)
+    search_params = dict(checks = 100)
     self.flann = cv2.FlannBasedMatcher(index_params, search_params)
 
   def compare(self,img1,img2):
-    sift_hash1 = self.sift_hash(img1)
-    sift_hash2 = self.sift_hash(img2)
-    matches = self.flann.knnMatch(sift_hash1[1],sift_hash2[1],k=2)
+    features_img1 = self.find_features(img1) 
+    features_img2 = self.find_features(img2)
+    matches = self.flann.knnMatch(features_img1[1],features_img2[1],k=2)
 
-    good = []
-    for m,n in matches:
-      if m.distance < 0.7*n.distance:
-          good.append(m)
-
-    return good
+    return matches
 
   def compare_base64(self,image1_base64,image2_base64):
     img1 = self.base64_to_img(image1_base64)
@@ -37,10 +33,17 @@ class FeatureMatcher:
 
   def are_similar(self,img1,img2):
     matches = self.compare(img1,img2)
-    return (len(matches) > self.MIN_MATCH_COUNT)
+    
+    good_matches = 0
 
-  def sift_hash(self,img):
-    keypoints, descriptor = self.sift.detectAndCompute(img,None)
+    for m,n in matches:
+      if m.distance < 0.7*n.distance:
+        good_matches += 1
+
+    return (good_matches > self.MIN_MATCH_COUNT)
+
+  def find_features(self,img):
+    keypoints, descriptor = self.feature_finder.detectAndCompute(img,None)
     return (keypoints,descriptor)
 
   def bytes_to_img(self,image_bytes):
@@ -51,32 +54,25 @@ class FeatureMatcher:
   def base64_to_img(self,image_base64):
     return self.bytes_to_img(base64.b64decode(image_base64))
 
+  def compare_and_draw_base64(self,img1,img2):
+    self.compare_and_draw(self.base64_to_img(img1),self.base64_to_img(img2))
+
   def compare_and_draw(self,img1,img2):
-    sift_hash1 = self.sift_hash(img1)
-    sift_hash2 = self.sift_hash(img2)
-    matches = self.flann.knnMatch(sift_hash1[1],sift_hash2[1],k=2)
+    kp1, des1 = self.find_features(img1) 
+    kp2, des2 = self.find_features(img2)
+    matches = self.flann.knnMatch(des1,des2,k=2)
+    
+    matchesMask = [[0,0] for i in range(len(matches))]
 
-    good = []
-    for m,n in matches:
+    for i,(m,n) in enumerate(matches):
       if m.distance < 0.7*n.distance:
-          good.append(m)
+        matchesMask[i]=[1,0]
 
-    if len(good)>self.MIN_MATCH_COUNT:
-      src_pts = np.float32([ sift_hash1[0][m.queryIdx].pt for m in good ]).reshape(-1,1,2)
-      dst_pts = np.float32([ sift_hash2[0][m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-      M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
-      matchesMask = mask.ravel().tolist()
-      h,w = img1.shape
-      pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-      dst = cv2.perspectiveTransform(pts,M)
-      img2 = cv2.polylines(img2,[np.int32(dst)],True,255,3, cv2.LINE_AA)
-    else:
-      print( "Not enough matches are found - {}/{}".format(len(good), self.MIN_MATCH_COUNT) )
-      matchesMask = None
+    draw_params = dict(matchColor = (0,255,0),
+                       singlePointColor = (255,0,0),
+                       matchesMask = matchesMask,
+                       flags = 0)
 
-    draw_params = dict(matchColor = (0,255,0), # draw matches in green color
-                       singlePointColor = None,
-                       matchesMask = matchesMask, # draw only inliers
-                       flags = 2)
-    img3 = cv2.drawMatches(img1,sift_hash1[0],img2,sift_hash2[0],good,None,**draw_params)
-    plt.imshow(img3, 'gray'),plt.show()
+    img3 = cv2.drawMatchesKnn(img1,kp1,img2,kp2,matches,None,**draw_params)
+
+    plt.imshow(img3,),plt.show()

@@ -4,22 +4,21 @@ import cv2
 
 class ImageNormalizer:
 
-  def __init__(self,width,height):
-    self.width = width
-    self.height = height
+  @staticmethod
+  def resize(image,width,height):
+    return cv2.resize(image,(width,height),cv2.INTER_CUBIC)
 
-  def __resize(image):
-    print('resize')
+  @staticmethod
+  def black_and_white(image):
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+     
+  @staticmethod
+  def histogram_equalization(image):
+    return cv2.equalizeHist(image)
 
-  def __black_and_white(image):
-    print('to black and white')
-
-  def __distort(image):
-    print('distort')
-
-  def normalize(self,image):
-    __black_and_white(image)
-    __resize(image)
-    __distort(image)
-
-    return image
+  @staticmethod
+  def normalize(image,width,height):
+    new_image = resize(image,width,height)
+    new_image = black_and_white(new_image)
+    new_image = histogram_equalization(new_image)
+    return new_image
