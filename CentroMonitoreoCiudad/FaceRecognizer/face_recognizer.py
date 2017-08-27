@@ -13,7 +13,7 @@ def handle_message(body):
   response = {}
 
   if request['type'] == config['request_update']:
-    id = face_recognizer.update_base64(request['image'])
+    id = face_recognizer.update_base64(request['images'])
     response['id'] = id
   elif request['type'] == config['request_predict']:
     ids = []

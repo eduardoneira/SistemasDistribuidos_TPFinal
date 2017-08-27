@@ -108,3 +108,7 @@ legend {
 form{
   padding-left: 25px;
 }
+#outputName, #outputSurname, #outputDni, #outputState{
+  font-weight: bold;
+  color: white;
+}

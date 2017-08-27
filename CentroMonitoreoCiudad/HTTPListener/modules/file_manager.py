@@ -28,10 +28,9 @@ class FileManager:
     filename = str(self.__SHA1_byte_stream(image))
     with open(directory+filename+".jpg",'wb') as file:
       file.write(image)
-    return filename
 
   def save_person_base64(self,image,id):
-    return self.save_person(base64.b64decode(image),id)
+    self.save_person(base64.b64decode(image),id)
 
   def __SHA1_byte_stream(self,byte_stream):
     return hashlib.sha1(byte_stream).hexdigest()

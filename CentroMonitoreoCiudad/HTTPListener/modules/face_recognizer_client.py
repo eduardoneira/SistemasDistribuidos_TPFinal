@@ -51,10 +51,10 @@ class FaceRecognizerClient(object):
                                       ),
                            body=message)
 
-  def update(self,image):
+  def update(self,images):
     message = {
                 'type': 'update',
-                'image': image
+                'images': images
               }
 
     response = json.loads(self.publish(json.dumps(message)).decode('utf-8'))

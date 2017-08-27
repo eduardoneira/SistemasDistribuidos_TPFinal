@@ -95,15 +95,16 @@ def index():
 @app.route('/uploadajax', methods=['POST'])
 def upldfile():
   if request.method == 'POST':
+    print("Llego un post");
+    requestManager= RequestManagerFactory.createRequestManager(request.form, rpc_client);
     files = request.files.getlist('file[]')
     for f in files:
       if f and allowed_file(f.filename):
-        formData = request.form;
-        requestManager= RequestManagerFactory.createRequestManager(int(formData['operation']),f,rpc_client,int(formData['state']));
-        return requestManager.processRequest();
+        requestManager.appendImage(f);
       else:
         app.logger.info('ext name error')
         return jsonify(error='ext name error')
+    return requestManager.processRequest();
 
 if __name__ == '__main__':
   if not os.path.exists('upload'):

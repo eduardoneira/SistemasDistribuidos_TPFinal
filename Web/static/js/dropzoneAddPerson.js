@@ -13,10 +13,13 @@ function setOperation(){
   }
   return REQUESTTRAJECTORY;
 }
-function setState(){
-  if ((document.getElementById("RadiosCheckLegalProblems").checked == true)){
+function getState(){
+  console.log("get state");
+  if ((document.getElementById("gridRadios1").checked == true)){
+    console.log("Legal problems");
     return STATELEGALPROBLEMS;
   }
+  console.log("missing");
   return STATEMISSING;
 }
 function setDefaultRadioButtonSelection(){
@@ -41,18 +44,20 @@ var dropzoneAddPerson = new Dropzone("div#dropareaAddPerson", {
     maxFilesize: 2, // in MB
     paramName: "file", // The name that will be used to transfer the file
     uploadMultiple: true, // This option will also trigger additional events (like processingmultiple).
+    parallelUploads: 100,
     previewsContainer: "#previewsContainerAddPerson",
     createImageThumbnails: true,
     maxThumbnailFilesize: 2, // in MB
-    maxFiles: 10,
+    maxFiles: 100,
     addRemoveLinks : true,
     hiddenInputContainer: "#previewsContainerAddPerson .addfile",
+    dictResponseError: 'Server not responding',
     renderMethod: "prepend",
     dictDefaultMessage: "Add Photo",
     clickable : "#previewsContainerAddPerson .addfile",
-    //dictDefaultMessage: "<img class='add_new' src='../static/camera-black.png' height='50' width='50'><img class='add_more' src='../static/plus.png' height='50' width='50'><h2>Drag and drop your photos here to upload</h2><p><a href='javascript:void(0)'>Or Click here to browse for photos</a></p>",
     acceptedFiles: ".jpg, .jpeg, .JPG, .JPEG", //This is a comma separated list of mime types or file extensions.Eg.: image/*,application/pdf,.psd.
     autoProcessQueue: false, // When set to false you have to call myDropzone.processQueue() yourself in order to upload the dropped files.
+    forceFallback: false,
     init: function(){
       disableButtonsAndRadio(true);
       setDefaultRadioButtonSelection();
@@ -83,7 +88,7 @@ var dropzoneAddPerson = new Dropzone("div#dropareaAddPerson", {
         <span data-dz-errormessage></span>\
       </div>\
       <div class="dz-success-mark">\
-        <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">\
+        <svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">\
           <title>Check</title>\
           <defs></defs>\
           <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">\
@@ -92,7 +97,7 @@ var dropzoneAddPerson = new Dropzone("div#dropareaAddPerson", {
         </svg>\
       </div>\
       <div class="dz-error-mark">\
-        <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">\
+        <svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">\
           <title>Error</title>\
           <defs></defs>\
           <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">\
@@ -113,40 +118,69 @@ var dropzoneAddPerson = new Dropzone("div#dropareaAddPerson", {
   dropzoneAddPerson.on("addedfile", function(file) {
     console.log("addedfile");
     disableButtonsAndRadio(false);
-    $('.start').click(function(){
+    $('#startAddPerson').click(function(){
+        console.log("start add person");
         dropzoneAddPerson.processQueue(); //processes the queue
         disableButtonsAndRadio(true);
-        document.getElementById(".cancelAddPerson").disabled = false;
+        document.getElementById("cancelAddPerson").disabled = false;
     });
-    $('.cancel').click(function(){
+    $('#cancelAddPerson').click(function(){
+      console.log("cancel add person");
       dropzoneAddPerson.removeAllFiles(true);
+      document.getElementById("inputNameAddPerson").value = "";
+      document.getElementById("inputSurnameAddPerson").value = "";
+      document.getElementById("inputDniAddPerson").value = "";
     });
   });
   dropzoneAddPerson.on("removedfile", function(file) {
     console.log("removedfile");
     disableButtonsAndRadio(true);
     setDefaultRadioButtonSelection();
-    var response = document.getElementById("response");
-    while (response.firstChild) {
-        response.removeChild(response.firstChild);
-    }
-    var spanInfo = document.createElement("SPAN");
-    spanInfo.setAttribute('style', 'color: blue');
-    var text = document.createTextNode("Best match will appear here.");
-    spanInfo.appendChild(text);
-    response.appendChild(spanInfo);
   });
   dropzoneAddPerson.on('sending', function(file, xhr, formData){
-    var operation = setOperation();
-    var state = setState();
+    /*console.log("sending single");
+    var operation = REQUESTUPLOAD;
+    var state = getState();
     formData.append('operation',operation);
-    formData.append('state', state)
+    formData.append('state', state);
+    formData.append('name', getElementById("inputNameAddPerson").value);
+    formData.append('surname', getElementById("inputSurnameAddPerson").value);
+    formData.append('dni', getElementById("inputDniAddPerson").value);
+    $('.meter').show();*/
+  });
+  dropzoneAddPerson.on("error", function(file) { console.log("error"); });
+  dropzoneAddPerson.on("maxfilesreached", function(file) { console.log("maxfilesreached"); });
+  dropzoneAddPerson.on("maxfilesexceeded", function(file) { console.log("maxfilesexceeded"); });
+  dropzoneAddPerson.on('sendingmultiple', function(file, xhr, formData){
+    console.log("dropzone on sendingmultiple");
+    var operation = REQUESTUPLOAD;
+    var state = getState();
+    formData.append('operation',REQUESTUPLOAD);
+    formData.append('state', state);
+    console.log("input name person");
+    formData.append('name', $('#inputNameAddPerson').val());
+    console.log("input surname");
+    formData.append('surname', $('#inputSurnameAddPerson').val());
+    console.log("input dni");
+    formData.append('dni', $('#inputDniAddPerson').val());
+    //$('.meter').show();
   });
   dropzoneAddPerson.on("success", function(file, response) {
     //TODO: ver aca
     // disableButtonsAndRadio(false);
+    console.console.log("on success");
     displayerFactory = new ResponseDisplayerFactory(response);
     displayer = displayerFactory.createDisplayer();
     displayer.show();
+
+  });
+  dropzoneAddPerson.on("totaluploadprogress", function (progress) {
+    console.log("progress ", progress);
+    $('.roller').width(progress + '%');
+  });
+
+  dropzoneAddPerson.on("queuecomplete", function (progress) {
+    console.log("queuecomplete");
+    $('.meter').delay(999).slideUp(999);
   });
 });

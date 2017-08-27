@@ -93,34 +93,27 @@ var dropzoneExistance = new Dropzone("div#droparea", {
         this.removeFile(this.files[0]);
       }
     disableButtons(false);
-    $('.start').click(function(){
+    $('#startExistance').click(function(){
         dropzoneExistance.processQueue(); //processes the queue
         disableButtons(true);
         document.getElementById("cancelExistance").disabled = false;
     });
-    $('.cancel').click(function(){
+    $('#cancelExistance').click(function(){
       dropzoneExistance.removeAllFiles(true);
     });
   });
   dropzoneExistance.on("removedfile", function(file) {
     console.log("removedfile");
     disableButtons(true);
-    var response = document.getElementById("response");
-    while (response.firstChild) {
-        response.removeChild(response.firstChild);
-    }
-    var spanInfo = document.createElement("SPAN");
-    spanInfo.setAttribute('style', 'color: blue');
-    var text = document.createTextNode("Best match will appear here.");
-    spanInfo.appendChild(text);
-    response.appendChild(spanInfo);
   });
   dropzoneExistance.on('sending', function(file, xhr, formData){
     formData.append('operation',REQUESTEXISTANCE);
+    $('.meter').show();
   });
   dropzoneExistance.on("success", function(file, response) {
     //TODO: ver aca
     // disableButtonsAndRadio(false);
+    console.log("on success");
     displayerFactory = new ResponseDisplayerFactory(response);
     displayer = displayerFactory.createDisplayer();
     displayer.show();

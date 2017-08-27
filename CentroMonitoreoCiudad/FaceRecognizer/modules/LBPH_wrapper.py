@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import threading
 import base64
-
+import pdb
 class LBPHWrapper:
 
   FILENAME = 'LBPH_dump'
@@ -16,12 +16,15 @@ class LBPHWrapper:
     self.MIN_MATCH_DISTANCE = min_match_distance
     self.MIN_UPDATE_DISTANCE = min_update_distance
 
-  def update_with_id(self,img,id):
-    self.recognizer.update([img],np.array([id]))
+  def update_with_id(self,images,id):
+    labels = np.arange(len(images));
+    for index in range(len(images)-1):
+        np.put(labels, [index], id);
+    self.recognizer.update(images,labels)
 
-  def update(self,img):
+  def update(self,images):
     self.id+=1
-    self.update_with_id(img,self.id)
+    self.update_with_id(images,self.id)
     self.images_processed+=1
 
     return self.id
@@ -33,7 +36,7 @@ class LBPHWrapper:
       print("La imagen que es mas cercana es "+str(nrb_predicted)+" con confianza "+str(conf))
       if (conf <= self.MIN_MATCH_DISTANCE):
         if (conf <= self.MIN_UPDATE_DISTANCE):
-          self.update_with_id(img,nrb_predicted)
+          self.update_with_id([img],nrb_predicted)
         return str(nrb_predicted)
 
     return None
@@ -52,9 +55,11 @@ class LBPHWrapper:
     image = self.base64_to_img(image_base64)
     return self.predict(image)
 
-  def update_base64(self,image_base64):
-    image = self.base64_to_img(image_base64)
-    return self.update(image)
+  def update_base64(self,images_base64):
+    images = [];
+    for image_base64 in images_base64:
+        images.append(self.base64_to_img(image_base64));
+    return self.update(images)
 
   def bytes_to_img(self,image_bytes):
     nparr = np.fromstring(image_bytes, np.uint8)

@@ -5,9 +5,11 @@ var AlreadyExistsDisplayer;
     this.response = response;
   };
   AlreadyExistsDisplayer.prototype.show = function(){
-    var outputName=document.getElementById("outputName");
-    var outputSurname= document.getElementById("outputSurname");
-    var outputDni=document.getElementById("outputDni");
-    var outputState= document.getElementById("outputState");
+    console.log("Already exists");
+    console.log(this.response);
+    document.getElementById("outputName").textContent = this.response['name'];
+    document.getElementById("outputSurname").textContent = this.response['surname'];
+    document.getElementById("outputDni").textContent = this.response['dni'];
+    document.getElementById("outputState").textContent = this.response['state'];
   }
 }());

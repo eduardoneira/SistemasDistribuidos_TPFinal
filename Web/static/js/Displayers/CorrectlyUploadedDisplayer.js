@@ -7,6 +7,6 @@ var CorrectlyUploadedDisplayer;
   CorrectlyUploadedDisplayer.prototype.show = function(){
     var answer = document.createTextNode("Correctly uploaded");
     //$("#preview_photos").append('<div id="response" class="col-xs-3"  style="width:250px;height:270px;border:1px solid #00F;"><span style="color:blue">Best match will appear here.</span></div>')
-    document.getElementById("response").appendChild(answer);
+    //document.getElementById("response").appendChild(answer);
   }
 }());

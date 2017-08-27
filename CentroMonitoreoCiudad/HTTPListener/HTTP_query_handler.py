@@ -7,55 +7,85 @@ from modules.face_recognizer_client import *
 from modules.graceful_killer import *
 from modules.file_manager import *
 from modules.face_cropper import *
-
+import pdb
 def handle(body):
   request = json.loads(body.decode('utf-8'))
   response = {}
   response['status'] = 'OK'
-
+  with open('../Database/config.json') as file:
+     conf_database = json.load(file)
+  connection_str = "dbname={} user={} host={} password={}".format(conf_database['dbname'], conf_database['user'], conf_database['host'], conf_database['password'])
+  connection_db = psycopg2.connect(connection_str)
+  connection_db.autocommit = True
+  cursor = connection_db.cursor()
   if (request['type'] == config['requests']['existance']):
-    check_existance(request,response)
+    check_existance(request,response, cursor)
   elif (request['type'] == config['requests']['upload']):
-    upload(request,response)
+    upload(request,response, cursor)
   elif (request['type'] == config['requests']['trajectory']):
-    get_trajectory(request,response)
+    get_trajectory(request,response, cursor)
   else:
     response['status'] = 'ERROR'
     response['message'] = 'Tipo de mensaje invalido'
-
+  cursor.close()
+  connection_db.close()
   return json.dumps(response)
 
-def check_existance(request,response):
-  id = face_recognizer_client.predict([request['image']])[0]
+def check_existance(request,response, cursor):
+  cropped_images = [];
+  images = request['images'];
+  for key, image in images.items():
+      cropped_images.append(cropper.crop_base_64(image)[0]);
+  id = face_recognizer_client.predict(cropped_images)[0]
   if id is not None:
-    response['found'] =  file_manager.get_person_base64(id,cursor)
+    cursor.execute("SELECT * FROM Person WHERE  Person.Id = %s", (id,))
+    rows = self.cursor.fetchall();
+    response['name'] =  rows[0][0];
+    response['surname'] =  rows[0][1];
+    response['dni'] =  rows[0][2];
+    response['state'] =  rows[0][3];
   else:
-    response['found'] = None
+    response['status'] = 'NOT OK'
 
-def upload(request,response):
-  id = face_recognizer_client.update(cropper.crop_base_64(request['image'])[0])
-  response['id'] = str(id)
-  if (request['state'] == config['requests']['missing']):
-    state = 'missing'
+def upload(request,response, cursor):
+  cursor.execute("SELECT dni FROM Person WHERE  Person.dni = %s", (request['dni']))
+  rows = self.cursor.fetchall();
+  if (len(rows) > 0):
+      response['status'] = 'NOT OK'
   else:
-    state = 'legal_problems'
-  filename= file_manager.save_person_base64(request['image'],str(id))
-  cursor.execute("INSERT INTO Person (Id,Filepath,state) VALUES (%s, %s,%s)",(id,filename,state))
+      cropped_images = [];
+      images = request['images'];
+      for key, image in images.items():
+          cropped_images.append(cropper.crop_base_64(image)[0]);
+      id = face_recognizer_client.update(cropped_images);
+      response['id'] = str(id)
+      if (request['state'] == config['requests']['missing']):
+        state = 'missing'
+      else:
+        state = 'legal_problems'
+      for key, image in images.items():
+         file_manager.save_person_base64(image,str(id))
+      cursor.execute("INSERT INTO Person (Id, state, name, surname, dni) VALUES (%s,%s, %s, %s,%s)",(id,state,request['name'], request['surname'], request['dni'],))
 
-def get_trajectory(request,response):
-  id = face_recognizer_client.predict([request['image']])[0]
-  if id is not None:
-    cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.Id = %s)", (id))
-    rows = cursor.fetchall()
-    points=[]
-    for row in rows:
-      big_pic_b64 =  file_manager.get_bigpic_base64(row[0])
-      point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": str(row[3])}
-      points.append(point)
-    response['coordinates'] = points
-    response['found'] =  file_manager.get_person_base64(id,cursor)
+def get_trajectory(request,response, cursor):
+    cursor.execute("SELECT Id FROM Person WHERE  Person.dni = %s", (request['dni']))
+    rows = self.cursor.fetchall();
+    if (len(rows) == 0):
+        response['status'] = 'NOT OK'
+    else:
+        cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.id = %s)", (id))
+        rows = cursor.fetchall()
+        if (len(rows) == 0):
+            response['status'] = 'NOT OK'
+        else:
+            points=[]
+            for row in rows:
+              big_pic_b64 =  file_manager.get_bigpic_base64(row[0])
+              point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": str(row[3])}
+              points.append(point)
+            response['coordinates'] = points
+            response['dni'] =  request['dni']
 
-    
 if __name__ == '__main__':
   print('Configurando CMC Query Handler')
 

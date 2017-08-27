@@ -5,10 +5,11 @@ import Utils.const as CONST
 
 class RequestManagerFactory:
   @staticmethod
-  def createRequestManager(type, file,rpc_client,state):
+  def createRequestManager(formData,rpc_client):
+    type = int(formData['operation']);
     if type == CONST.REQUESTUPLOAD:
-      return UploadManager(file,rpc_client,type,state);
+      return UploadManager(rpc_client, formData);
     elif type == CONST.REQUESTEXISTANCE:
-      return ExistanceManager(file,rpc_client,type);
+      return ExistanceManager(rpc_client,formData);
     elif type == CONST.REQUESTTRAJECTORY:
-      return TrajectoryManager(file,rpc_client,type);
+      return TrajectoryManager(rpc_client,formData);
