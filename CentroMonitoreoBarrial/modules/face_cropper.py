@@ -9,21 +9,21 @@ class FaceCropper():
 
   PATH_HAAR = './haarcascade/haarcascade_frontalface_alt.xml'
 
-  def __init__(self):
+  def __init__(self,config):
     self.face_cascade = cv2.CascadeClassifier(self.PATH_HAAR)
+    self.scale_factor = config['scale_factor']
+    self.min_neighbours = config['min_neighbours']
+    self.min_size = (tuple(config['min_size']))
 
   def crop(self,image):
     images=[]
 
-    nparr = np.fromstring(image, np.uint8)
-    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
-
-    #Parametros para imagen un poco clara
-    faces = self.face_cascade.detectMultiScale(gray,1.1,2,0,(20,20))
+    image_eq = cv2.equalizeHist(image)
+    #Params: image, scale_factor, min_neighbours, flags, min_size
+    faces = self.face_cascade.detectMultiScale(image_eq,self.scale_factor,self.min_neighbours,0,self.min_size)
     
     for (x,y,w,h) in faces:
-      cropped = img_np[y:y+h,x:x+w]
+      cropped = cv2.resize(image[y:y+h,x:x+w],self.min_size,cv2.INTER_CUBIC)
       logging.debug('face found: [%d,%d,%d,%d]',y,y+h,x,x+w)
       r, buff = cv2.imencode('.jpg', cropped)
       img = base64.b64encode(buff).decode('utf-8')
@@ -33,12 +33,11 @@ class FaceCropper():
 
   #Receives in base64 and returns in base64
   def crop_base_64(self,image):
-    return  self.crop(base64.b64decode(image))
+    return  self.crop(self.bytes_to_image(base64.b64decode(image)))
 
   def bytes_to_image(self,image):
     nparr = np.fromstring(image, np.uint8)
-    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    return img_np
+    return cv2.imdecode(nparr, 0)
 
   def show(self,image):
     cv2.imshow('image',image)
