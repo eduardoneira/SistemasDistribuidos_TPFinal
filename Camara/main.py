@@ -28,7 +28,7 @@ payload = {}
 
 if config['camera'] == "mock": 
   camera = MockCamera() 
-elif config['camera'] == "rasppi":
+elif config['camera'] == "raspberrypi":
   from modules.rasp_camera import *
   camera = RaspCamera()
 
@@ -55,5 +55,6 @@ while True:
 print('Se recibió una señal de salida, cerrando conexión')
 
 client.close()
+camera.close()
 
 print('Proceso terminado')

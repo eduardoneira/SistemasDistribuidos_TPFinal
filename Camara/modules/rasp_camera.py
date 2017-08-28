@@ -22,3 +22,6 @@ class RaspCamera(AbstractCamera):
     os.remove(filepath)      
 
     return img_b64
+
+  def close(self):
+    self.camera.close()
