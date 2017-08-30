@@ -12,6 +12,7 @@ import pdb
 sys.path.insert(0, '../')
 import Utils.const as CONST
 
+from app_exceptions import *
 from werkzeug import secure_filename
 from flask_googlemaps import Map, icons
 
@@ -38,7 +39,7 @@ class TrajectoryManager(Manager):
     super(TrajectoryManager, self).__init__(rpc_client,formData)
 
   def processRequest(self):
-    self.request['Dni'] = int(formData['Dni']);
+    self.request['dni'] = int(formData['dni']);
     response = json.loads(self.rpc_call())
 
     if response['status'] == 'OK':
@@ -53,10 +54,9 @@ class TrajectoryManager(Manager):
           file_big_pic.write(image_decoded)
         point['image'] = filename
         points.append(point)
-
-      return jsonify(operation=CONST.RESPONSETRAJECTORY,points=json.dumps(points), match=bestmatch_file_name)
+      return jsonify(operation= self.type, answer= CONST.RESPONSETRAJECTORY,points=json.dumps(points), match=bestmatch_file_name)
     else:
-      return jsonify(operation=CONST.RESPONSEDOESNTEXIST);
+      raise VoidRequest("Request trajectory of somebody that doesn 't exist in the system")#jsonify(error= "Request trajectory of somebody that doesn 't exist in the system");
 
 class UploadManager(Manager):
   def __init__(self,rpc_client,formData):
@@ -70,9 +70,9 @@ class UploadManager(Manager):
     response = json.loads(self.rpc_call())
 
     if response['status'] == 'OK':
-      return jsonify(operation=CONST.RESPONSECORRECTLYUPLOADED)
+      return jsonify(operation=self.type, answer= CONST.RESPONSECORRECTLYUPLOADED)
     else:
-      return jsonify(operation=CONST.RESPONSEALREADYEXISTS)
+      raise VoidRequest("Already exists")
 class ExistanceManager(Manager):
   def __init__(self, rpc_client,formData):
     super(ExistanceManager, self).__init__(rpc_client,formData)
@@ -80,8 +80,9 @@ class ExistanceManager(Manager):
   def processRequest(self):
     self.request['images'] = self.image_list;
     response = json.loads(self.rpc_call())
+    print(response)
     if response['status'] == 'OK':
       #TODO: Show best match
-      return jsonify(operation=CONST.RESPONSEALREADYEXISTS, name= response['name'], surname= response['surname'], dni= response['dni'], state= response['state'])
+      return jsonify(operation=self.type, answer= CONST.RESPONSEALREADYEXISTS, name= response['name'], surname= response['surname'], dni= response['dni'], state= response['state'])
     else:
-      return jsonify(operation=CONST.RESPONSEDOESNTEXIST)
+      raise VoidRequest("non-existent")

@@ -39,17 +39,19 @@ def check_existance(request,response, cursor):
   id = face_recognizer_client.predict(cropped_images)[0]
   if id is not None:
     cursor.execute("SELECT * FROM Person WHERE  Person.Id = %s", (id,))
-    rows = self.cursor.fetchall();
-    response['name'] =  rows[0][0];
-    response['surname'] =  rows[0][1];
-    response['dni'] =  rows[0][2];
-    response['state'] =  rows[0][3];
+    rows = cursor.fetchall();
+    response['id'] =  rows[0][0];
+    response['dni'] =  rows[0][1];
+    response['state'] =  rows[0][2];
+    response['name'] =  rows[0][3];
+    response['surname'] =  rows[0][4];
+    print(response)
   else:
     response['status'] = 'NOT OK'
 
 def upload(request,response, cursor):
-  cursor.execute("SELECT dni FROM Person WHERE  Person.dni = %s", (request['dni']))
-  rows = self.cursor.fetchall();
+  cursor.execute("SELECT dni FROM Person WHERE  Person.dni = %s", (request['dni'],))
+  rows = cursor.fetchall();
   if (len(rows) > 0):
       response['status'] = 'NOT OK'
   else:

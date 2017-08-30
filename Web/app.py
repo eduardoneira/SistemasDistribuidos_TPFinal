@@ -3,13 +3,14 @@
 from flask import (
     Flask,
     request,
+    Response,
     render_template,
     send_from_directory,
     send_file,
     url_for,
     jsonify
 )
-
+from app_exceptions import *
 from flask_googlemaps import GoogleMaps, Map
 import os
 import sys
@@ -106,9 +107,13 @@ def upldfile():
         return jsonify(error='ext name error')
     return requestManager.processRequest();
 
+@app.errorhandler(VoidRequest)
+def handle_void_request(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
 if __name__ == '__main__':
-  if not os.path.exists('upload'):
-    os.makedirs('upload')
   app.run(debug=True)
   print("voy a borrar")
   print(os.system("ls ./static/images/"))

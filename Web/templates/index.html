@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{url_for('css_static', filename='bootstrap.min.css')}}" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('css_static', filename='dropzone.css')}}">
     <link rel="stylesheet" href="../static/css/font-awesome/font-awesome.min.css" >
     <link rel="stylesheet" href="../static/css/stylesheet.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="../static/css/footer-distributed.css" type="text/css" charset="utf-8" />
@@ -42,16 +43,18 @@
 <!-- Tab panes -->
 <div class="tab-content">
   <div class="tab-pane fade in active" id="addPerson" role="tabpanel">
-    <div id="dropareaAddPerson" class="dropzone dz-clickable" enctype="multipart/form-data">
-      <div id="previewsContainerAddPerson">
-        <div class="addfile">
-          <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
-            <div class="fallback">
-              <input name="photo" id="chose-photo" multiple="" type="file">
-            </div>
-          </span>
-      </div>
-      </div>
+    <div>
+      <form action="/uploadajax" method="POST" enctype="multipart/form-data" role="form" id="compose-photo" class="dropzone">
+        <div id="file-uploader">
+          <div class="addfile">
+            <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
+              <div class="fallback">
+                <input name="photo" id="chose-photo" multiple="" type="file">
+              </div>
+            </span>
+          </div>
+        </div>
+      </form>
     </div>
     <br>
     <form>
@@ -110,16 +113,18 @@
   </form>
   </div>
   <div class="tab-pane fade" id="check_existance" role="tabpanel">
-    <div id="droparea" class="dropzone dz-clickable">
-      <div id="previewsContainer">
-        <div class="addfile">
-          <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
-            <div class="fallback">
-              <input name="photo" id="chose-photo" multiple="" type="file">
-            </div>
-          </span>
-      </div>
-      </div>
+    <div>
+      <form action="/uploadajax" method="POST" enctype="multipart/form-data" role="form" id="compose-photo-exist" class="dropzone">
+        <div id="file-uploader-exist">
+          <div class="addfile">
+            <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
+              <div class="fallback">
+                <input name="photo" id="chose-photo" multiple="" type="file">
+              </div>
+            </span>
+          </div>
+        </div>
+      </form>
     </div>
     <br>
     <form>
@@ -146,7 +151,8 @@
             <div class="col-sm-6" id="outputState">
             </div>
           </div>
-      </fieldset>
+        </div>
+    </fieldset>
     <div class="form-group row">
       <div class="offset-sm-2 col-sm-10">
         <button type="submit" class="btn btn-success start" id="startExistance">
@@ -159,6 +165,7 @@
         </button>
       </div>
     </div>
+  </form>
   </div>
   <div class="tab-pane fade" id="trajectory" role="tabpanel">
     <form>
@@ -184,21 +191,23 @@
       </div>
     </div>
     <br>
-      <div id="trajectory_map" class="row">
-        <div id="map" class="col-xs-12" style="height: 800px; width: 800px;border:1px solid #000;"></div>
+    <div id="trajectory_map" class="row">
+      <div id="map" class="col-xs-12" style="height: 800px; width: 800px;border:1px solid #000;"></div>
     </div>
+  </form>
   </div>
 </div>
-  </div>
-    <div class="container">
+  <div class="container">
 
       <script type="text/javascript" src="{{url_for('js_static', filename='jquery-3.2.1.min.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzone.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='bootstrap.min.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/AlreadyExistsDisplayer.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/CorrectlyUploadedDisplayer.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/UncorrectlyUploadedDisplayer.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/DoesntExistDisplayer.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/TrajectoryDisplayer.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='Displayers/UnknownTrajectoryDisplayer.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='ResponseDisplayerFactory/ResponseDisplayerFactory.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzoneAddPerson.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzoneExistance.js')}}"></script>
