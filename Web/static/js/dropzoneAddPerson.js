@@ -100,15 +100,22 @@ $("#compose-photo").dropzone({
         //TODO: ver aca
         // disableButtonsAndRadio(false);
         console.log("on success");
+        $(".loading").remove();
         /*displayerFactory = new ResponseDisplayerFactory(file, response);
         displayer = displayerFactory.createDisplayer();
         displayer.show();*/
 
       });
-      this.on("totaluploadprogress", function (progress) {
+      this.on("uploadprogress", function(file, progress, bytesSent) {
         console.log("progress ", progress);
+        if (progress >= 100){
+          $(".dz-preview").append('<div class="loading" id="loading"><img src="../static/loader.gif" style="max-width: 100%; max-height: 100%"/></div>')
+        }
       });
-      this.on("error", function(file) { console.log("error"); });
+      this.on("error", function(file) {
+        console.log("error");
+        $(".loading").remove();
+      });
       this.on("queuecomplete", function (progress) {
         console.log("queuecomplete");
       });
