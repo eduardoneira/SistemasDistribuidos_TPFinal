@@ -1,3 +1,0 @@
-Fri, 11 Aug 2017 09:55:21 DEBUG    Camera   6926    Creando conexión a servidor CMB en host: 127.0.0.1 usando topic: camera/feed
-Fri, 11 Aug 2017 09:55:21 DEBUG    Camera   6926    Inicializando mock camara que agarra imagenes de ./img/
-Fri, 11 Aug 2017 09:55:22 DEBUG    Camera   6926    Llego señal de salida. Se va a terminar la captura de fotos

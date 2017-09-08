@@ -1,2 +1,5 @@
 image_database/
 setup/OpenCV
+TestTrajectory/BigPic
+TestTrajectory/CropFace
+TestTrajectory/Person

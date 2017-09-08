@@ -111,3 +111,7 @@ form{
   font-weight: bold;
   color: white;
 }
+#divSearch{
+  top: 11px;
+  width: 350px;
+}

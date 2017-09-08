@@ -25,8 +25,8 @@ def handle(body):
   elif (request['type'] == config['requests']['trajectory']):
     get_trajectory(request,response, cursor)
   else:
-    response['status'] = 'ERROR'
-    response['message'] = 'Tipo de mensaje invalido'
+    response['status'] = 'NOT OK'
+    response['message'] = 'Invalid request'
   cursor.close()
   connection_db.close()
   return json.dumps(response)
@@ -34,20 +34,23 @@ def handle(body):
 def check_existance(request,response, cursor):
   cropped_images = [];
   images = request['images'];
-  for key, image in images.items():
-      cropped_images.append(cropper.crop_base_64(image)[0]);
-  id = face_recognizer_client.predict(cropped_images)[0]
-  if id is not None:
-    cursor.execute("SELECT * FROM Person WHERE  Person.Id = %s", (id,))
-    rows = cursor.fetchall();
-    response['id'] =  rows[0][0];
-    response['dni'] =  rows[0][1];
-    response['state'] =  rows[0][2];
-    response['name'] =  rows[0][3];
-    response['surname'] =  rows[0][4];
-    print(response)
-  else:
-    response['status'] = 'NOT OK'
+  response['status'] = 'NOT OK'
+  if (len(images)>0):
+      #pdb.set_trace()
+      for key, image in images.items():
+          cropped_images.append(cropper.crop_base_64(image)[0]);
+      id = face_recognizer_client.predict(cropped_images)[0]
+      if id is not None:
+        cursor.execute("SELECT * FROM Person WHERE  Person.Id = %s", (id,))
+        rows = cursor.fetchall();
+        if (len(rows)>0):
+            response['id'] =  rows[0][0];
+            response['dni'] =  rows[0][1];
+            response['state'] =  rows[0][2];
+            response['name'] =  rows[0][3];
+            response['surname'] =  rows[0][4];
+            response['status'] = 'OK'
+
 
 def upload(request,response, cursor):
   cursor.execute("SELECT dni FROM Person WHERE  Person.dni = %s", (request['dni'],))
@@ -70,12 +73,13 @@ def upload(request,response, cursor):
       cursor.execute("INSERT INTO Person (Id, state, name, surname, dni) VALUES (%s,%s, %s, %s,%s)",(id,state,request['name'], request['surname'], request['dni'],))
 
 def get_trajectory(request,response, cursor):
-    cursor.execute("SELECT Id FROM Person WHERE  Person.dni = %s", (request['dni']))
-    rows = self.cursor.fetchall();
+    cursor.execute("SELECT Id FROM Person WHERE  Person.dni = %s", (request['dni'],))
+    rows = cursor.fetchall();
     if (len(rows) == 0):
         response['status'] = 'NOT OK'
     else:
-        cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.id = %s)", (id))
+        id = rows[0][0];
+        cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.id = %s)", (id,))
         rows = cursor.fetchall()
         if (len(rows) == 0):
             response['status'] = 'NOT OK'

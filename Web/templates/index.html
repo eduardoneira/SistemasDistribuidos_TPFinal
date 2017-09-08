@@ -170,15 +170,12 @@
   <div class="tab-pane fade" id="trajectory" role="tabpanel">
     <form>
       <fieldset class="form-group row">
-        <div class="col-sm-5">
            <form action="" class="search-form">
-           <div class="form-group has-feedback">
-              <label for="inputDni" class="col-sm-6 col-form-label">Search trajectory by Dni</label>
+           <div class="form-group has-feedback" id="divSearch">
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
-              <input type="text" class="form-control" id="inputDniTrajectory" placeholder="Dni">
+              <input type="text" class="form-control" id="inputDniTrajectory" placeholder="search trajectory by dni..">
           </div>
         </form>
-        </div>
       </fieldset>
     <div id="preview_photos" class="row" style="display:none">
       <div id="myCarousel" class="col-sm-6 carousel slide" style="height: 270px; width: 400px;border:1px solid #000; margin-left: 150px;margin-right:50px;">
@@ -296,6 +293,42 @@
         }
       </script>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4&callback=initMap"></script>
+      <script>
+        $("#inputDniTrajectory").on("keydown",function search(e) {
+            e.preventDefault();
+            if(e.keyCode == 13) {
+                request= {'operation': REQUESTTRAJECTORY, 'dni':$("#inputDniTrajectory").val()}
+                console.log(JSON.stringify(request));
+                $.ajax({
+                  type: 'POST',
+                  // Provide correct Content-Type, so that Flask will know how to process it.
+                  contentType: 'application/json',
+                  // Encode your data as JSON.
+                  data: JSON.stringify(request),
+                  // This is the type of data you're expecting back from the server.
+                  dataType: 'json',
+                  url: '/trajectory',
+                  success: function (response) {
+                      console.log("Success trajectory");
+                      if (response.points.length > 0){
+                        console.log(response.points);
+                        AgregarPuntos(response.points);
+                        //$("#preview_photos").append('<div id="response" class="col-xs-3"  style="width:250px;height:270px;border:1px solid #00F;"><span style="color:blue">Best match will appear here.</span></div>')
+
+                        //$("#trajectory_map").show();
+                        $("#preview_photos").show();
+                      }
+                  },
+                  error: function(file){
+                    console.log("Error trajectory");
+                    console.log(file);
+                    //response= JSON.parse(file["responseText"]);
+                    //console.log(response["error"]);
+                  }
+              });
+            }
+        });
+      </script>
     </div>
   </body>
 </html

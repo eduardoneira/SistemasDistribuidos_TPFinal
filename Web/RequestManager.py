@@ -39,7 +39,7 @@ class TrajectoryManager(Manager):
     super(TrajectoryManager, self).__init__(rpc_client,formData)
 
   def processRequest(self):
-    self.request['dni'] = int(formData['dni']);
+    self.request['dni'] = int(self.formData['dni']);
     response = json.loads(self.rpc_call())
 
     if response['status'] == 'OK':
@@ -54,7 +54,7 @@ class TrajectoryManager(Manager):
           file_big_pic.write(image_decoded)
         point['image'] = filename
         points.append(point)
-      return jsonify(operation= self.type, answer= CONST.RESPONSETRAJECTORY,points=json.dumps(points), match=bestmatch_file_name)
+      return jsonify(operation= self.type, answer= CONST.RESPONSETRAJECTORY,points=json.dumps(points))
     else:
       raise VoidRequest("Request trajectory of somebody that doesn 't exist in the system")#jsonify(error= "Request trajectory of somebody that doesn 't exist in the system");
 

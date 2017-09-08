@@ -41,7 +41,9 @@ $("#compose-photo-exist").dropzone({
             this.removeFile(this.files[0]);
           }
         disableButtons(false);
-        $('#startExistance').click(function(){
+        $('#startExistance').click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
             dropzoneExistance.processQueue(); //processes the queue
             disableButtons(true);
             document.getElementById("cancelExistance").disabled = false;
@@ -74,8 +76,9 @@ $("#compose-photo-exist").dropzone({
           $(".dz-preview").append('<div class="loading" id="loading"><img src="../static/loader.gif" style="max-width: 100%; max-height: 100%"/></div>')
         }
       });
-      this.on("error", function(file) {
+      this.on("error", function(file, message, xhr) {
         console.log("error");
+        console.log(file);
         clearOutput();
         $(".loading").remove();
       });

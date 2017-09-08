@@ -64,11 +64,13 @@ $("#compose-photo").dropzone({
       this.on("addedfile", function(file) {
         console.log("addedfile");
         disableButtonsAndRadio(false);
-        $('#startAddPerson').click(function(){
+        $('#startAddPerson').click(function(e){
             console.log("start add person");
-            dropzoneAddPerson.processQueue(); //processes the queue
             disableButtonsAndRadio(true);
             document.getElementById("cancelAddPerson").disabled = false;
+            e.preventDefault();
+            e.stopPropagation();
+            dropzoneAddPerson.processQueue(); //processes the queue
         });
         $('#cancelAddPerson').click(function(){
           console.log("cancel add person");
@@ -112,8 +114,9 @@ $("#compose-photo").dropzone({
           $(".dz-preview").append('<div class="loading" id="loading"><img src="../static/loader.gif" style="max-width: 100%; max-height: 100%"/></div>')
         }
       });
-      this.on("error", function(file) {
+      this.on("error", function(file, message, xhr) {
         console.log("error");
+        console.log(xhr.status+": "+xhr.statusText);
         $(".loading").remove();
       });
       this.on("queuecomplete", function (progress) {

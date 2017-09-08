@@ -1,7 +1,0 @@
-{
-  "host": "127.0.0.1",
-  "logging_level" : 10,
-  "FPS": 1,
-  "location": [-34.620797, -58.474174],
-  "topic": "camera/feed"
-}
