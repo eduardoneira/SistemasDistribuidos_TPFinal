@@ -171,27 +171,16 @@
     <form>
       <fieldset class="form-group row">
            <form action="" class="search-form">
-           <div class="form-group has-feedback" id="divSearch">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-              <input type="text" class="form-control" id="inputDniTrajectory" placeholder="search trajectory by dni..">
+             <div style="text-align:center;">
+               <div class="form-group has-feedback" id="divSearch" style="display: inline-block;margin:50px auto;">
+                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                  <input type="text" class="form-control" id="inputDniTrajectory" placeholder="Input dni ...">
+              </div>
+              <div id="map"></div>
           </div>
         </form>
       </fieldset>
-    <div id="preview_photos" class="row" style="display:none">
-      <div id="myCarousel" class="col-sm-6 carousel slide" style="height: 270px; width: 400px;border:1px solid #000; margin-left: 150px;margin-right:50px;">
-        <!-- Indicators -->
-        <ol class="carousel-indicators"></ol>
-        <div class="carousel-inner"></div>
-        <!-- Carousel controls -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-      </div>
-    </div>
-    <br>
-    <div id="trajectory_map" class="row">
-      <div id="map" class="col-xs-12" style="height: 800px; width: 800px;border:1px solid #000;"></div>
-    </div>
-  </form>
+    </form>
   </div>
 </div>
   <div class="container">
@@ -212,6 +201,9 @@
         var directionsDisplay;
         var directionsService;
         var mymap;
+        var infowindow;
+        var marker;
+        var geocoder;
         function initMap() {
           console.log("initMap");
           directionsService = new google.maps.DirectionsService();
@@ -220,6 +212,15 @@
           center: new google.maps.LatLng(-34.618696, -58.435593),
           zoom: 13
           });
+          geocoder = new google.maps.Geocoder();
+          infowindow = new google.maps.InfoWindow();
+          google.maps.event.trigger(mymap, 'resize');
+          $('a[href="#trajectory"]').on('shown', function(e) {
+            var currCenter = map.getCenter();
+             google.maps.event.trigger(map, 'resize');
+             map.setCenter(currCenter);
+          });
+          $("#map").css("width", '95%').css("height", 800);
         }
         $('#tab_map_link').on('shown.bs.tab', function(e) {
         		if( mymap == undefined) {
@@ -231,11 +232,6 @@
             mymap.setCenter(center);
             mymap.setZoom(zoom);
         });
-        function updateMarker(marker, points, idx) {
-            console.log("update marker lat: "+points[idx].lat+" lng: "+points[idx].lng);
-            marker.setPosition(new google.maps.LatLng(points[idx].lat, points[idx].lng));
-            mymap.panTo(marker.getPosition());
-        }
         function calculateRoute(routeExtremes, waypts) {
           var bounds = new google.maps.LatLngBounds();
           for (var i=0; i< routeExtremes.length; i++){
@@ -258,54 +254,84 @@
               }
           });
         }
-        function loadImageToCarouselAndDrawRoute(points){
-          console.log("loadImageToCarousel");
-          routeExtremes=[];
-          waypts=[];
-          for (var i = 0; i < points.length; i++){
-            var filepath="/static/images/"+points[i].image;
-            $('<div class="item"><img src="'+filepath+'"><div class="carousel-caption"></div>   </div>').appendTo('.carousel-inner');
-            $('<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>').appendTo('.carousel-indicators')
-            if ((i > 0) && (i< points.length - 1)){
-              waypts.push({location: new google.maps.LatLng(points[i].lat, points[i].lng), stopover: true})
-            }else{
-              routeExtremes.push(new google.maps.LatLng(points[i].lat, points[i].lng))
-            }
+        function sleep(milliseconds) {
+         var start = new Date().getTime();
+         for (var i = 0; i < 1e7; i++) {
+          if ((new Date().getTime() - start) > milliseconds) {
+           break;
           }
-          calculateRoute(routeExtremes, waypts);
-          $('.item').first().addClass('active');
-          $('.carousel-indicators > li').first().addClass('active');
-          $('.carousel').carousel('pause')
+         }
+        }
+
+        function createMarkerAddInfoWindowAndSetListener(points, i){
+
+          var currentPosition = {lat: points[i].lat, lng: points[i].lng};
+          geocoder.geocode({'location': currentPosition}, function(results, status) {
+            if (status === 'OK') {
+              if (results[1]) {
+                var filepath="/static/images/"+points[i].image;
+                var content = '<figure style="height: auto; width: 250px;"><img border="0" align="left"; src='+
+                filepath+' style="height: auto; width: 250px; text-align:center;"> <figcaption><b>Location</b>: '+
+                results[1].formatted_address+')</figcaption><figcaption><b>Date</b>: '+points[i].timestamp+'</figcaption></figure>';
+                marker = new google.maps.Marker({
+                  position: currentPosition,
+                  map: mymap
+                });
+                google.maps.event.addListener(marker, 'click', (function(marker, content) {
+                  return function() {
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                  }
+                })(marker, content));
+              } else {
+                window.alert('No results found');
+              }
+            } else {
+              if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                sleep(2000);
+              } else {
+                window.alert('Geocoder failed due to: ' + status);
+              }
+            }
+          });
+        }
+        function isExtremePoint(points, i){
+          return ((i == 0) || (i== points.length - 1));
         }
         function AgregarPuntos(locations){
           var points = JSON.parse(locations);
-          var marker = new google.maps.Marker({
-          animation: google.maps.Animation.BOUNCE,
-          map: mymap});
-          loadImageToCarouselAndDrawRoute(points);
-          updateMarker(marker, points, 0);
-          $('#myCarousel').bind('slide.bs.carousel', function (e) {
-            console.log("Bind carousel");
-            console.log("points: "+ points);
-            var slideIdx = $(e.relatedTarget).index();
-            updateMarker(marker, points, slideIdx);
-          });
+          routeExtremes=[];
+          waypts=[];
+          for (var i=0;i < points.length; i++){
+            createMarkerAddInfoWindowAndSetListener(points, i);
+            if (isExtremePoint(points, i)){
+              routeExtremes.push(new google.maps.LatLng(points[i].lat, points[i].lng))
+            }else{
+              waypts.push({location: new google.maps.LatLng(points[i].lat, points[i].lng), stopover: true})
+            }
+          }
+          calculateRoute(routeExtremes, waypts);
         }
       </script>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4&callback=initMap"></script>
       <script>
+        function resetErrors() {
+          $('form input, form select').removeClass('inputTxtError');
+          $('label.error').remove();
+        }
         $("#inputDniTrajectory").on("keydown",function search(e) {
-            e.preventDefault();
+            if ($('label[name="label_error"]').length > 0){
+                resetErrors();
+                initMap();
+            }
             if(e.keyCode == 13) {
+                e.preventDefault();
                 request= {'operation': REQUESTTRAJECTORY, 'dni':$("#inputDniTrajectory").val()}
                 console.log(JSON.stringify(request));
                 $.ajax({
                   type: 'POST',
-                  // Provide correct Content-Type, so that Flask will know how to process it.
                   contentType: 'application/json',
-                  // Encode your data as JSON.
                   data: JSON.stringify(request),
-                  // This is the type of data you're expecting back from the server.
                   dataType: 'json',
                   url: '/trajectory',
                   success: function (response) {
@@ -313,18 +339,18 @@
                       if (response.points.length > 0){
                         console.log(response.points);
                         AgregarPuntos(response.points);
-                        //$("#preview_photos").append('<div id="response" class="col-xs-3"  style="width:250px;height:270px;border:1px solid #00F;"><span style="color:blue">Best match will appear here.</span></div>')
-
-                        //$("#trajectory_map").show();
-                        $("#preview_photos").show();
+                      }else{
+                        console.log("no tiene trayectoria");
                       }
                   },
                   error: function(file){
                     console.log("Error trajectory");
                     console.log(file);
-                    //response= JSON.parse(file["responseText"]);
-                    //console.log(response["error"]);
-                  }
+                    errorTxt= JSON.parse(file.responseText);
+                    var msg = '<label class="error" for="inputDniTrajectory" name="label_error">'+errorTxt['error']+'</label>';
+                    $('#inputDniTrajectory').addClass('inputTxtError').after(msg);
+                    $('#inputDniTrajectory').focus();
+                    }
               });
             }
         });

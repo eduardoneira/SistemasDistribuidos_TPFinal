@@ -2,17 +2,7 @@ html,body{
   margin:0px;
   padding: 0px;
   background-color: #404040;
-  /*background: url("../static/trafficpeople.jpg");
-  background-size:100%;
-  background-repeat: no-repeat, no-repeat;*/
-  /*font-family: Arial, Helvetica, sans-serif;*/
 }
-/*hr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}*/
 
 h1 {
   font-family: 'Museo_Slab_500_2';
@@ -21,22 +11,6 @@ h1 {
 #panel-heading-actions{
   font-family: 'Museo_Slab_500_2';
   font-weight: bold;
-}
-
-
-.best-match-preview{
-  height: 250px;
-  width: 270px;
-  border: 1px solid #000;
-  background: url("../static/no-preview-available.png");
-  background-size: 270px 250px;
-  background-repeat: no-repeat;
-}
-
-.google-map-preview{
-  height: 800px;
-  width: 1200px;
-  border: 1px solid #000;
 }
 
 header{
@@ -63,6 +37,9 @@ header{
 #file-uploader .add-file input[type="file"]{ height: 20px; position: absolute; top: 0; right: 0; bottom:5px; margin: 0 auto; opacity: 0; cursor: pointer; width: 100%;}
 #map {
   height: 100%;
+  border:1px solid #000;
+  display: inline-block;
+  margin:0px auto;
 }
 .object-fit-cover{
   max-height: 300px;
@@ -107,6 +84,8 @@ legend {
 form{
   padding-left: 25px;
 }
+form label.error{font:10px Tahoma,sans-serif;color:#ED7476;margin-left:5px; display:inline;}
+form input.error,form input.error:hover,form input.error:focus,form select.error,form textarea.error{border:1px solid #ED7476;background:#FFEDED}
 #outputName, #outputSurname, #outputDni, #outputState{
   font-weight: bold;
   color: white;
