@@ -41,7 +41,6 @@ class TrajectoryManager(Manager):
   def processRequest(self):
     self.request['dni'] = int(self.formData['dni']);
     response = json.loads(self.rpc_call())
-
     if response['status'] == 'OK':
       points = []
       image_path = "/static/images/"
@@ -56,7 +55,7 @@ class TrajectoryManager(Manager):
         points.append(point)
       return jsonify(operation= self.type, answer= CONST.RESPONSETRAJECTORY,points=json.dumps(points))
     else:
-      raise VoidRequest("Request trajectory of somebody that doesn 't exist in the system")#jsonify(error= "Request trajectory of somebody that doesn 't exist in the system");
+      raise VoidRequest(response['status'])
 
 class UploadManager(Manager):
   def __init__(self,rpc_client,formData):

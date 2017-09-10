@@ -83,13 +83,13 @@ def get_trajectory(request,response, cursor):
     cursor.execute("SELECT Id FROM Person WHERE  Person.dni = %s", (request['dni'],))
     rows = cursor.fetchall();
     if (len(rows) == 0):
-        response['status'] = 'NOT OK'
+        response['status'] = 'non-existent dni'
     else:
         id = rows[0][0];
         cursor.execute("SELECT * FROM BigPic WHERE  BigPic.HashBigPic IN (SELECT CropFace.HashBigPic FROM CropFace WHERE CropFace.id = %s)", (id,))
         rows = cursor.fetchall()
         if (len(rows) == 0):
-            response['status'] = 'NOT OK'
+            response['status'] = 'Person with no trajectory yet.'
         else:
             points=[]
             for row in rows:

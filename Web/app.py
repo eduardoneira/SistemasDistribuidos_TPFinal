@@ -95,16 +95,11 @@ def index():
 @app.route('/trajectory', methods=['POST'])
 def trajectory_request():
     if request.method == 'POST':
-      print("Llego un post de trajectory");
-      print(request.data)
       requestManager= RequestManagerFactory.createRequestManager(json.loads(request.data.decode('utf-8')), rpc_client);
       return requestManager.processRequest();
 @app.route('/uploadajax', methods=['POST'])
 def upldfile():
   if request.method == 'POST':
-    print("Llego un post");
-    print(request)
-    #pdb.set_trace();
     requestManager= RequestManagerFactory.createRequestManager(request.form, rpc_client);
     files = request.files.getlist('file[]')
     for f in files:
@@ -117,7 +112,6 @@ def upldfile():
 
 @app.errorhandler(VoidRequest)
 def handle_void_request(error):
-    print("handle voidRequest")
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response
