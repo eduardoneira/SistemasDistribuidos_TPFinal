@@ -8,6 +8,8 @@ from modules.graceful_killer import *
 from modules.file_manager import *
 from modules.face_cropper import *
 import pdb
+import datetime
+from datetime import date
 def handle(body):
   request = json.loads(body.decode('utf-8'))
   response = {}
@@ -71,7 +73,12 @@ def upload(request,response, cursor):
       for key, image in images.items():
          file_manager.save_person_base64(image,str(id))
       cursor.execute("INSERT INTO Person (Id, state, name, surname, dni) VALUES (%s,%s, %s, %s,%s)",(id,state,request['name'], request['surname'], request['dni'],))
-
+def format_time(timestamp):
+    s = timestamp.strftime('%Y-%m-%d %H:%M:%S.%f')
+    tail = s[-7:]
+    f = round(float(tail), 3)
+    temp = "%.3f" % f
+    return "%s%s" % (s[:-7], temp[1:])
 def get_trajectory(request,response, cursor):
     cursor.execute("SELECT Id FROM Person WHERE  Person.dni = %s", (request['dni'],))
     rows = cursor.fetchall();
@@ -87,8 +94,10 @@ def get_trajectory(request,response, cursor):
             points=[]
             for row in rows:
               big_pic_b64 =  file_manager.get_bigpic_base64(row[0])
-              point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": str(row[3])}
+              time_formatted= format_time(row[3]);
+              point = {"lat": row[1], "lng": row[2], 'image': big_pic_b64, "timestamp": time_formatted}
               points.append(point)
+            points.sort(key=lambda x:x['timestamp'])
             response['coordinates'] = points
             response['dni'] =  request['dni']
 

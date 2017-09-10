@@ -197,11 +197,12 @@
       <script type="text/javascript" src="{{url_for('js_static', filename='ResponseDisplayerFactory/ResponseDisplayerFactory.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzoneAddPerson.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzoneExistance.js')}}"></script>
+      <script type="text/javascript" src="{{url_for('js_static', filename='infobubble.js')}}"></script>
       <script type="text/javascript">
         var directionsDisplay;
         var directionsService;
         var mymap;
-        var infowindow;
+        var infobubble;
         var marker;
         var geocoder;
         function initMap() {
@@ -209,18 +210,31 @@
           directionsService = new google.maps.DirectionsService();
           directionsDisplay = new google.maps.DirectionsRenderer();
           mymap = new google.maps.Map(document.getElementById('map'), {
-          center: new google.maps.LatLng(-34.618696, -58.435593),
-          zoom: 13
+            center: new google.maps.LatLng(-34.618696, -58.435593),
+            zoom: 13
           });
           geocoder = new google.maps.Geocoder();
-          infowindow = new google.maps.InfoWindow();
           google.maps.event.trigger(mymap, 'resize');
           $('a[href="#trajectory"]').on('shown', function(e) {
             var currCenter = map.getCenter();
              google.maps.event.trigger(map, 'resize');
              map.setCenter(currCenter);
           });
+          infobubble = new InfoBubble({
+            shadowStyle: 1,
+            padding: 0,
+            backgroundColor: '#606060',
+            hideCloseButton: true,
+            arrowSize: 10,
+            arrowPosition: 30,
+            backgroundClassName: 'transparent',
+            arrowStyle: 2,
+            maxWidth: 300
+          });
           $("#map").css("width", '95%').css("height", 800);
+          google.maps.event.addListener(mymap, 'click', function() {
+            infobubble.close();
+          });
         }
         $('#tab_map_link').on('shown.bs.tab', function(e) {
         		if( mymap == undefined) {
@@ -262,37 +276,39 @@
           }
          }
         }
-
+        function insertMarker(location, points, i, currentPosition){
+          date = new Date(points[i].timestamp);
+          console.log(date);
+          var filepath="/static/images/"+points[i].image;
+          var month = date.getMonth() + 1;
+          var content = '<div id="iw-container"><div class="iw-title">'+location+'</div><div class="iw-content"><img src='+
+          filepath+' style="height: auto; width: 250px;"><p><b>Date</b>: '+ date.getDate()+'/'+month+ '/'+date.getFullYear()+
+          '<br><b>Time</b>:'+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()+':'+date.getMilliseconds()+'</p></div></div>';
+          marker = new google.maps.Marker({
+            position: currentPosition,
+            map: mymap,
+            title: location
+          });
+          google.maps.event.addListener(marker, 'click', (function(marker, content) {
+            return function() {
+              infobubble.setContent(content);
+              infobubble.open(mymap, marker);
+            }
+          })(marker, content));
+        }
         function createMarkerAddInfoWindowAndSetListener(points, i){
-
           var currentPosition = {lat: points[i].lat, lng: points[i].lng};
           geocoder.geocode({'location': currentPosition}, function(results, status) {
-            if (status === 'OK') {
-              if (results[1]) {
-                var filepath="/static/images/"+points[i].image;
-                var content = '<figure style="height: auto; width: 250px;"><img border="0" align="left"; src='+
-                filepath+' style="height: auto; width: 250px; text-align:center;"> <figcaption><b>Location</b>: '+
-                results[1].formatted_address+')</figcaption><figcaption><b>Date</b>: '+points[i].timestamp+'</figcaption></figure>';
-                marker = new google.maps.Marker({
-                  position: currentPosition,
-                  map: mymap
-                });
-                google.maps.event.addListener(marker, 'click', (function(marker, content) {
-                  return function() {
-                    infowindow.setContent(content);
-                    infowindow.open(map, marker);
-                  }
-                })(marker, content));
-              } else {
-                window.alert('No results found');
-              }
+            var location;
+            if ((status === 'OK') && (results[1])){
+              location = results[1].formatted_address;
             } else {
+              location = 'LatLng: {'+points[i].lat+', '+points[i].lng+'}';
               if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
                 sleep(2000);
-              } else {
-                window.alert('Geocoder failed due to: ' + status);
               }
             }
+            insertMarker(location, points, i, currentPosition);
           });
         }
         function isExtremePoint(points, i){

@@ -94,3 +94,33 @@ form input.error,form input.error:hover,form input.error:focus,form select.error
   top: 11px;
   width: 350px;
 }
+figcaption {
+    text-align: left;
+    font-family: 'Museo_Slab_500_2';
+}
+
+#iw-container {
+	margin-bottom: 0px;
+  text-align: left;
+}
+#iw-container .iw-title {
+  background-color: black !important;
+  color: #ff8000 !important;
+  font-family: 'Museo_Slab_500_2';
+  font-weight: bold !important;
+	padding: 10px;
+	margin: 0;
+	border-radius: 2px 2px 0 0;
+}
+#iw-container .iw-content {
+  color: #00cc00;
+  font-family: 'Museo_Slab_500_2';
+	line-height: 18px;
+	margin-right: 10px;
+	padding: 15px 5px 0px 15px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.iw-content img {
+	float: top;
+}
