@@ -1,5 +1,3 @@
-const REQUESTEXISTANCE = 4;
-const RESPONSEALREADYEXISTS=0;
 function disableButtons(setDisable){
   document.getElementById("startExistance").disabled = setDisable;
   document.getElementById("cancelExistance").disabled = setDisable;
@@ -55,11 +53,11 @@ $("#compose-photo-exist").dropzone({
         disableButtons(true);
       });
       this.on('sending', function(file, xhr, formData){
-        formData.append('operation',REQUESTEXISTANCE);
+          formData.append('operation',config['REQUESTEXISTANCE']);
       });
       this.on("success", function(file, response) {
         $(".loading").remove();
-        if (response.answer == RESPONSEALREADYEXISTS){
+        if (response.answer == config['RESPONSEALREADYEXISTS']){
           document.getElementById("outputName").textContent = response['name'];
           document.getElementById("outputSurname").textContent = response['surname'];
           document.getElementById("outputDni").textContent = response['dni'];

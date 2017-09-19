@@ -16,7 +16,6 @@ import os
 import sys
 import pdb
 sys.path.insert(0, '../')
-import Utils.const as CONST
 import json
 from Factory import *
 from rpc_client import *
@@ -31,7 +30,9 @@ app.config['GOOGLEMAPS_KEY'] = "AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4"
 # Initialize the extension
 GoogleMaps(app)
 #Rpc client
-rpc_client = RpcClient(CONST.HOST_CMC,CONST.QUEUE_RPC)
+with open('./static/config.json') as config_file:
+    config = json.load(config_file)
+rpc_client = RpcClient(config['HOST_CMC'], config['QUEUE_RPC'])
 
 from logging import Formatter, FileHandler
 handler = FileHandler(os.path.join(basedir, 'log.txt'), encoding='utf8')

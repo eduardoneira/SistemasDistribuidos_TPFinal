@@ -10,7 +10,6 @@ import json
 import hashlib
 import pdb
 sys.path.insert(0, '../')
-import Utils.const as CONST
 
 from app_exceptions import *
 from werkzeug import secure_filename
@@ -32,7 +31,6 @@ class Manager(object):
   def appendImage(self, file):
      image_key = "image_"+str(self.image_id);
      self.image_list[image_key] = base64.b64encode(file.read()).decode('utf-8');
-     #self.imageList.append(base64.b64encode(file.read()).decode('utf-8'));
      self.image_id += 1;
 class TrajectoryManager(Manager):
   def __init__(self, rpc_client,formData):
@@ -53,7 +51,9 @@ class TrajectoryManager(Manager):
           file_big_pic.write(image_decoded)
         point['image'] = filename
         points.append(point)
-      return jsonify(operation= self.type, answer= CONST.RESPONSETRAJECTORY,points=json.dumps(points))
+      with open('./static/config.json') as config_file:
+          config = json.load(config_file)
+          return jsonify(operation= self.type, answer= config['RESPONSETRAJECTORY'],points=json.dumps(points))
     else:
       raise VoidRequest(response['status'])
 
@@ -69,7 +69,9 @@ class UploadManager(Manager):
     response = json.loads(self.rpc_call())
 
     if response['status'] == 'OK':
-      return jsonify(operation=self.type, answer= CONST.RESPONSECORRECTLYUPLOADED)
+        with open('./static/config.json') as config_file:
+          config = json.load(config_file)
+          return jsonify(operation=self.type, answer= config['RESPONSECORRECTLYUPLOADED'])
     else:
       raise VoidRequest("Already exists")
 class ExistanceManager(Manager):
@@ -79,9 +81,10 @@ class ExistanceManager(Manager):
   def processRequest(self):
     self.request['images'] = self.image_list;
     response = json.loads(self.rpc_call())
-    print(response)
-    if response['status'] == 'OK':
-      #TODO: Show best match
-      return jsonify(operation=self.type, answer= CONST.RESPONSEALREADYEXISTS, name= response['name'], surname= response['surname'], dni= response['dni'], state= response['state'])
-    else:
-      raise VoidRequest("non-existent")
+    with open('./static/config.json') as config_file:
+       config = json.load(config_file)
+       if response['status'] == 'OK':
+          #TODO: Show best match
+          return jsonify(operation=self.type, answer= config['RESPONSEALREADYEXISTS'], name= response['name'], surname= response['surname'], dni= response['dni'], state= response['state'])
+       else:
+          raise VoidRequest("non-existent")

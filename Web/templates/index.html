@@ -184,13 +184,21 @@
   </div>
 </div>
   <div class="container">
-
       <script type="text/javascript" src="{{url_for('js_static', filename='jquery-3.2.1.min.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzone.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='bootstrap.min.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzoneAddPerson.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='dropzoneExistance.js')}}"></script>
       <script type="text/javascript" src="{{url_for('js_static', filename='infobubble.js')}}"></script>
+      <script type="text/javascript">
+        /*Cuando carga la página html, una de las primeras cosas que hace es
+        una consulta al web server para pedirle el json con configuraciones.
+        El valor del json queda en la variable global config*/
+        var config;
+        $.getJSON("/static/config.json", function(json) {
+          config = json;
+        });
+      </script>
       <script type="text/javascript">
         var directionsDisplay;
         var directionsService;
@@ -324,7 +332,6 @@
       </script>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4&callback=initMap"></script>
       <script>
-        REQUESTTRAJECTORY = 6
         function resetErrors() {
           $('form input, form select').removeClass('inputTxtError');
           $('label.error').remove();
@@ -336,7 +343,8 @@
             }
             if(e.keyCode == 13) {
                 e.preventDefault();
-                request= {'operation': REQUESTTRAJECTORY, 'dni':$("#inputDniTrajectory").val()}
+                request= {'operation': 0, 'dni':$("#inputDniTrajectory").val()}
+                request['operation'] = config['REQUESTTRAJECTORY'];
                 console.log(JSON.stringify(request));
                 $.ajax({
                   type: 'POST',

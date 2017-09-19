@@ -1,12 +1,8 @@
-const REQUESTUPLOAD = 5;
-const STATELEGALPROBLEMS= 7;
-const STATEMISSING=8;
-
 function getState(){
   if ((document.getElementById("gridRadios1").checked == true)){
-    return STATELEGALPROBLEMS;
+    return config['STATELEGALPROBLEMS'];
   }
-  return STATEMISSING;
+  return config['STATEMISSING'];
 }
 function setDefaultRadioButtonSelection(){
   document.getElementById("gridRadios1").disabled = false;
@@ -68,8 +64,8 @@ $("#compose-photo").dropzone({
         setDefaultRadioButtonSelection();
       });
       this.on('sendingmultiple', function(file, xhr, formData){
-        var state = getState();
-        formData.append('operation',REQUESTUPLOAD);
+        var state  = getState();
+        formData.append('operation',config['REQUESTUPLOAD']);
         formData.append('state', state);
         formData.append('name', $('#inputNameAddPerson').val());
         formData.append('surname', $('#inputSurnameAddPerson').val());
