@@ -37,8 +37,5 @@ class FaceCropper():
 
   #Receives in base64 and returns in base64
   def crop_base64(self,image):
-    with open("edu.jpg","wb") as file:
-      file.write(base64.b64decode(image))
-    
     cv_image = bytes_to_image(base64.b64decode(image))
-    return map(lambda img: base64.b64encode(img).decode('utf-8'), self._crop(cv_image))
+    return list(map(lambda img: base64.b64encode(img).decode('utf-8'), self._crop(cv_image)))

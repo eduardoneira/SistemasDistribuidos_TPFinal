@@ -5,7 +5,8 @@
     "routing_key_camera": "camera.barrio1",
     "queue": "camToCMB",
     "cmc_host": "localhost",
-    "topic_cmc": "img/cropped"
+    "topic_cmc": "img/cropped",
+    "message_type":"CMB_feed"
   },
   "logger": {
     "level" : 10

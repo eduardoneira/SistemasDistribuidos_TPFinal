@@ -12,10 +12,8 @@ def handle_message(body):
   logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
   print("Se recibio mensaje de frame. Comienza el cropeo")
 
-  payload['type'] = 'CMB_feed'
-  payload['faces'] = []
-  for img in cropper.crop_base64(payload['frame']):
-    payload['faces'].append(img)
+  payload['type'] = config['network']['message_type']
+  payload['faces'] = cropper.crop_base64(payload['frame'])
 
   if len(payload['faces']) > 0:
     client.send(json.dumps(payload))
