@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 import base64
 import logging
+from modules.opencv_helper import *
 
 class FaceCropper():
 
@@ -15,34 +16,29 @@ class FaceCropper():
     self.min_neighbours = config['min_neighbours']
     self.min_size = (tuple(config['min_size']))
 
-  def crop(self,image):
+  def _crop(self,image):
     images=[]
 
     image_eq = cv2.equalizeHist(image)
-    #Params: image, scale_factor, min_neighbours, flags, min_size
+    # TODO: Adjust params to find head
+    # Params: image, scale_factor, min_neighbours, flags, min_size
     faces = self.face_cascade.detectMultiScale(image_eq,self.scale_factor,self.min_neighbours,0,self.min_size)
     
     for (x,y,w,h) in faces:
+      # TODO: Crop smaller to square face 
       cropped = cv2.resize(image[y:y+h,x:x+w],self.min_size,cv2.INTER_CUBIC)
-      logging.debug('face found: [%d,%d,%d,%d]',y,y+h,x,x+w)
-      r, buff = cv2.imencode('.jpg', cropped)
-      img = base64.b64encode(buff).decode('utf-8')
-      images.append(img)
+      logging.debug('Face found: [%d,%d,%d,%d]',y,y+h,x,x+w)
+      images.append(image_to_bytes(cropped))
 
     return images
 
+  def crop(self,image):
+    return self._crop(bytes_to_image(image))
+
   #Receives in base64 and returns in base64
-  def crop_base_64(self,image):
-    return  self.crop(self.bytes_to_image(base64.b64decode(image)))
-
-  def bytes_to_image(self,image):
-    nparr = np.fromstring(image, np.uint8)
-    return cv2.imdecode(nparr, 0)
-
-  def show(self,image):
-    cv2.imshow('image',image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-  def save_image(self,filename,image):
-    cv2.imwrite(filename,image)
+  def crop_base64(self,image):
+    with open("edu.jpg","wb") as file:
+      file.write(base64.b64decode(image))
+    
+    cv_image = bytes_to_image(base64.b64decode(image))
+    return map(lambda img: base64.b64encode(img).decode('utf-8'), self._crop(cv_image))

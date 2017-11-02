@@ -14,7 +14,7 @@ def handle_message(body):
 
   payload['type'] = 'CMB_feed'
   payload['faces'] = []
-  for img in cropper.crop_base_64(payload['frame']):
+  for img in cropper.crop_base64(payload['frame']):
     payload['faces'].append(img)
 
   if len(payload['faces']) > 0:
