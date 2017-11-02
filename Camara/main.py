@@ -3,11 +3,9 @@
 import json
 from modules.graceful_killer import *
 from modules.logger import *
-from modules.mock_camera import *
 from modules.mqtt_wrapper import *
 from datetime import datetime
 from time import sleep
-import pdb
 import base64
 
 print('Configurando camara')
@@ -15,34 +13,35 @@ print('Configurando camara')
 with open('config.json') as config_file:    
   config = json.load(config_file)
 
-set_logger(config['logging_level'])
+set_logger(config['logger']['level'])
 
-logging.debug('Creando conexión a servidor CMB en host: %s usando topic: %s',config['host'],config['topic'])
+logging.debug('Creando conexión a servidor CMB en host: %s usando topic: %s',config['network']['cmb_host'], config['network']['topic'])
 
-client = MqttWrapper(config['host'])
+client = MqttWrapper(config['network']['cmb_host'])
 
 print('Configuración terminada. Comenzando envió de mensajes')
 
-sleep_time = 1 / config['FPS']
+sleep_time = 1 / config['camera']['FPS']
 payload = {}
 
-if config['camera'] == "mock": 
+if config['camera']['type'] == "mock": 
+  from modules.mock_camera import *
   camera = MockCamera() 
-elif config['camera'] == "raspberrypi":
+elif config['camera']['type'] == "raspberrypi":
   from modules.rasp_camera import *
   camera = RaspCamera()
 
 killer = GracefulKiller()
 
 while True:  
-  payload['location'] = config['location']
+  payload['location'] = config['camera']['location']
   payload['timestamp'] = datetime.now().strftime('%d-%m-%Y||%H:%M:%S.%f')
   payload['frame'] = camera.get_frame()
 
   if payload['frame'] != camera.INVALID():
     payload['frame'] = payload['frame'].decode('utf-8')
     
-    client.send(config['topic'],json.dumps(payload))
+    client.send(config['network']['topic'],json.dumps(payload))
 
     print('Mensaje de frame enviado')
     logging.debug('Se envió: \'{'+str(payload['location'])+','+payload['timestamp']+'}\'')
@@ -56,5 +55,3 @@ print('Se recibió una señal de salida, cerrando conexión')
 
 client.close()
 camera.close()
-
-print('Proceso terminado')

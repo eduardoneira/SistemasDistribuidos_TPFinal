@@ -1,12 +1,16 @@
 { 
-  "host_camera" : "localhost",
-  "topic_camera": "amq.topic",
-  "routing_key_camera": "camera.barrio1",
-  "host_cmc": "localhost",
-  "queue": "camToCMB",
-  "topic_cmc": "img/cropped",
-  "logging_level" : 10,
-  "face_cropper" : {
+  "network": {
+    "camera_host" : "localhost",
+    "topic_camera": "amq.topic",
+    "routing_key_camera": "camera.barrio1",
+    "queue": "camToCMB",
+    "cmc_host": "localhost",
+    "topic_cmc": "img/cropped"
+  },
+  "logger": {
+    "level" : 10
+  },  
+  "face_cropper": {
     "scale_factor" : 1.1,
     "min_neighbours" : 2,
     "min_size" : [100,100]

@@ -7,7 +7,7 @@ from modules.pika_wrapper_subscriber import *
 from modules.pika_wrapper_publisher import *
 from modules.face_cropper import *
 
-def handle_message(ch, method, properties, body):
+def handle_message(body):
   payload = json.loads(body.decode('utf-8'))
   logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
   print("Se recibio mensaje de frame. Comienza el cropeo")
@@ -16,7 +16,7 @@ def handle_message(ch, method, properties, body):
   payload['faces'] = []
   for img in cropper.crop_base_64(payload['frame']):
     payload['faces'].append(img)
-  
+
   if len(payload['faces']) > 0:
     client.send(json.dumps(payload))
     logging.debug('Se encontraron %d caras, enviando mensaje a CMC con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
@@ -31,21 +31,22 @@ if __name__ == '__main__':
   with open('config.json') as config_file:
     config = json.load(config_file)
 
-  set_logger(config['logging_level'])
+  set_logger(config['logger']['level'])
 
   cropper = FaceCropper(config['face_cropper'])
 
-  client = PikaWrapperPublisher(host=config['host_cmc'],
-                                topic=config['topic_cmc'])
+  client = PikaWrapperPublisher(host=config["network"]['cmc_host'],
+                                topic=config["network"]['topic_cmc'])
 
-  server = PikaWrapperSubscriber( host=config['host_camera'],
-                                  topic=config['topic_camera'],
-                                  queue=config['queue'],
-                                  routing_key=config['routing_key_camera'])
+  server = PikaWrapperSubscriber( host=config["network"]['camera_host'],
+                                  topic=config["network"]['topic_camera'],
+                                  routing_key=config["network"]['routing_key_camera'],
+                                  queue=config["network"]['queue'])
   
   server.set_receive_callback(handle_message)
   
   killer = GracefulKiller()
+  killer.add_connection(client)
   killer.add_connection(server)
 
   print('[*] Esperando mensajes para procesar. Para salir usar CTRL+C')
