@@ -9,7 +9,8 @@
     "message_type":"CMB_feed"
   },
   "logger": {
-    "level" : 10
+    "level": 10,
+    "save_image": true
   },  
   "face_cropper": {
     "scale_factor" : 1.1,

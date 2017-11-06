@@ -14,6 +14,8 @@ def handle_message(body):
 
   payload['type'] = config['network']['message_type']
   payload['faces'] = cropper.crop_base64(payload['frame'])
+  if config['logger']['save_image']:
+    save_image_b64(payload['frame'],payload['faces'])
 
   if len(payload['faces']) > 0:
     client.send(json.dumps(payload))
@@ -30,6 +32,8 @@ if __name__ == '__main__':
     config = json.load(config_file)
 
   set_logger(config['logger']['level'])
+  if config['logger']['save_image']:
+    set_image_directory()
 
   cropper = FaceCropper(config['face_cropper'])
 
