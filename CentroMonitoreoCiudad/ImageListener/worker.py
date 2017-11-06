@@ -31,7 +31,7 @@ if __name__ == '__main__':
   server = PikaWrapperSubscriber( host=config['host_CMB'],
                                   topic=config['topic_cmc'])
 
-  #crear feature matcher propio, fijarse cuantos numeros
+  #Crear feature matcher propio, fijarse cuantos numeros
   matcher = FeatureMatcher(config['MIN_MATCH'])
 
   server.set_receive_callback(callback)

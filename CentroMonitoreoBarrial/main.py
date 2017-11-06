@@ -14,6 +14,7 @@ def handle_message(body):
 
   payload['type'] = config['network']['message_type']
   payload['faces'] = cropper.crop_base64(payload['frame'])
+  
   if config['logger']['save_image']:
     save_image_b64(payload['frame'],payload['faces'])
 
