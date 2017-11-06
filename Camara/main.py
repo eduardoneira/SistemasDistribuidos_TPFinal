@@ -27,7 +27,7 @@ payload = {}
 if config['camera']['type'] == "mock": 
   from modules.mock_camera import *
   camera = MockCamera() 
-elif config['camera']['type'] == "raspberrypi":
+elif config['camera']['type'] == "pi":
   from modules.rasp_camera import *
   camera = RaspCamera()
 
