@@ -1,12 +1,11 @@
-#!/bin/python3
+#!/usr/bin/python3
 
-import psycopg2
-from modules.graceful_killer import *
 from modules.logger import *
+from modules.graceful_killer import *
 from modules.pika_wrapper_subscriber import *
-from modules.face_recognizer_client import *
+from modules.db_wrapper import *
 from modules.file_manager import *
-
+from modules.matcher_wrapper import *
 
 def callback(ch, method, properties, body):
   payload = json.loads(body.decode('utf-8'))
@@ -19,27 +18,24 @@ def callback(ch, method, properties, body):
   #   store_data(payload,faces_found)
 
 if __name__ == '__main__':
-  print('Configurando Worker Feature Matcher')
+  print('Configurando Worker Image Listener')
 
-  file_manager = FileManager(config)
+  with open('./config.json') as config_file:
+    config = json.load(config_file)
 
-  connection_str = "dbname={} user={} host={} password={}".format(conf_database['dbname'], conf_database['user'], conf_database['host'], conf_database['password'])
-  connection_db = psycopg2.connect(connection_str)
-  cursor = connection_db.cursor()
+  set_logger(config['logger']['logging_level'])
+  
+  db = DBWrapper(config['db'])
 
-  #Abrir conexion con server
-  server = PikaWrapperSubscriber( host=config['host_CMB'],
-                                  topic=config['topic_cmc'])
-
-  #Crear feature matcher propio, fijarse cuantos numeros
-  matcher = FeatureMatcher(config['MIN_MATCH'])
-
+  server = PikaWrapperSubscriber( host=config['network']['host_CMB'],
+                                  topic=config['network']['topic_cmc'])
   server.set_receive_callback(callback)
 
   graceful_killer = GracefulKiller()
   graceful_killer.add_connection(server)
-  graceful_killer.add_connection(cursor)
+  graceful_killer.add_connection(db)
 
-  print('[*] Feature Matcher configurado. Esperando mensajes para procesar. Para salir usar CTRL+C')
+  matcher = MatcherWrapper(config['matcher'],FileManager(config['filesystem']))
+
+  print('[*] Image Listener Worker configurado. Esperando mensajes para procesar. Para salir usar CTRL+C')
   server.start_consuming()
-

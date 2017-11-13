@@ -1,11 +1,25 @@
 {
-  "host_CMB": "127.0.0.1",
-  "topic_cmc": "img/cropped",
-  "host_FaceRecog":"localhost",
-  "logging_level" : 10,
-  "queue_send_face_recognizer": "face_recognizer_request",
-  "queue_receive_face_recognizer": "img_receive_face_recognizer",
-  "image_database": "../image_database",
-  "person": "/person/",
-  "bigpic": "/bigpic/"
+  "network": {
+    "broker_cmb_host": "127.0.0.1",
+    "topic_cmc": "img/cropped",
+  },
+  "logger": {
+    "logging_level" : 10
+  },
+  "filesystem": {
+    "image_database": "../image_database",
+    "people": "/people",
+    "uploaded": "/uploaded",
+    "found": "/found",
+    "bigpic": "/bigpics"
+  },
+  "db": {
+    "dbname": "cmcdatabase",
+    "user": "postgres",
+    "host": "localhost",
+    "password": "postgres"
+  },
+  "matcher": {
+    "min_match": 5
+  }
 }
