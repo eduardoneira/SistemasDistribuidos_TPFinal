@@ -11,11 +11,13 @@ def callback(ch, method, properties, body):
   payload = json.loads(body.decode('utf-8'))
   logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
   
-  # matcher.compare()
+  for face in payload['faces']:  
+    id = matcher.find_match(face)
 
-  # faces_found = faces_to_store(payload['faces'])
-  # if len(faces_found) > 0:
-  #   store_data(payload,faces_found)
+    if id
+      logging.debug('Se encontro un match con '+id+'. Guardando en sistema')
+    else 
+      logging.debug('No se encontro un match. Descartando')
 
 if __name__ == '__main__':
   print('Configurando Worker Image Listener')
