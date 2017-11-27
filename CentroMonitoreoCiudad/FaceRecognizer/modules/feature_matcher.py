@@ -19,22 +19,19 @@ class FeatureMatcher:
     search_params = dict(checks = 200)
     self.flann = cv2.FlannBasedMatcher(index_params, search_params)
 
-  def compare(self,img1,img2):
-    self.features_img1 = self.find_features(img1) 
-    self.features_img2 = self.find_features(img2)
+  def _compare_descriptors(self, features_img1, features_img2):
+    return self.flann.knnMatch(self.features_img1, self.features_img2, k=2)
 
-    return self.flann.knnMatch(self.features_img1[1],self.features_img2[1],k=2)
+  def match_image_base64(self, img1, img2):  
+    self.features_img1 = self.find_features(base64_to_image(img1)) 
+    self.features_img2 = self.find_features(base64_to_image(img2))
 
-  def compare_base64(self,image1_base64,image2_base64):
-    img1 = base64_to_image(image1_base64)
-    img2 = base64_to_image(image2_base64)
+    return self.match_descriptors(self.features_img1[1], self.features_img2[1])
 
-    return self.compare(img1,img2)
-
-  def are_similar(self,img1,img2):  
+  def match_descriptors(self, desc1, desc2):
     self.good_matches = []
 
-    for m,n in self.compare(img1,img2):
+    for m,n in self._compare_descriptors(desc1, desc2):
       if m.distance < self.__PORC_DISTANCE*n.distance:
         self.good_matches.append(m)
 
@@ -43,37 +40,16 @@ class FeatureMatcher:
   def find_features(self,img):
     return self.feature_finder.detectAndCompute(img,None)
 
-  def compare_and_draw_base64(self,img1,img2):
-    self.compare_and_draw(base64_to_image(img1),base64_to_image(img2))
+  def find_features_base64(self,img):
+    return self.find_features(base64_to_image(img))
 
-  def _compare_and_draw(self,img1,img2):
-    # if self.are_similar(img1,img2):
-    #   src_pts = np.float32([ self.features_img1[0][m.queryIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
-    #   dst_pts = np.float32([ self.features_img2[0][m.trainIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
+  def compare_and_draw_base64(self, img1, img2):
+    self._compare_and_draw(base64_to_image(img1),base64_to_image(img2))
 
-    #   M, mask = cv2.findHomography(src_pts,dst_pts,cv2.RANSAC,5.0)
-    #   matchesMask = mask.ravel().tolist()
-
-    #   h,w = img1.shape
-    #   pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-    #   dst = cv2.perspectiveTransform(pts,M)
-
-    #   img2 = cv2.polylines(img2,[np.int32(dst)],True,255,3,cv2.LINE_AA)
-    # else:
-    #   print("Not enough matches are found - %d/%d" % (len(self.good_matches),self.MIN_MATCH_COUNT))
-    #   matchesMask = None
-
-    # draw_params = dict(matchColor = (0,255,0),
-    #                    singlePointColor = (255,0,0),
-    #                    matchesMask = matchesMask,
-    #                    flags = 2)
-
-    # img3 = cv2.drawMatchesKnn(img1,self.features_img1[0],img2,self.features_img2[0],self.good_matches,None,**draw_params)
-
-    # plt.imshow(img3,'gray'),plt.show()
+  def _compare_and_draw(self, img1, img2):
     hash1 = self.find_features(img1)
     hash2 = self.find_features(img2)
-    matches = self.flann.knnMatch(hash1[1],hash2[1],k=2)
+    matches = self.flann.knnMatch(hash1[1], hash2[1], k=2)
 
     good = []
     for m,n in matches:

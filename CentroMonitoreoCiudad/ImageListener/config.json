@@ -9,8 +9,7 @@
   "filesystem": {
     "image_database": "../image_database",
     "people": "/people",
-    "uploaded": "/uploaded",
-    "found": "/found",
+    "keypoints": "/keypoints",
     "bigpic": "/bigpics"
   },
   "db": {
@@ -20,6 +19,7 @@
     "password": "postgres"
   },
   "matcher": {
-    "min_match": 5
+    "min_match": 5,
+    "mem_size": 1048576
   }
 }
