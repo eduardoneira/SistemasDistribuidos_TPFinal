@@ -28,8 +28,8 @@ def callback(body):
     db.save_match_big_pic(big_pic_id, payload['location'][0], payload['location'][1], payload['timestamp'])
     
     for match in matches_data:
-      file_manager.save_person_base64(match[0], match[1])
-      db.save_match_person(match[0],big_pic_id)
+      face_id = file_manager.save_person_base64( match[0], match[1])
+      db.save_match_person(face_id, match[0], big_pic_id)
 
 if __name__ == '__main__':
   print('Configurando Worker Image Listener')

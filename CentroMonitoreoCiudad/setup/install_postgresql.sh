@@ -8,9 +8,9 @@ fi
 echo "Instalando Postgresql"
 
 if [[ "$1" == "fedora" ]]; then
-  dnf install postgresql-server postgresql postgresql-contrib
-  postgresql-setup --initdb
-  systemctl start postgresql
+  sudo dnf install postgresql-server postgresql postgresql-contrib
+  sudo postgresql-setup --initdb
+  sudo systemctl start postgresql
   echo "Ingrese un password para postgres (poner de contraseña: postgres)"
   echo "Ingrese: \password postgres"
   echo "Siga las instrucciones. Para salir ingrese: \q. Luego cuando quede en bash$ ingrese el comando logout"
@@ -23,7 +23,7 @@ if [[ "$1" == "fedora" ]]; then
   echo "Luego $ sudo -i -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE cmcdatabase to postgres\""
 
 elif [[ "$1" == "arch" ]]; then
-  pacman -S postgresql
+  sudo pacman -S postgresql
   mkdir /var/lib/postgres/data
   chown -c -R postgres:postgres /var/lib/postgres
   sudo -i -u postgres
@@ -31,6 +31,6 @@ elif [[ "$1" == "arch" ]]; then
   logout
   systemctl start postgresql
 elif [[ "$1" == "debian" ]] || [[ "$1" == "ubuntu" ]]; then
-  apt-get install postgresql postgresql-contrib
+  sudo apt-get install postgresql postgresql-contrib
   sudo -i -u postgres
 fi
