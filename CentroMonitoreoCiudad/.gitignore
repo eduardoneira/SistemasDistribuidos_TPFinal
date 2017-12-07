@@ -1,2 +1,3 @@
 image_database/
 setup/OpenCV
+**/__pycache__/**

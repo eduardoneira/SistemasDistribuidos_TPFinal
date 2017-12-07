@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from cachetools import LRUCache
-from modules.surf_feature_matcher import *
+from modules.image_processing.surf_feature_matcher import *
 
 class MatcherWrapper:
 
@@ -23,7 +23,7 @@ class MatcherWrapper:
         if (self.matcher.good_matches > max_good_matches):
           best_id = id
           max_good_matches = self.matcher.good_matches
-    
+
     return best_id
 
   def _get_keypoints(self, id):

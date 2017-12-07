@@ -10,6 +10,7 @@ class DBWrapper:
                                                                     config['host'], 
                                                                     config['password'])
     self.connection_db = psycopg2.connect(connection_str)
+    self.connection_db.autocommit = True
     self.cursor = self.connection_db.cursor()
 
   def most_wanted_people(self):
@@ -17,7 +18,7 @@ class DBWrapper:
     return self.cursor.fetchall()
   
   def save_match_person(self, id, big_pic_id):
-      cursor.execute("""INSERT INTO Faces (id, big_pictures_id) VALUES (%s, %s, %s);""",(id, big_pic_id))
+    self.cursor.execute("""INSERT INTO Faces (id, big_pictures_id) VALUES (%s, %s, %s);""",(id, big_pic_id))
 
   def save_match_big_pic(self, id, latitude, longitude, timestamp):
     self.cursor.execute("""INSERT INTO BigPictures (id, latitude, longitude, timestamp) VALUES (%s, %s, %s, %s)""",(id, latitude, longitude, timestamp))

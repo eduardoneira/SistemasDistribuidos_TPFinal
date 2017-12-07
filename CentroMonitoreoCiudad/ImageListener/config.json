@@ -1,7 +1,7 @@
 {
   "network": {
     "broker_cmb_host": "127.0.0.1",
-    "topic_cmc": "img/cropped",
+    "topic_cmc": "img/cropped"
   },
   "logger": {
     "logging_level" : 10
@@ -10,7 +10,7 @@
     "image_database": "../image_database",
     "people": "/people",
     "keypoints": "/keypoints",
-    "bigpic": "/bigpics"
+    "bigpics": "/bigpics"
   },
   "db": {
     "dbname": "cmcdatabase",

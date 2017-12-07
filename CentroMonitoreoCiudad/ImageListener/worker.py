@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import json
 from modules.logger import *
 from modules.graceful_killer import *
 from modules.pika_wrapper_subscriber import *
@@ -16,10 +17,10 @@ def callback(body):
 
   for face in payload['faces']:  
     person_id = matcher.find_match(face, ids)
-    if person_id
+    if (person_id):
       matches_data.append([person_id, face])
       logging.debug('Se encontro un match con '+person_id+'. Guardando en sistema')
-    else 
+    else:
       logging.debug('No se encontro un match. Descartando')
 
   if (len(matches_data) > 0):
@@ -40,7 +41,7 @@ if __name__ == '__main__':
   
   db = DBWrapper(config['db'])
 
-  server = PikaWrapperSubscriber( host=config['network']['host_CMB'],
+  server = PikaWrapperSubscriber( host=config['network']['broker_cmb_host'],
                                   topic=config['network']['topic_cmc'])
   server.set_receive_callback(callback)
 

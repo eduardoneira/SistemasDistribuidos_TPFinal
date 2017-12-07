@@ -1,6 +1,6 @@
 #!/bin/python3
 
-from modules.feature_matcher import * 
+from modules.image_processing.feature_matcher import * 
 
 class SURFFeatureMatcher(FeatureMatcher):
 
