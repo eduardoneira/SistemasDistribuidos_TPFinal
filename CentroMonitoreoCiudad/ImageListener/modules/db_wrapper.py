@@ -12,11 +12,15 @@ class DBWrapper:
     self.connection_db = psycopg2.connect(connection_str)
     self.cursor = self.connection_db.cursor()
 
-  def get_people_uploaded(self):
-    #return list of ids
-    return []
+  def most_wanted_people(self):
+    self.cursor.execute("SELECT id FROM Person;")
+    return self.cursor.fetchall()
   
-  def save_match(self,id,big_pic_path,face_path):
+  def save_match_person(self, id, big_pic_id):
+      cursor.execute("""INSERT INTO Faces (id, big_pictures_id) VALUES (%s, %s, %s);""",(id, big_pic_id))
+
+  def save_match_big_pic(self, id, latitude, longitude, timestamp):
+    self.cursor.execute("""INSERT INTO BigPictures (id, latitude, longitude, timestamp) VALUES (%s, %s, %s, %s)""",(id, latitude, longitude, timestamp))
 
   def close(self):
     self.cursor.close()

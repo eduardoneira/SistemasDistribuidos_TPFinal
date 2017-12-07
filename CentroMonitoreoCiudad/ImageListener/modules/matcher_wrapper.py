@@ -6,8 +6,8 @@ from modules.surf_feature_matcher import *
 class MatcherWrapper:
 
   def __init__(self, config, file_manager):
-    self.matcher = SURFFeatureMatcher(min_match_count=config['min_match'])
     self.file_manager = file_manager
+    self.matcher = SURFFeatureMatcher(min_match_count=config['min_match'])
     self.keypoints = LRUCache(maxsize=config['mem_size'])
 
   def find_match(self, image, ids):

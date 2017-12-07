@@ -33,10 +33,10 @@ class FileManager:
 
     return filename
 
-  def load_keypoints(self,id):
+  def load_keypoints(self, id):
     return load_keypoints(self.keypoints_path+'/'+str(id)+'.kp')
 
-  def save_person_base64(self, image, id):
+  def save_person_base64(self, id, image):
     return self.save_image(base64.b64decode(image), self.people_path+str(id)+'/')
 
   def save_bigpic_base64(self, image):
