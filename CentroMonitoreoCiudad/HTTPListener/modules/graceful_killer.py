@@ -2,7 +2,6 @@
 
 import signal
 import logging
-import pika
 
 class GracefulKiller:
   __connections = []
@@ -15,7 +14,7 @@ class GracefulKiller:
     self.__connections.append(connection)
 
   def exit_gracefully(self,signum,frame):
-    logging.debug('Llego señal de salida. Se va a cerrar el CMC Query Handler')    
+    logging.debug('Llego señal de salida. Se va a cerrar el CMB')    
 
     for connection in self.__connections:
       connection.close()

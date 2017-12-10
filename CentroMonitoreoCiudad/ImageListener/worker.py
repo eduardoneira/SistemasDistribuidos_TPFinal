@@ -12,7 +12,7 @@ def callback(body):
   payload = json.loads(body.decode('utf-8'))
   logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
 
-  ids = db.most_wanted_people()
+  ids = db.most_wanted_people_images()
   matches_data = []
 
   for face in payload['faces']:  

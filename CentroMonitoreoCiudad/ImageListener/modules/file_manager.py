@@ -10,11 +10,11 @@ class FileManager:
   def __init__(self,config):
     self.config = config
     self.bigpic_path = config['image_database']+config['bigpics']
-    self.people_path = config['image_database']+config['people']
+    self.faces_path = config['image_database']+config['faces']
     self.keypoints_path = config['image_database']+config['keypoints']
 
     self.__create_directory(config['image_database'])
-    self.__create_directory(self.people_path)
+    self.__create_directory(self.faces_path)
     self.__create_directory(self.bigpic_path)
     self.__create_directory(self.keypoints_path)
 
@@ -35,9 +35,9 @@ class FileManager:
 
   def load_keypoints(self, id):
     return load_keypoints(self.keypoints_path+'/'+str(id)+'.kp')
-
-  def save_person_base64(self, id, image):
-    return self.save_image(base64.b64decode(image), self.people_path+str(id)+'/')
+  
+  def save_faces_base64(self, id, image):
+    return self.save_image(base64.b64decode(image), self.faces_path+str(id)+'/')
 
   def save_bigpic_base64(self, image):
     return self.save_image(base64.b64decode(image), self.bigpic_path)

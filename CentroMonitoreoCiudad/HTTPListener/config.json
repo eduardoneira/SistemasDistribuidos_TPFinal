@@ -1,18 +1,40 @@
 {
-  "host_HTTP": "127.0.0.1",
-  "host_FaceRecog": "localhost",
-  "logging_level" : 10,
-  "queue_http": "http_rpc",
-  "queue_send_face_recognizer": "face_recognizer_request",
-  "queue_receive_face_recognizer": "http_receive_face_recognizer",
-  "image_database": "../image_database",
-  "person": "/person/",
-  "bigpic": "/bigpic/",
+  "network": {
+    "broker_client_host": "127.0.0.1",
+    "queue_client": "http_rpc"
+  },
   "requests": {
     "existance": 4,
     "upload": 5,
     "trajectory":6,
     "legal_problems":7,
     "missing":8
+  },
+  "logger": {
+    "logging_level" : 10
+  },  
+  "filesystem": {
+    "image_database": "../image_database",
+    "faces": "/found",
+    "keypoints": "/keypoints",
+    "bigpics": "/bigpics",
+    "people": "/people"
+  },
+  "db": {
+    "dbname": "cmcdatabase",
+    "user": "postgres",
+    "host": "localhost",
+    "password": "postgres"
+  },
+  "face_cropper": {
+    "scale_factor" : 1.1,
+    "min_neighbours" : 2,
+    "min_size" : [100,100],
+    "default_size" : [200,200],
+    "shrink_factor": 0.20
+  },
+  "matcher": {
+    "min_match": 5,
+    "mem_size": 1048576
   }
 }

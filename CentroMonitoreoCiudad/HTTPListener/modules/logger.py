@@ -4,17 +4,16 @@ import logging
 import glob
 import os
 
+PROCESS_NAME = "HTTP_QUERY_HANDLER"
+
 def set_logger(logging_level):  
   if not os.path.exists('./log/'):
     os.makedirs('./log/')
 
-  #Para no sobreescribir
-  id = len(glob.glob("./log/HTTP_query_handler*.log")) +1
-
   logging.basicConfig(  level=logging_level,
                         format='%(asctime)s %(levelname)-8s QUERY    '+ str(os.getpid()) +'    %(message)s',
                         datefmt='%a, %d %b %Y %H:%M:%S',
-                        filename='./log/HTTP_query_handler'+str(id)+'.log',
+                        filename='./log/'+PROCESS_NAME+str(id)+'.log',
                         filemode='w')
 
   logging.getLogger('pika').setLevel(logging.WARNING)

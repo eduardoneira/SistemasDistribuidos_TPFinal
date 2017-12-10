@@ -6,12 +6,13 @@
   "logger": {
     "logging_level" : 10
   },
-  "filesystem": {
+ "filesystem": {
     "image_database": "../image_database",
-    "people": "/people",
+    "faces": "/found",
     "keypoints": "/keypoints",
-    "bigpics": "/bigpics"
-  },
+    "bigpics": "/bigpics",
+    "people": "/people"
+  }, 
   "db": {
     "dbname": "cmcdatabase",
     "user": "postgres",

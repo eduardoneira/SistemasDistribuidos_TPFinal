@@ -13,8 +13,8 @@ class DBWrapper:
     self.connection_db.autocommit = True
     self.cursor = self.connection_db.cursor()
 
-  def most_wanted_people(self):
-    self.cursor.execute("SELECT id FROM Person;")
+  def most_wanted_people_images(self):
+    self.cursor.execute("SELECT id FROM PersonImage;")
     return self.cursor.fetchall()
   
   def save_match_person(self, id, person_id, big_pic_id):
