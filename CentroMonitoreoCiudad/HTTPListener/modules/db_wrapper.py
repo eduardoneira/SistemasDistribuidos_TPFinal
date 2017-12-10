@@ -22,14 +22,14 @@ class DBWrapper:
     return self.cursor.fetchone()
   
   def find_person_by_dni(self, dni):
-    self.cursor.execute("SELECT * FROM Person WHERE Person.dni = %i",(dni,))
+    self.cursor.execute("SELECT * FROM Person WHERE Person.dni = %s",(dni,))
     return self.cursor.fetchone()
 
   def save_person(self, dni, state, name, surname):
-    self.cursor.execute("INSERT INTO Person (dni, state, name, surname) VALUES (%s,%s,%s,%s)",(dni, state, name, surname))
+    self.cursor.execute("INSERT INTO Person (dni, state, name, surname) VALUES (%s,%s,%s,%s);",(dni, state, name, surname))
 
   def save_person_image(self, id, person_id):
-    self.cursor.execute("INSERT INTO PersonImage (id, person_id) VALUES (%s,%s)",(id, person_id))
+    self.cursor.execute("INSERT INTO PersonImage (id, person_id) VALUES (%s,%s);",(id, person_id))
   
   def find_big_pictures(self, id):
     self.cursor.execute("SELECT * FROM BigPicture WHERE BigPicture.id IN (SELECT Face.bigpic_id FROM Face WHERE Face.person_id = %s)", (id))

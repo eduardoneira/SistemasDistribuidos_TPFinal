@@ -17,7 +17,7 @@ class CheckExistanceQuery:
     images = request['images']
 
     for key, image in images.items():
-      cropped_images.append(cropper.crop_base_64(image)[0])
+      cropped_images.append(self.cropper.crop_base_64(image)[0])
 
     ids = self.db.most_wanted_people()
     #TODO: Adapt to multiple, change must be in matcher wrapper

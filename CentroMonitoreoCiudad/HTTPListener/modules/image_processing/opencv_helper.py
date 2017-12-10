@@ -33,10 +33,13 @@ def dump_keypoints(keypoints, descriptors, filepath):
     serialization.append(point_serialization)
     ++i
 
-  pickle.dump(serialization, open(filepath,"wb"))
+  with open(filepath,"wb") as file:
+    pickle.dump(serialization, file)
 
 def load_keypoints(filepath):
-  serialization = pickle.load(open(filepath,"rb"))
+  with open(filepath,"wb") as file:
+    serialization = pickle.load(file)
+  
   keypoints = []
   descriptors = []
   

@@ -15,7 +15,7 @@ class UploadQuery:
     self.file_manager = file_manager
     self.MISSING = missing_id
 
-  def handle(request, response):
+  def handle(self, request, response):
     if (request['state'] == self.MISSING):
       state = 'missing'
     else:
@@ -29,13 +29,13 @@ class UploadQuery:
     response['id'] = self.db.find_person_by_dni(request['dni'])[0]
     
     for key, image in request['images'].items():
-      cropped = cropper.crop_base_64(image)[0]
+      cropped = self.cropper.crop_base64(image)[0]
 
       image_id = self.file_manager.save_person_base64(response['id'],
                                                       cropped)
       
-      self.db.save_person_image(response['id'],
-                                image_id)
+      self.db.save_person_image(image_id,
+                                response['id'])
 
       self.matcher_wrapper.dump_keypoints(image_id,
                                           cropped)

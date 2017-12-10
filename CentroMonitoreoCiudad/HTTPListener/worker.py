@@ -1,6 +1,5 @@
-#!/bin/python3
+#!/usr/bin/python3
 
-import json
 from modules.query_handler import * 
 from modules.rpc_server_rabbitmq import *
 from modules.graceful_killer import *

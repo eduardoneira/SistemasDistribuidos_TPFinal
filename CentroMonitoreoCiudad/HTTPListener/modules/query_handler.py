@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import json
 from modules.handlers.upload_query import *
 from modules.handlers.check_existance_query import *
 from modules.handlers.trajectory_query import *
@@ -29,14 +30,14 @@ class QueryHandler:
                                                           self.file_manager,
                                                           self.cropper)
 
-  def handle(body):
+  def handle(self, body):
     request = json.loads(body.decode('utf-8'))
     response = {}
     response['status'] = 'OK'
     
     try:
       logging.debug("Llego una request de tipo "+ request['type'])
-      handlers[int(request['type'])].handle(request, response)
+      self.handlers[int(request['type'])].handle(request, response)
     except KeyError:
       response['status'] = 'ERROR'
       response['message'] = 'Tipo de mensaje invalido'

@@ -26,10 +26,6 @@ class MatcherWrapper:
 
     return best_id
 
-  def dump_keypoints(self, id, image):
-     keypoints, descriptors = self.matcher.find_features_base64(image)
-     self.file_manager.dump_keypoints(keypoints, descriptors, id)
-
   def _get_keypoints(self, id):
     try:
       return self.keypoints[id]
