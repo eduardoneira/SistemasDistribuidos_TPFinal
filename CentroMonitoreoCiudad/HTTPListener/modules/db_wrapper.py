@@ -32,10 +32,9 @@ class DBWrapper:
     self.cursor.execute("INSERT INTO PersonImage (id, person_id) VALUES (%s,%s);",(id, person_id))
   
   def find_big_pictures(self, id):
-    self.cursor.execute("SELECT * FROM BigPicture WHERE BigPicture.id IN (SELECT Face.bigpic_id FROM Face WHERE Face.person_id = %s)", (id))
+    self.cursor.execute("SELECT * FROM BigPicture WHERE BigPicture.id IN (SELECT Face.bigpic_id FROM Face WHERE Face.person_id = %s)", (str(id),))
     return self.cursor.fetchall()
     
   def close(self):
     self.cursor.close()
     self.connection_db.close()
-  

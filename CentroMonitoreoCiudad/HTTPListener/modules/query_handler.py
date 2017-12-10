@@ -12,7 +12,7 @@ class QueryHandler:
     self.file_manager = FileManager(config['filesystem'])
     self.matcher_wrapper = MatcherWrapper(config['matcher'], self.file_manager)
     self.db = DBWrapper(config['db'])
-    
+
     self.__create_handlers(config['requests'])
 
   def __create_handlers(self, config):
@@ -25,7 +25,7 @@ class QueryHandler:
                                                   self.file_manager,
                                                   self.matcher_wrapper,
                                                   self.cropper,
-                                                  config['missing'])
+                                                  str(config['missing']))
   
     self.handlers[config['trajectory']] = TrajectoryQuery(self.db,
                                                           self.file_manager)

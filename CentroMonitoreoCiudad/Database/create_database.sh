@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-sudo -i -u postgres psql -c "CREATE DATABASE cmc_db"
-sudo -i -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cmc_db to postgres"
+sudo -i -u postgres psql -c "CREATE DATABASE cmcdatabase"
+sudo -i -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cmcdatabase to postgres"
 
 pip3 install --user psycopg2
 

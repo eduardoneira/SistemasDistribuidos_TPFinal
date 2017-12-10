@@ -12,12 +12,12 @@ class CheckExistanceQuery:
     self.matcher_wrapper = matcher_wrapper
     self.cropper = cropper
 
-  def handle(request, response):
+  def handle(self, request, response):
     cropped_images = []
     images = request['images']
 
     for key, image in images.items():
-      cropped_images.append(self.cropper.crop_base_64(image)[0])
+      cropped_images.append(self.cropper.crop_base64(image)[0])
 
     ids = self.db.person_images()
     #TODO: Adapt to multiple, change must be in matcher wrapper
