@@ -26,8 +26,12 @@ class PikaWrapperSubscriber:
 
     logging.debug('Se establecio una conexion como subscriber con el host: '+ host+' con topic: '+topic+' y escuchando de la cola: '+ queue_name)
 
+  def handle_message(self, ch, method, properties, body):
+    return self.handle_message_callback(body)
+
   def set_receive_callback(self, callback):
-    self.tag = self.channel.basic_consume(callback,
+    self.handle_message_callback = callback
+    self.tag = self.channel.basic_consume(self.handle_message,
                                           queue=self.queue,
                                           no_ack=True)
     return self.tag

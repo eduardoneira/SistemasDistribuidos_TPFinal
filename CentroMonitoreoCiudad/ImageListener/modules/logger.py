@@ -17,3 +17,6 @@ def set_logger(logging_level):
                         filemode='w')
 
   logging.getLogger('pika').setLevel(logging.WARNING)
+
+  logging.debug('------------------------------------------------------------------------------------')
+  logging.debug('------------------------------------------------------------------------------------')

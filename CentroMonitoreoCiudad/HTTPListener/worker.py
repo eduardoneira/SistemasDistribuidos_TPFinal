@@ -15,11 +15,11 @@ if __name__ == '__main__':
 
   set_logger(config['logger']['logging_level'])
 
+  handler = QueryHandler(config)
+
   server = RPCServer(host=config['network']['broker_client_host'],
                      queue=config['network']['queue_client'],
                      request_callback_main=handle)
-
-  handler = QueryHandler(config)
 
   graceful_killer = GracefulKiller()
   graceful_killer.add_connection(handler)

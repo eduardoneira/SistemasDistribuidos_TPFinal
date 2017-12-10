@@ -16,7 +16,9 @@ def callback(body):
   matches_data = []
 
   for face in payload['faces']:  
-    person_id = matcher.find_match(face, ids)
+    id = matcher.find_match(face, ids)
+    person_id = db.person_id_by_person_image_id(id)
+    
     if (person_id):
       matches_data.append([person_id, face])
       logging.debug('Se encontro un match con '+person_id+'. Guardando en sistema')
@@ -28,7 +30,7 @@ def callback(body):
     db.save_match_big_pic(big_pic_id, payload['location'][0], payload['location'][1], payload['timestamp'])
     
     for match in matches_data:
-      face_id = file_manager.save_person_base64( match[0], match[1])
+      face_id = file_manager.save_faces_base64( match[0], match[1])
       db.save_match_person(face_id, match[0], big_pic_id)
 
 if __name__ == '__main__':

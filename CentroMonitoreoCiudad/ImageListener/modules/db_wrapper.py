@@ -16,6 +16,10 @@ class DBWrapper:
   def most_wanted_people_images(self):
     self.cursor.execute("SELECT id FROM PersonImage;")
     return self.cursor.fetchall()
+
+  def person_id_by_person_image_id(self, id):
+    self.cursor.execute("SELECT person_id FROM PersonImage WHERE PersonImage.id = %s;",(id,))
+    return self.cursor.fetchone()
   
   def save_match_person(self, id, person_id, big_pic_id):
     self.cursor.execute("""INSERT INTO Faces (id, person_id, bigpic_id) VALUES (%s, %s, %s);""",(id, person_id, big_pic_id))
