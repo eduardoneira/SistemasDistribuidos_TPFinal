@@ -33,5 +33,8 @@ class RequestTest(unittest.TestCase):
     
     self.assertEqual(response['status'], 'OK')
 
+  def test_check_existance(self):
+    
+
 if __name__ == '__main__':
   unittest.main()

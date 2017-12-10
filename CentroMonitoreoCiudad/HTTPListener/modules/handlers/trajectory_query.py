@@ -1,16 +1,14 @@
 #!/usr/bin/python3
 
 from modules.logger import *
-from modules.face_cropper import *
 from modules.db_wrapper import *
 from modules.file_manager import *
 
 class TrajectoryQuery:
 
-  def __init__(self, db, file_manager, cropper):
+  def __init__(self, db, file_manager):
     self.db = db
     self.file_manager = file_manager
-    self.cropper = cropper
 
   def handle(request, response):
     person_id = self.db.find_person_by_dni(request['dni'])
