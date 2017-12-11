@@ -45,7 +45,7 @@
     <div id="dropareaAddPerson" class="dropzone dz-clickable" enctype="multipart/form-data">
       <div id="previewsContainerAddPerson">
         <div class="addfile">
-          <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
+          <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus plus-icon"></i>
             <div class="fallback">
               <input name="photo" id="chose-photo" multiple="" type="file">
             </div>
@@ -56,31 +56,31 @@
     <br>
     <form>
       <fieldset class="form-group row">
-        <legend class="col-form-legend col-sm-2">Personal data</legend>
-        <div class="col-sm-10">
+        <legend class="col-form-legend col-sm-3">Personal data</legend>
+        <div class="col-sm-9">
           <div class="form-group row">
             <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
               <input type="text" class="form-control" id="inputNameAddPerson" placeholder="Name">
             </div>
           </div>
           <div class="form-group row">
             <label for="inputSurname" class="col-sm-2 col-form-label">Surname</label>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
               <input type="text" class="form-control" id="inputSurnameAddPerson" placeholder="Surname">
             </div>
           </div>
           <div class="form-group row">
             <label for="inputDni" class="col-sm-2 col-form-label">Dni</label>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
               <input type="text" class="form-control" id="inputDniAddPerson" placeholder="Dni">
             </div>
           </div>
         </div>
       </fieldset>
     <fieldset class="form-group row">
-      <legend class="col-form-legend col-sm-2">Select state</legend>
-      <div class="col-sm-10">
+      <legend class="col-form-legend col-sm-3">Select state</legend>
+      <div class="col-sm-9">
         <div class="form-check">
           <label class="form-check-label">
             <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
@@ -95,13 +95,15 @@
         </div>
       </div>
     </fieldset>
-    <div class="form-group row">
-      <div class="offset-sm-2 col-sm-10">
-        <button type="submit" class="btn btn-success start" id="startAddPerson">
+    <br>
+    <br>
+    <div class="option-buttons form-group row">
+      <div class="offset-sm-5 col-sm-5">
+        <button type="submit" class="btn btn-lg btn-primary start" id="startAddPerson">
             <i class="glyphicon glyphicon-upload"></i>
             <span>Submit</span>
         </button>
-        <button type="reset" class="btn btn-warning cancel" id="cancelAddPerson">
+        <button type="reset" class="btn btn-lg cancel hover-button" id="cancelAddPerson">
             <i class="glyphicon glyphicon glyphicon-ban-circle"></i>
             <span>Cancel</span>
         </button>
@@ -113,7 +115,7 @@
     <div id="droparea" class="dropzone dz-clickable">
       <div id="previewsContainer">
         <div class="addfile">
-          <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
+          <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus plus-icon"></i>
             <div class="fallback">
               <input name="photo" id="chose-photo" multiple="" type="file">
             </div>
@@ -124,8 +126,8 @@
     <br>
     <form>
       <fieldset class="form-group row">
-        <legend class="col-form-legend col-sm-2">Personal data</legend>
-        <div class="col-sm-10">
+        <legend class="col-form-legend col-sm-4">Personal data</legend>
+        <div class="col-sm-8">
           <div class="form-group row">
             <label for="outputName" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-6" id="outputName">
@@ -147,13 +149,13 @@
             </div>
           </div>
       </fieldset>
-    <div class="form-group row">
+    <div class="option-buttons form-group row">
       <div class="offset-sm-2 col-sm-10">
-        <button type="submit" class="btn btn-success start" id="startExistance">
+        <button type="submit" class="btn btn-lg btn-primary start" id="startExistance">
             <i class="glyphicon glyphicon-upload"></i>
             <span>Submit</span>
         </button>
-        <button type="reset" class="btn btn-warning cancel" id="cancelExistance">
+        <button type="reset" class="btn btn-lg cancel hover-button" id="cancelExistance">
             <i class="glyphicon glyphicon glyphicon-ban-circle"></i>
             <span>Cancel</span>
         </button>
@@ -162,13 +164,13 @@
   </div>
   <div class="tab-pane fade" id="trajectory" role="tabpanel">
     <form>
-      <fieldset class="form-group row">
+      <br>
+      <fieldset class="form-group row" style="padding-left: 68px!important;">
         <div class="col-sm-5">
            <form action="" class="search-form">
            <div class="form-group has-feedback">
-              <label for="inputDni" class="col-sm-6 col-form-label">Search trajectory by Dni</label>
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
               <input type="text" class="form-control" id="inputDniTrajectory" placeholder="Dni">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
           </div>
         </form>
         </div>
@@ -184,9 +186,11 @@
       </div>
     </div>
     <br>
-      <div id="trajectory_map" class="row">
-        <div id="map" class="col-xs-12" style="height: 800px; width: 800px;border:1px solid #000;"></div>
+      <div id="trajectory_map" style="padding-left: 85px!important;" class="row">
+        <div id="map" class="col-xs-12" style="height: 500px; width: 1000px; border:1px solid #000;"></div>
     </div>
+    <br>
+    <br>
   </div>
 </div>
   </div>

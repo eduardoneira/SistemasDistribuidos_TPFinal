@@ -2,6 +2,7 @@ html,body{
   margin:0px;
   padding: 0px;
   background-color: #404040;
+  background: url("../static/cybersecurity-background.jpg")
   /*background: url("../static/trafficpeople.jpg");
   background-size:100%;
   background-repeat: no-repeat, no-repeat;*/
@@ -23,7 +24,6 @@ h1 {
   font-weight: bold;
 }
 
-
 .best-match-preview{
   height: 250px;
   width: 270px;
@@ -41,15 +41,19 @@ h1 {
 
 header{
   background: #202020;
-  color:#00ffff;
+  color:#ffffff;
 }
 
-#previewsContainer{ width:300px; white-space:nowrap; overflow-x: auto; border: 2px solid #c0c0c0;margin-left:30%}
+.plus-icon {
+  color: #eeeeee !important;
+}
+
+#previewsContainer{ width:300px; white-space:nowrap; overflow-x: auto; border: 2px solid #c0c0c0;margin-left:12%}
 #previewsContainer .pic{ width:120px; height:120px; text-align:center; border:1px solid #000; border-radius: 5px; margin:8px; display: inline-block; vertical-align:top; position:relative; overflow:hidden;}
 #previewsContainer .pic img { width:120px; height: 120px; text-align:center;}
 #previewsContainer .pic .remove{cursor: pointer; position:absolute; top:0; right: 0; width:20px; height:20px; background: #eee; z-index:1030; }
 #previewsContainer .pic-list{ overflow-x: scroll; overflow-y: hidden;}
-#previewsContainer .addfile{cursor: pointer; border: 2px dashed #32A336; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
+#previewsContainer .addfile{cursor: pointer; border: 2px dashed #c0c0c0; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
 #previewsContainer .add-file { position: relative; overflow: hidden;  height: 48px; font-size:2em; }
 #previewsContainer .add-file input[type="file"]{ height: 20px; position: absolute; top: 0; right: 0; bottom:5px; margin: 0 auto; opacity: 0; cursor: pointer; width: 100%;}
 
@@ -58,7 +62,7 @@ header{
 #previewsContainerAddPerson .pic img { width:120px; height:120px; text-align:center;}
 #previewsContainerAddPerson .pic .remove{cursor: pointer; position:absolute; top:0; right: 0; width:20px; height:20px; background: #eee; z-index:1030; }
 #previewsContainerAddPerson .pic-list{ overflow-x: scroll; overflow-y: hidden;}
-#previewsContainerAddPerson .addfile{cursor: pointer; border: 2px dashed #32A336; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
+#previewsContainerAddPerson .addfile{cursor: pointer; border: 2px dashed #c0c0c0; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
 #previewsContainerAddPerson .add-file { position: relative; overflow: hidden;  height: 48px; font-size:2em; }
 #previewsContainerAddPerson .add-file input[type="file"]{ height: 20px; position: absolute; top: 0; right: 0; bottom:5px; margin: 0 auto; opacity: 0; cursor: pointer; width: 100%;}
 #map {
@@ -71,13 +75,13 @@ header{
 }
 
 .nav {
-    background-color: #202020 !important;
+    /*background-color: #ffffff !important;*/
     font-family: 'Museo_Slab_500_2';
     font-weight: bold;
 }
 .nav>li>a {
     background-color: #a0a0a0 !important;
-    color: #ffcc99;
+    color: #ffffff;
     font-family: 'Museo_Slab_500_2';
 }
 .nav>li>a:hover {
@@ -87,27 +91,36 @@ header{
 }
 .nav>li.active>a{
     background-color: #606060 !important;
-    color: #ff8000 !important;
+    color: #ffffff !important;
     font-family: 'Museo_Slab_500_2';
     font-weight: bold !important;
 }
-.tab-content {
-  background-color: #606060;
+
+.hover-button:hover {
+  background-color: #ff0000 !important;
 }
+
 label {
   /*background-color: #99ccff;*/
-  color: #ff8000;
+  color: #ffffff;
   font-family: 'Museo_Slab_500_2';
   padding: 4px;
 }
 legend {
-  color: #00cc00;
+  color: #ffffff;
   font-family: 'Museo_Slab_500_2';
   font-weight: bold;
+  width: 80px;
 }
+
 form{
-  padding-left: 25px;
+  padding-left: 150px;
 }
+
+.option-buttons {
+  padding-left: 300px; 
+}
+
 #outputName, #outputSurname, #outputDni, #outputState{
   font-weight: bold;
   color: white;
