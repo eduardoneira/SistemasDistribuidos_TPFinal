@@ -16,6 +16,9 @@ def image_to_bytes(image):
 def base64_to_image(image):
   return bytes_to_image(base64.b64decode(image))
 
+def show_base64(image):
+  show(base64_to_image(image))
+
 def show(image):
   cv2.imshow('image',image)
   cv2.waitKey(0)

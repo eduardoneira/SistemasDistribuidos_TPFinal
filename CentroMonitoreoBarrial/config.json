@@ -15,7 +15,7 @@
   "face_cropper": {
     "scale_factor" : 1.1,
     "min_neighbours" : 2,
-    "min_size" : [100,100],
+    "min_size" : [180,180],
     "default_size" : [200,200],
     "shrink_factor": 0.20
   }

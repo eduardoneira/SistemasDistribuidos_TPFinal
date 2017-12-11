@@ -16,6 +16,9 @@ def image_to_bytes(image):
 def base64_to_image(image):
   return bytes_to_image(base64.b64decode(image))
 
+def show_base64(image):
+  show(base64_to_image(image))
+
 def show(image):
   cv2.imshow('image',image)
   cv2.waitKey(0)
@@ -33,10 +36,13 @@ def dump_keypoints(keypoints, descriptors, filepath):
     serialization.append(point_serialization)
     ++i
 
-  pickle.dump(serialization, open(filepath,"wb"))
+  with open(filepath,"wb") as file:
+    pickle.dump(serialization, file)
 
 def load_keypoints(filepath):
-  serialization = pickle.load(open(filepath,"rb"))
+  with open(filepath,"wb") as file:
+    serialization = pickle.load(file)
+  
   keypoints = []
   descriptors = []
   
