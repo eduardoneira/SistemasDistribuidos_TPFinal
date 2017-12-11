@@ -5,7 +5,7 @@ import cv2
 import base64
 from tkinter import *
 from matplotlib import pyplot as plt 
-from modules.opencv_helper import *
+from modules.image_processing.opencv_helper import *
 
 class FeatureMatcher:
 
