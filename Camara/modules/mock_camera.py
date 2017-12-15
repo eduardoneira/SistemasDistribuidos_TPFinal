@@ -22,9 +22,8 @@ class MockCamera(AbstractCamera):
       src = self.PATH_IMG()+folder[0]
       dst = self.PATH_IMG_PROCESSED()+folder[0]
       
-      img = open(src,'rb')      
-      img_b64 =  self.base64(img)
-      img.close()
+      with open(src,'rb') as img:      
+        img_b64 =  self.base64(img)
 
       shutil.move(src,dst)
       logging.debug('Imagen movida a procesada en '+dst)      
@@ -32,6 +31,10 @@ class MockCamera(AbstractCamera):
       return img_b64
 
     return img
+
+  def close(self):
+    shutil.rmtree(path = self.PATH_IMG(),
+                  ignore_errors = True)
 
   def PATH_IMG_PROCESSED(self):
     return self.CONST_PATH_IMG_PROCESSED

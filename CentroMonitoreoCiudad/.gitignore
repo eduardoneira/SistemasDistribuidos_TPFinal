@@ -1,5 +1,9 @@
 image_database/
 setup/OpenCV
+<<<<<<< HEAD
 TestTrajectory/BigPic
 TestTrajectory/CropFace
 TestTrajectory/Person
+=======
+**/__pycache__/**
+>>>>>>> surf_improvement

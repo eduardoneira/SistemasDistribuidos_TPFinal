@@ -1,47 +1,47 @@
 #!/bin/python3
 
 import numpy as np
+import math
 import cv2
 import base64
 import logging
-import pdb
+from modules.image_processing.opencv_helper import *
+
 class FaceCropper():
 
   PATH_HAAR = './haarcascade/haarcascade_frontalface_alt.xml'
 
-  def __init__(self):
+  def __init__(self, config):
     self.face_cascade = cv2.CascadeClassifier(self.PATH_HAAR)
+    self.scale_factor = config['scale_factor']
+    self.min_neighbours = config['min_neighbours']
+    self.min_size = (tuple(config['min_size']))
+    self.default_size = (tuple(config['default_size']))
+    self.shrink_factor = config['shrink_factor']
 
-  def crop(self,image):
-    images=[]
-    nparr = np.fromstring(image, np.uint8)
-    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
-    #Parametros para imagen un poco clara
-    faces = self.face_cascade.detectMultiScale(gray,1.1,2,0,(20,20))
+  def _crop(self, image):
+    images = []
 
+    image_eq = cv2.equalizeHist(image)
+    # Params: image, scale_factor, min_neighbours, flags, min_size
+    faces = self.face_cascade.detectMultiScale(image_eq,self.scale_factor,self.min_neighbours,0,self.min_size)
+    
     for (x,y,w,h) in faces:
-      cropped = img_np[y:y+h,x:x+w]
-      logging.debug('face found: [%d,%d,%d,%d]',y,y+h,x,x+w)
-      r, buff = cv2.imencode('.jpg', cropped)
-      img = base64.b64encode(buff).decode('utf-8')
-      images.append(img)
+      cropped = cv2.resize(self._locate_target(image,y,h,x,w),self.default_size,cv2.INTER_CUBIC)
+      logging.debug('Face found: [%d,%d,%d,%d]',y,y+h,x,x+w)
+      images.append(image_to_bytes(cropped))
 
     return images
 
+  def crop(self, image):
+    return self._crop(bytes_to_image(image))
+
   #Receives in base64 and returns in base64
-  def crop_base_64(self,image):
-    return  self.crop(base64.b64decode(image));
+  def crop_base64(self,image):
+    cv_image = bytes_to_image(base64.b64decode(image))
+    return list(map(lambda img: base64.b64encode(img).decode('utf-8'), self._crop(cv_image)))
 
-  def bytes_to_image(self,image):
-    nparr = np.fromstring(image, np.uint8)
-    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    return img_np
-
-  def show(self,image):
-    cv2.imshow('image',image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-  def save_image(self,filename,image):
-    cv2.imwrite(filename,image)
+  def _locate_target(self,image,y,h,x,w):
+    deltaX = math.floor(w *(self.shrink_factor))
+    deltaY = math.floor(h *(self.shrink_factor) / 3.0)
+    return image[y+deltaY:y+h-deltaY,x+deltaX:x+w-deltaX]

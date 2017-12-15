@@ -43,81 +43,81 @@
 <!-- Tab panes -->
 <div class="tab-content">
   <div class="tab-pane fade in active" id="addPerson" role="tabpanel">
-    <div>
-      <form action="/uploadajax" method="POST" enctype="multipart/form-data" role="form" id="compose-photo" class="dropzone">
-        <div id="file-uploader">
-          <div class="addfile">
-            <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
-              <div class="fallback">
-                <input name="photo" id="chose-photo" multiple="" type="file">
-              </div>
-            </span>
-          </div>
+    <form action="/uploadajax" method="POST" enctype="multipart/form-data" role="form" id="compose-photo" class="dropzone">
+      <div id="file-uploader">
+        <div class="addfile">
+          <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus plus-icon"></i>
+            <div class="fallback">
+              <input name="photo" id="chose-photo" multiple="" type="file">
+            </div>
+          </span>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
     <br>
-    <form>
+    <form class="form-data">
       <fieldset class="form-group row">
-        <legend class="col-form-legend col-sm-2">Personal data</legend>
-        <div class="col-sm-10">
+        <legend class="col-form-legend col-sm-3">Personal data</legend>
+        <div class="col-sm-9">
           <div class="form-group row">
             <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
               <input type="text" class="form-control" id="inputNameAddPerson" placeholder="Name">
             </div>
           </div>
           <div class="form-group row">
             <label for="inputSurname" class="col-sm-2 col-form-label">Surname</label>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
               <input type="text" class="form-control" id="inputSurnameAddPerson" placeholder="Surname">
             </div>
           </div>
           <div class="form-group row">
             <label for="inputDni" class="col-sm-2 col-form-label">Dni</label>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
               <input type="text" class="form-control" id="inputDniAddPerson" placeholder="Dni">
             </div>
           </div>
         </div>
       </fieldset>
-    <fieldset class="form-group row">
-      <legend class="col-form-legend col-sm-2">Select state</legend>
-      <div class="col-sm-10">
-        <div class="form-check">
-          <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-            Legal problems
-          </label>
+      <fieldset class="form-group row">
+        <legend class="col-form-legend col-sm-3">Select state</legend>
+        <div class="col-sm-9">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+              Legal problems
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+              Missing
+            </label>
+          </div>
         </div>
-        <div class="form-check">
-          <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-            Missing
-          </label>
+      </fieldset>
+      <br>
+      <br>
+      <div class="option-buttons form-group row">
+        <div class="offset-sm-5 col-sm-5">
+          <button type="submit" class="btn btn-lg btn-primary start" id="startAddPerson">
+              <i class="glyphicon glyphicon-upload"></i>
+              <span>Submit</span>
+          </button>
+          <button type="reset" class="btn btn-lg cancel hover-button" id="cancelAddPerson">
+              <i class="glyphicon glyphicon glyphicon-ban-circle"></i>
+              <span>Cancel</span>
+          </button>
         </div>
       </div>
-    </fieldset>
-    <div class="form-group row">
-      <div class="offset-sm-2 col-sm-10">
-        <button type="submit" class="btn btn-success start" id="startAddPerson">
-            <i class="glyphicon glyphicon-upload"></i>
-            <span>Submit</span>
-        </button>
-        <button type="reset" class="btn btn-warning cancel" id="cancelAddPerson">
-            <i class="glyphicon glyphicon glyphicon-ban-circle"></i>
-            <span>Cancel</span>
-        </button>
-      </div>
-    </div>
-  </form>
+    </form>
   </div>
   <div class="tab-pane fade" id="check_existance" role="tabpanel">
-    <div>
+    <div style="padding-left: 460px;">
       <form action="/uploadajax" method="POST" enctype="multipart/form-data" role="form" id="compose-photo-exist" class="dropzone">
         <div id="file-uploader-exist">
           <div class="addfile">
-            <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus"></i>
+            <span class="add-file dz-message" data-toggle="tooltip" title="Add Photo"><i class="glyphicon glyphicon-plus plus-icon"></i>
               <div class="fallback">
                 <input name="photo" id="chose-photo" multiple="" type="file">
               </div>
@@ -127,10 +127,10 @@
       </form>
     </div>
     <br>
-    <form>
+    <form class="form-data">
       <fieldset class="form-group row">
-        <legend class="col-form-legend col-sm-2">Personal data</legend>
-        <div class="col-sm-10">
+        <legend class="col-form-legend col-sm-4">Personal data</legend>
+        <div class="col-sm-8">
           <div class="form-group row">
             <label for="outputName" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-6" id="outputName">
@@ -152,14 +152,14 @@
             </div>
           </div>
         </div>
-    </fieldset>
-    <div class="form-group row">
+      </fieldset>
+    <div class="option-buttons form-group row">
       <div class="offset-sm-2 col-sm-10">
-        <button type="submit" class="btn btn-success start" id="startExistance">
+        <button type="submit" class="btn btn-lg btn-primary start" id="startExistance">
             <i class="glyphicon glyphicon-upload"></i>
             <span>Submit</span>
         </button>
-        <button type="reset" class="btn btn-warning cancel" id="cancelExistance">
+        <button type="reset" class="btn btn-lg cancel hover-button" id="cancelExistance">
             <i class="glyphicon glyphicon glyphicon-ban-circle"></i>
             <span>Cancel</span>
         </button>
@@ -170,13 +170,13 @@
   <div class="tab-pane fade" id="trajectory" role="tabpanel">
     <form>
       <fieldset class="form-group row">
-           <form action="" class="search-form">
-             <div style="text-align:center;">
-               <div class="form-group has-feedback" id="divSearch" style="display: inline-block;margin:50px auto;">
-                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                  <input type="text" class="form-control" id="inputDniTrajectory" placeholder="Input dni ...">
-              </div>
-              <div id="map"></div>
+       <form action="" class="search-form">
+         <div style="text-align:center;">
+            <div class="form-group has-feedback" id="divSearch" style="display: inline-block;margin:50px auto;">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              <input type="text" class="form-control" id="inputDniTrajectory" placeholder="Search by dni">
+            </div>
+            <div id="map"></div>
           </div>
         </form>
       </fieldset>

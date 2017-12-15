@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 import logging
 import os
@@ -8,20 +8,22 @@ import hashlib
 class FileManager:
 
   def __init__(self,config):
-    self.person_path = config['image_database']+config['person']
-    self.bigpic = config['image_database']+config['bigpic']
+    self.config = config
+    self.bigpic_path = config['image_database']+config['bigpics']
+    self.faces_path = config['image_database']+config['faces']
+    self.keypoints_path = config['image_database']+config['keypoints']
 
     self.__create_directory(config['image_database'])
-    self.__create_directory(self.person_path)
-    self.__create_directory(self.bigpic)
+    self.__create_directory(self.faces_path)
+    self.__create_directory(self.bigpic_path)
+    self.__create_directory(self.keypoints_path)
 
   def __create_directory(self,path):
     if not os.path.exists(path):
       logging.debug('Creando directorio en '+path)
       os.makedirs(path)
 
-
-  def save_image(self,image,directory):
+  def _save_image(self, image, directory):
     self.__create_directory(directory)
     filename = self.SHA1_byte_stream(image)
     filename_fullpath = directory+str(filename)+".jpg"
@@ -31,12 +33,14 @@ class FileManager:
 
     return filename
 
-  def save_person_base64(self,image,id):
-    return self.save_image(base64.b64decode(image),self.person_path+str(id)+'/')
+  def load_keypoints(self, id):
+    return load_keypoints(self.keypoints_path+'/'+str(id)+'.kp')
+  
+  def save_faces_base64(self, id, image):
+    return self.save_image(base64.b64decode(image), self.faces_path+str(id)+'/')
 
-  def save_bigpic_base64(self,image):
-    return self.save_image(base64.b64decode(image),self.bigpic)
+  def save_bigpic_base64(self, image):
+    return self.save_image(base64.b64decode(image), self.bigpic_path)
 
-  def SHA1_byte_stream(self,byte_stream):
-    sha1 = hashlib.sha1(byte_stream)
-    return sha1.hexdigest()
+  def SHA1_byte_stream(self, byte_stream):
+    return hashlib.sha1(byte_stream).hexdigest()

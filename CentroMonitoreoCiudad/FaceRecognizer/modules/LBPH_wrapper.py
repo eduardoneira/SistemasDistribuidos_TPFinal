@@ -10,7 +10,7 @@ class LBPHWrapper:
   FILENAME = 'LBPH_dump'
 
   def __init__(self,min_match_distance,min_update_distance):
-    self.recognizer = cv2.face.LBPHFaceRecognizer_create()
+    self.recognizer = cv2.face.createLBPHFaceRecognizer()
     self.images_processed = 0
     self.id = 0
     self.MIN_MATCH_DISTANCE = min_match_distance

@@ -6,5 +6,6 @@
   "request_update": "update",
   "request_predict": "predict",
   "MIN_MATCH_DISTANCE": 60,
-  "MIN_UPDATE_DISTANCE": 35
+  "MIN_UPDATE_DISTANCE": 35,
+  "MIN_MATCH": 25
 }

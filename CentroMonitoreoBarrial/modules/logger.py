@@ -3,6 +3,10 @@
 import logging
 import glob
 import os
+import hashlib
+import base64
+
+image_path = './img_processed/'
 
 def set_logger(logging_level):
   if not os.path.exists('./log/'):
@@ -18,3 +22,17 @@ def set_logger(logging_level):
                         filemode='w')
 
   logging.getLogger('pika').setLevel(logging.WARNING)
+
+def set_image_directory():
+  if not os.path.exists(image_path):
+    os.makedirs(image_path)
+
+def _save_image(img):
+  filename = str(hashlib.sha1(img).hexdigest())
+  with open(image_path+filename+".jpg",'wb') as file:
+    file.write(img)
+
+def save_image_b64(big_pic, faces): 
+    _save_image(base64.b64decode(big_pic))
+    for face in faces:
+      _save_image(base64.b64decode(face))

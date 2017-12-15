@@ -1,9 +1,14 @@
 {
-  "host": "localhost",
-  "logging_level" : 10,
-  "FPS": 1,
-  "location": [-34.5884843,
-               -58.3962122],
-  "topic": "camera/barrio1",
-  "camera": "mock"
+  "network": {
+    "cmb_host": "localhost",
+    "topic": "camera/barrio1"
+  },
+  "logger" : {
+    "level" : 10
+  },
+  "camera" : {
+    "FPS": 1,
+    "location": [-34.5884843,-58.3962122],
+    "type": "mock"
+  }
 }

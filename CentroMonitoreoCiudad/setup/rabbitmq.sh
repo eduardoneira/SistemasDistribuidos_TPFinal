@@ -32,6 +32,7 @@ if ! command -v rabbitmq-server > /dev/null 2>&1; then
 	#Para usar mqtt
 	rabbitmq-plugins enable rabbitmq_mqtt
 
+  cp ../../Utils/rabbitmq.config /etc/rabbitmq/
 fi
 
 #Reinicio el servicio

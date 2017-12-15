@@ -2,7 +2,17 @@ html,body{
   margin:0px;
   padding: 0px;
   background-color: #404040;
+  background: url("../static/cybersecurity-background.jpg");
+  /*background-size:100%;
+  background-repeat: no-repeat, no-repeat;*/
+  /*font-family: Arial, Helvetica, sans-serif;*/
 }
+/*hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}*/
 
 h1 {
   font-family: 'Museo_Slab_500_2';
@@ -13,17 +23,35 @@ h1 {
   font-weight: bold;
 }
 
-header{
-  background: #202020;
-  color:#00ffff;
+.best-match-preview{
+  height: 250px;
+  width: 270px;
+  border: 1px solid #000;
+  background: url("../static/no-preview-available.png");
+  background-size: 270px 250px;
+  background-repeat: no-repeat;
 }
 
-#file-uploader-exist{ width:300px; white-space:nowrap; overflow-x: auto; border: 2px solid #c0c0c0;margin-left:30%}
+.google-map-preview{
+  height: 800px;
+  width: 1200px;
+  border: 1px solid #000;
+}
+
+header{
+  background: #202020;
+  color:#ffffff;
+}
+
+.plus-icon {
+  color: #eeeeee !important;
+}
+
 #file-uploader-exist .pic{ width:120px; height:120px; text-align:center; border:1px solid #000; border-radius: 5px; margin:8px; display: inline-block; vertical-align:top; position:relative; overflow:hidden;}
 #file-uploader-exist .pic img { width:120px; height: 120px; text-align:center;}
 #file-uploader-exist .pic .remove{cursor: pointer; position:absolute; top:0; right: 0; width:20px; height:20px; background: #eee; z-index:1030; }
 #file-uploader-exist .pic-list{ overflow-x: scroll; overflow-y: hidden;}
-#file-uploader-exist .addfile{cursor: pointer; border: 2px dashed #32A336; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
+#file-uploader-exist .addfile{cursor: pointer; border: 2px dashed #c0c0c0; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
 #file-uploader-exist .add-file { position: relative; overflow: hidden;  height: 48px; font-size:2em; }
 #file-uploader-exist .add-file input[type="file"]{ height: 20px; position: absolute; top: 0; right: 0; bottom:5px; margin: 0 auto; opacity: 0; cursor: pointer; width: 100%;}
 
@@ -32,9 +60,10 @@ header{
 #file-uploader .pic img { width:120px; height:120px; text-align:center;}
 #file-uploader .pic .remove{cursor: pointer; position:absolute; top:0; right: 0; width:20px; height:20px; background: #eee; z-index:1030; }
 #file-uploader .pic-list{ overflow-x: scroll; overflow-y: hidden;}
-#file-uploader .addfile{cursor: pointer; border: 2px dashed #32A336; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
+#file-uploader .addfile{cursor: pointer; border: 2px dashed #c0c0c0; border-radius: 5px; display: inline-block; width:120px; height:120px; text-align:center;  margin:8px; line-height:105px;}
 #file-uploader .add-file { position: relative; overflow: hidden;  height: 48px; font-size:2em; }
 #file-uploader .add-file input[type="file"]{ height: 20px; position: absolute; top: 0; right: 0; bottom:5px; margin: 0 auto; opacity: 0; cursor: pointer; width: 100%;}
+
 #map {
   height: 100%;
   border:1px solid #000;
@@ -48,13 +77,13 @@ header{
 }
 
 .nav {
-    background-color: #202020 !important;
+    /*background-color: #ffffff !important;*/
     font-family: 'Museo_Slab_500_2';
     font-weight: bold;
 }
 .nav>li>a {
     background-color: #a0a0a0 !important;
-    color: #ffcc99;
+    color: #ffffff;
     font-family: 'Museo_Slab_500_2';
 }
 .nav>li>a:hover {
@@ -64,28 +93,38 @@ header{
 }
 .nav>li.active>a{
     background-color: #606060 !important;
-    color: #ff8000 !important;
+    color: #ffffff !important;
     font-family: 'Museo_Slab_500_2';
     font-weight: bold !important;
 }
-.tab-content {
-  background-color: #606060;
+
+.hover-button:hover {
+  background-color: #ff0000 !important;
 }
+
 label {
-  color: #ff8000;
+  color: #ffffff;
   font-family: 'Museo_Slab_500_2';
   padding: 4px;
 }
 legend {
-  color: #00cc00;
+  color: #ffffff;
   font-family: 'Museo_Slab_500_2';
   font-weight: bold;
+  width: 80px;
 }
-form{
-  padding-left: 25px;
+
+.form-data{
+  padding-left: 150px;
 }
+
+.option-buttons {
+  padding-left: 300px; 
+}
+
 form label.error{font:10px Tahoma,sans-serif;color:#ED7476;margin-left:5px; display:inline;}
 form input.error,form input.error:hover,form input.error:focus,form select.error,form textarea.error{border:1px solid #ED7476;background:#FFEDED}
+
 #outputName, #outputSurname, #outputDni, #outputState{
   font-weight: bold;
   color: white;

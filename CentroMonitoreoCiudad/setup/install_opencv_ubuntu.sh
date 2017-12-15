@@ -2,23 +2,7 @@
 # INSTALL OPENCV ON UBUNTU OR DEBIAN #
 ######################################
 
-# |         THIS SCRIPT IS TESTED CORRECTLY ON         |
-# |----------------------------------------------------|
-# | OS             | OpenCV       | Test | Last test   |
-# |----------------|--------------|------|-------------|
-# | Ubuntu 16.04.2 | OpenCV 3.2.0 | OK   | 20 May 2017 |
-# | Debian 8.8     | OpenCV 3.2.0 | OK   | 20 May 2017 |
-
-
-# 1. KEEP UBUNTU OR DEBIAN UP TO DATE
-
-# sudo apt-get -y update
-# sudo apt-get -y upgrade
-# sudo apt-get -y dist-upgrade
-# sudo apt-get -y autoremove
-
-
-# 2. INSTALL THE DEPENDENCIES
+# 1. INSTALL THE DEPENDENCIES
 
 # Build tools:
 sudo apt-get install -y build-essential cmake
@@ -46,29 +30,12 @@ sudo apt-get install -y doxygen
 
 
 # 3. INSTALL THE LIBRARY (YOU CAN CHANGE '3.2.0' FOR THE LAST STABLE VERSION)
+git clone https://github.com/Itseez/opencv.git
 
-sudo apt-get install -y unzip wget
-wget https://github.com/opencv/opencv/archive/3.2.0.zip
+git clone https://github.com/opencv/opencv_contrib.git
 
-unzip 3.2.0.zip
-#mv 3.2.0.zip opencv.3.2.0.zip
-rm 3.2.0.zip
-mv opencv-3.2.0 OpenCV
-
-wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip
-unzip 3.2.0.zip
-#mv 3.2.0.zip opencv_contrib.3.2.0.zip
-rm 3.2.0.zip
-mv opencv_contrib-3.2.0 OpenCV/opencv_contrib
-cd OpenCV
 mkdir build
 cd build
-cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules -DWITH_OPENGL=ON -DFORCE_VTK=ON -DWITH_TBB=ON -DWITH_GDAL=ON -DWITH_XINE=ON -DBUILD_EXAMPLES=ON ..
-make -j4
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local .. -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules -D PYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3 ../opencv
+make -j2
 sudo make install
-sudo ldconfig
-
-
-# 4. EXECUTE SOME OPENCV EXAMPLES AND COMPILE A DEMONSTRATION
-
-# To complete this step, please visit 'http://milq.github.io/install-opencv-ubuntu-debian'.

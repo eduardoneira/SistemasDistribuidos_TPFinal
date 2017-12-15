@@ -1,2 +1,6 @@
 log/
 modules/__pycache__
+setup/build
+setup/opencv
+setup/opencv_contrib
+img_processed/
