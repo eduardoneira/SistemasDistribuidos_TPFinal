@@ -24,8 +24,6 @@ class MatcherWrapper:
           best_id = id
           max_good_matches = self.matcher.good_matches_count
 
-      print(self.matcher.good_matches_count)
-
     return best_id
 
   def _get_keypoints(self, id):

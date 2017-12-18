@@ -72,7 +72,7 @@ class FeatureMatcher:
     if len(good)>self.MIN_MATCH_COUNT:
       src_pts = np.float32([ hash1[0][m.queryIdx].pt for m in good ]).reshape(-1,1,2)
       dst_pts = np.float32([ hash2[0][m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-      M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 10.0)
+      M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
       matchesMask = mask.ravel().tolist()
       print("Mask matches: "+str(matchesMask.count(1)))
       if (matchesMask.count(1) > 0):

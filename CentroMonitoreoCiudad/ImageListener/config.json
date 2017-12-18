@@ -20,7 +20,7 @@
     "password": "postgres"
   },
   "matcher": {
-    "min_match": 5,
+    "min_match": 4,
     "mem_size": 1048576
   }
 }

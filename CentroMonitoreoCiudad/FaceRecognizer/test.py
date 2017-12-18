@@ -19,17 +19,17 @@ if __name__ == '__main__':
   feature_matcher = SURFFeatureMatcher(min_match_count=4, threshold=800)
   cropper = FaceCropper(config_cropper())
   
-  with open('tests/-1.jpg','rb') as fd:
+  with open('tests/1.jpg','rb') as fd:
     img1 = fd.read()
 
-  with open('tests/5.jpg','rb') as fd:
+  with open('tests/3.jpg','rb') as fd:
     img2 = fd.read()
   
   img1_b64 = base64.b64encode(img1).decode('utf-8')
   img2_b64 = base64.b64encode(img2).decode('utf-8')
 
   img1_cropped = cropper.crop_base64(img1_b64)[0]
-  img2_cropped = cropper.crop_base64(img2_b64)[0]
+  img2_cropped = cropper.crop_base64(img2_b64)[1]
 
   img1_features = feature_matcher.find_features_base64(img1_cropped)  
   img2_features = feature_matcher.find_features_base64(img2_cropped)
