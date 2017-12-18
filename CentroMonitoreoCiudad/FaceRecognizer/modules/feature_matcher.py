@@ -32,17 +32,20 @@ class FeatureMatcher:
 
   def match_descriptors(self, kp1, desc1, kp2, desc2):
     self.good_matches = []
+    self.good_matches_count = 0
 
     for m,n in self._compare_descriptors(desc1, desc2):
       if m.distance < self.__PORC_DISTANCE*n.distance:
         self.good_matches.append(m)
+        self.good_matches_count += 1
 
-    if (len(self.good_matches) > self.MIN_MATCH_COUNT):
+    if (self.good_matches_count > self.MIN_MATCH_COUNT):
       if (self.__USE_RANSAC):
         src_pts = np.float32([ kp1[m.queryIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         dst_pts = np.float32([ kp2[m.trainIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
-        return (mask.ravel().tolist().count(1) > self.MIN_MATCH_COUNT)
+        self.good_matches_count = mask.ravel().tolist().count(1)
+        return (self.good_matches_count > self.MIN_MATCH_COUNT)
       else:
         return True
     else: 
@@ -72,7 +75,7 @@ class FeatureMatcher:
     if len(good)>self.MIN_MATCH_COUNT:
       src_pts = np.float32([ hash1[0][m.queryIdx].pt for m in good ]).reshape(-1,1,2)
       dst_pts = np.float32([ hash2[0][m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-      M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
+      M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 10.0)
       matchesMask = mask.ravel().tolist()
       print("Mask matches: "+str(matchesMask.count(1)))
       if (matchesMask.count(1) > 0):

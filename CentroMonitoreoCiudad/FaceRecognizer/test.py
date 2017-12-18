@@ -34,5 +34,6 @@ if __name__ == '__main__':
   img1_features = feature_matcher.find_features_base64(img1_cropped)  
   img2_features = feature_matcher.find_features_base64(img2_cropped)
 
-  # print(feature_matcher.match_descriptors(img1_features[1],img2_features[1]))  
+  print(feature_matcher.match_descriptors(img1_features[0], img1_features[1], img2_features[0],img2_features[1]))  
+  print(feature_matcher.good_matches_count)
   feature_matcher.compare_and_draw_base64(img1_cropped, img2_cropped)

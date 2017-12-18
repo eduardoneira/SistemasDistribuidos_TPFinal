@@ -1,7 +1,6 @@
 #!/bin/python3
 
 import numpy as np
-import pdb
 import cv2
 import base64
 from tkinter import *
@@ -39,15 +38,12 @@ class FeatureMatcher:
         self.good_matches.append(m)
         self.good_matches_count += 1
 
-    pdb.set_trace()
-
     if (self.good_matches_count > self.MIN_MATCH_COUNT):
       if (self.__USE_RANSAC):
         src_pts = np.float32([ kp1[m.queryIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         dst_pts = np.float32([ kp2[m.trainIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
         self.good_matches_count = mask.ravel().tolist().count(1)
-        pdb.set_trace()
         return (self.good_matches_count > self.MIN_MATCH_COUNT)
       else:
         return True
