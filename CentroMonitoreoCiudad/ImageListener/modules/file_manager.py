@@ -4,6 +4,7 @@ import logging
 import os
 import base64
 import hashlib
+from modules.image_processing.opencv_helper import *
 
 class FileManager:
 
@@ -37,10 +38,10 @@ class FileManager:
     return load_keypoints(self.keypoints_path+'/'+str(id)+'.kp')
   
   def save_faces_base64(self, id, image):
-    return self.save_image(base64.b64decode(image), self.faces_path+str(id)+'/')
+    return self._save_image(base64.b64decode(image), self.faces_path+'/'+str(id)+'/')
 
   def save_bigpic_base64(self, image):
-    return self.save_image(base64.b64decode(image), self.bigpic_path)
+    return self._save_image(base64.b64decode(image), self.bigpic_path+'/')
 
   def SHA1_byte_stream(self, byte_stream):
     return hashlib.sha1(byte_stream).hexdigest()

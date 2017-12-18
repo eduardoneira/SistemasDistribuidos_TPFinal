@@ -12,9 +12,10 @@ class TrajectoryQuery:
 
   def handle(self, request, response):
     person = self.db.find_person_by_dni(request['dni'])
-
-    if (len(person) == 0):
+    
+    if (person == None):
       response['status'] = 'NOT OK'
+      response['comment'] = 'Not included in database'
     else:
       big_pictures = self.db.find_big_pictures(person[0])
       if (len(big_pictures) == 0):

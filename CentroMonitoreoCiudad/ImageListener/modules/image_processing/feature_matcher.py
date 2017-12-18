@@ -41,7 +41,8 @@ class FeatureMatcher:
         src_pts = np.float32([ kp1[m.queryIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         dst_pts = np.float32([ kp2[m.trainIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
-        return (mask.ravel().tolist().count(1) > self.MIN_MATCH_COUNT)
+        self.good_matches_count = mask.ravel().tolist().count(1)
+        return (self.good_matches_count > self.MIN_MATCH_COUNT)
       else:
         return True
     else: 

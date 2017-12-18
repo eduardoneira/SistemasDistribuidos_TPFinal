@@ -46,7 +46,7 @@ class FileManager:
     return self.__save_image(base64.b64decode(image), self.people_path+'/'+str(id)+'/')
 
   def get_bigpic_base64(self, filename):
-    with open(self.bigpic_path+filename+".jpg", 'rb') as file:
+    with open(self.bigpic_path+'/'+filename+".jpg", 'rb') as file:
       return base64.b64encode(file.read()).decode('utf-8')
 
   def SHA1_byte_stream(self, byte_stream):

@@ -12,16 +12,16 @@ def callback(body):
   payload = json.loads(body.decode('utf-8'))
   logging.debug('Mensaje recibido: %d caras, con %s, %s',len(payload['faces']),payload['location'],payload['timestamp'])
 
-  ids = db.most_wanted_people_images()
+  ids = db.person_images()
   matches_data = []
 
   for face in payload['faces']:  
     id = matcher.find_match(face, ids)
-    person_id = db.person_id_by_person_image_id(id)
     
-    if (person_id):
+    if (id):
+      person_id = db.person_id_by_person_image_id(id)
       matches_data.append([person_id, face])
-      logging.debug('Se encontro un match con '+person_id+'. Guardando en sistema')
+      logging.debug('Se encontro un match con '+str(person_id)+'. Guardando en sistema')
     else:
       logging.debug('No se encontro un match. Descartando')
 

@@ -3,7 +3,7 @@
 import numpy as np
 import cv2
 import base64
-import _pickle as pickle
+import pickle
 
 def bytes_to_image(image):
   nparr = np.fromstring(image, np.uint8)
@@ -34,13 +34,13 @@ def dump_keypoints(keypoints, descriptors, filepath):
   for point in keypoints:
     point_serialization = (point.pt, point.size, point.angle, point.response, point.octave, point.class_id, descriptors[i])
     serialization.append(point_serialization)
-    ++i
+    i+=1
 
-  with open(filepath,"wb") as file:
-    pickle.dump(serialization, file)
+  with open(filepath,"wb") as f:
+    pickle.dump(serialization, f)
 
 def load_keypoints(filepath):
-  with open(filepath,"wb") as file:
+  with open(filepath,"rb") as file:
     serialization = pickle.load(file)
   
   keypoints = []
