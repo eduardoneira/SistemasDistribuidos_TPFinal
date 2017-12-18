@@ -4,7 +4,6 @@ import numpy as np
 import cv2
 import base64
 import pickle
-import pdb
 
 def bytes_to_image(image):
   nparr = np.fromstring(image, np.uint8)
@@ -36,8 +35,6 @@ def dump_keypoints(keypoints, descriptors, filepath):
     point_serialization = (point.pt, point.size, point.angle, point.response, point.octave, point.class_id, descriptors[i])
     serialization.append(point_serialization)
     i+=1
-
-  pdb.set_trace()
 
   with open(filepath,"wb") as f:
     pickle.dump(serialization, f)
