@@ -27,9 +27,9 @@ class FeatureMatcher:
     self.features_img1 = self.find_features(base64_to_image(img1)) 
     self.features_img2 = self.find_features(base64_to_image(img2))
 
-    return self.match_descriptors(self.features_img1[1], self.features_img2[1])
+    return self.match_descriptors(self.feature_img1[0], self.features_img1[1], self.feature_img2[0], self.features_img2[1])
 
-  def match_descriptors(self, desc1, desc2):
+  def match_descriptors(self, kp1, desc1, kp2, desc2):
     self.good_matches = []
 
     for m,n in self._compare_descriptors(desc1, desc2):
@@ -37,9 +37,9 @@ class FeatureMatcher:
         self.good_matches.append(m)
 
     if (len(self.good_matches) > self.MIN_MATCH_COUNT):
-      if (__USE_RANSAC):
-        src_pts = np.float32([ hash1[0][m.queryIdx].pt for m in good ]).reshape(-1,1,2)
-        dst_pts = np.float32([ hash2[0][m.trainIdx].pt for m in good ]).reshape(-1,1,2)
+      if (self.__USE_RANSAC):
+        src_pts = np.float32([ kp1[m.queryIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
+        dst_pts = np.float32([ kp2[m.trainIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
         return (mask.ravel().tolist().count(1) > self.MIN_MATCH_COUNT)
       else:

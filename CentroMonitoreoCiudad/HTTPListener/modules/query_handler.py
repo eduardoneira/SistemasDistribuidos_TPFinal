@@ -25,7 +25,7 @@ class QueryHandler:
                                                   self.file_manager,
                                                   self.matcher_wrapper,
                                                   self.cropper,
-                                                  str(config['missing']))
+                                                  config['missing'])
   
     self.handlers[config['trajectory']] = TrajectoryQuery(self.db,
                                                           self.file_manager)
@@ -36,7 +36,7 @@ class QueryHandler:
     response['status'] = 'OK'
     
     try:
-      logging.debug("Llego una request de tipo "+ request['type'])
+      logging.debug("Llego una request de tipo "+ str(request['type']))
       self.handlers[int(request['type'])].handle(request, response)
     except KeyError:
       response['status'] = 'ERROR'

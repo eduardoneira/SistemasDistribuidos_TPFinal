@@ -2,6 +2,7 @@
 
 from cachetools import LRUCache
 from modules.image_processing.surf_feature_matcher import *
+import pdb
 
 class MatcherWrapper:
 
@@ -19,10 +20,10 @@ class MatcherWrapper:
     for id in ids:
       id_keypoints = self._get_keypoints(id)
       
-      if (self.matcher.match_descriptors(processed_image[1], id_keypoints[1])):
-        if (self.matcher.good_matches > max_good_matches):
+      if (self.matcher.match_descriptors(processed_image[0], processed_image[1], id_keypoints[0], id_keypoints[1])):
+        if (len(self.matcher.good_matches) > max_good_matches):
           best_id = id
-          max_good_matches = self.matcher.good_matches
+          max_good_matches = len(self.matcher.good_matches)
 
     return best_id
 

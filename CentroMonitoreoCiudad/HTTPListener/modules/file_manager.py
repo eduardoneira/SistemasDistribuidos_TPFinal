@@ -49,6 +49,5 @@ class FileManager:
     with open(self.bigpic_path+filename+".jpg", 'rb') as file:
       return base64.b64encode(file.read()).decode('utf-8')
 
-
   def SHA1_byte_stream(self, byte_stream):
     return hashlib.sha1(byte_stream).hexdigest()

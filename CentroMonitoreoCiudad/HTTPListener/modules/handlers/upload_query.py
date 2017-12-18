@@ -5,6 +5,7 @@ from modules.face_cropper import *
 from modules.db_wrapper import *
 from modules.matcher_wrapper import *
 from modules.file_manager import *
+import pdb
 
 class UploadQuery:
 
@@ -16,12 +17,13 @@ class UploadQuery:
     self.MISSING = missing_id
 
   def handle(self, request, response):
+    pdb.set_trace()
     if (request['state'] == self.MISSING):
       state = 'missing'
     else:
       state = 'legal_problems'
 
-    self.db.save_person(request['dni'],
+    self.db.save_person(str(request['dni']),
                         state,
                         request['name'],    
                         request['surname'])    
