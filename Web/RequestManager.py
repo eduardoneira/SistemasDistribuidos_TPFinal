@@ -88,4 +88,4 @@ class ExistanceManager(Manager):
           #TODO: Show best match
           return jsonify(operation=self.type, answer= config['RESPONSEALREADYEXISTS'], name= response['name'], surname= response['surname'], dni= response['dni'], state= response['state'])
        else:
-          raise VoidRequest("non-existent")
+          raise VoidRequest("Not in database")
