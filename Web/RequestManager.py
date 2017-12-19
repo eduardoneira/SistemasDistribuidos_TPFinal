@@ -55,7 +55,8 @@ class TrajectoryManager(Manager):
           config = json.load(config_file)
           return jsonify(operation= self.type, answer= config['RESPONSETRAJECTORY'],points=json.dumps(points))
     else:
-      raise VoidRequest(response['status'])
+      print(response);
+      raise VoidRequest(response['comment'])
 
 class UploadManager(Manager):
   def __init__(self,rpc_client,formData):

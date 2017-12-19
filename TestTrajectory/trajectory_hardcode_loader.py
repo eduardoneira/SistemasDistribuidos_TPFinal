@@ -8,14 +8,14 @@ sys.path.insert(0, '../')
 from Utils.Hash import compute_sha1_from_file
 
 def loadBigPicAndCrop(filename, cropFile, lat, lng):
-    hash_big_pic = compute_sha1_from_file(filename);
+    hash_big_pic = hash_big_pic = file_manager.save_bigpic_base64(payload['frame'])
     hash_crop = compute_sha1_from_file(cropFile)
     timestamp= datetime.now()
-    cursor.execute("""INSERT INTO BigPic (HashBigPic, Lat, Lng, Timestmp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, lat, lng, timestamp))
-    cursor.execute("""INSERT INTO CropFace (HashCrop, Id, HashBigPic) VALUES (%s, %s, %s)""",(hash_crop, 1, hash_big_pic))
+    cursor.execute("""INSERT INTO BigPicture (id, latitude, longitude, Time_stamp) VALUES (%s, %s, %s, %s)""",(hash_big_pic, lat, lng, timestamp))
+    cursor.execute("""INSERT INTO Face (id, person_id, bigpic_id) VALUES (%s, %s, %s)""",(hash_crop, 43, hash_big_pic))
 
 def loadCrop():
-    cursor.execute("""INSERT INTO CropFace (HashCrop, Id, HashBigPic) VALUES (%s, %s, %s)""",(hash_crop, 1, hash_big_pic))
+    cursor.execute("""INSERT INTO Face (id, person_id, bigpic_id) VALUES (%s, %s, %s)""",(hash_crop, 37, hash_big_pic))
 if __name__ == '__main__':
   with open('./config.json') as f:
       conf = json.load(f)

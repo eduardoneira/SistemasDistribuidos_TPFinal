@@ -119,11 +119,11 @@ legend {
 }
 
 .option-buttons {
-  padding-left: 300px; 
+  padding-left: 300px;
 }
 
-form label.error{font:10px Tahoma,sans-serif;color:#ED7476;margin-left:5px; display:inline;}
-form input.error,form input.error:hover,form input.error:focus,form select.error,form textarea.error{border:1px solid #ED7476;background:#FFEDED}
+form label.error{font:25px Tahoma,sans-serif;color:#ED7476;margin-top: 15px;margin-left:5px; display:inline;}
+form input.error,form input.error:hover,form input.error:focus,form select.error,form textarea.error{border:5px solid #ED7476;background:#FFFFFF}
 
 #outputName, #outputSurname, #outputDni, #outputState{
   font-weight: bold;
