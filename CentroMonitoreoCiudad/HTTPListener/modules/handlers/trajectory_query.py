@@ -12,7 +12,7 @@ class TrajectoryQuery:
 
   def handle(self, request, response):
     person = self.db.find_person_by_dni(request['dni'])
-    
+
     if (person == None):
       response['status'] = 'NOT OK'
       response['comment'] = 'Not included in database'
@@ -20,7 +20,7 @@ class TrajectoryQuery:
       big_pictures = self.db.find_big_pictures(person[0])
       if (len(big_pictures) == 0):
         response['status'] = 'NOT OK'
-        response['comment'] = 'Not found yet'
+        response['comment'] = 'Included in database but not found yet in the streets'
       else:
         coordinates = []
         for image in big_pictures:
