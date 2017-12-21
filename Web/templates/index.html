@@ -105,8 +105,8 @@
               <span>Upload</span>
           </button>
           <button type="reset" class="btn btn-lg cancel hover-button" id="cancelAddPerson">
-              <i class="glyphicon glyphicon glyphicon-ban-circle"></i>
-              <span>Cancel</span>
+              <i class="glyphicon glyphicon glyphicon-trash"></i>
+              <span>Clean</span>
           </button>
         </div>
       </div>
@@ -160,8 +160,8 @@
             <span>Submit</span>
         </button>
         <button type="reset" class="btn btn-lg cancel hover-button" id="cancelExistance">
-            <i class="glyphicon glyphicon glyphicon-ban-circle"></i>
-            <span>Cancel</span>
+            <i class="glyphicon glyphicon glyphicon-trash"></i>
+            <span>Clean</span>
         </button>
       </div>
     </div>
@@ -231,7 +231,6 @@
             backgroundClassName: 'transparent',
             arrowStyle: 2,
             maxWidth: 300,
-            disableAutoPan: true
           });
           $("#map").css("width", '95%').css("height", 800);
           google.maps.event.addListener(mymap, 'click', function() {
@@ -284,7 +283,8 @@
           var filepath="/static/images/"+points[i].image;
           var month = date.getMonth() + 1;
           var content = '<div id="iw-container"><div class="iw-title">'+location+'</div><div class="iw-content"><img src='+
-          filepath+' style="height: auto; width: 250px;"><br><br><p><b>Date</b>: '+ date.getDate()+'/'+month+ '/'+date.getFullYear()+'<br><b>Time</b>:'+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()+':'+date.getMilliseconds()+'</p></div></div>';
+          filepath+' style="height: auto; width: 250px;"><p><b>Date</b>: '+ date.getDate()+'/'+month+ '/'+date.getFullYear()+
+          '<br><b>Time</b>:'+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()+':'+date.getMilliseconds()+'</p></div></div>';
           marker = new google.maps.Marker({
             position: currentPosition,
             map: mymap,
@@ -360,7 +360,6 @@
                       }else{
                         console.log("no tiene trayectoria");
                       }
-                      window.scrollTo(0,document.body.scrollHeight);
                   },
                   error: function(file){
                     console.log("Error trajectory");
