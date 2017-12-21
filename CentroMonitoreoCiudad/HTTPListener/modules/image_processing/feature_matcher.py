@@ -11,6 +11,7 @@ class FeatureMatcher:
 
   __PORC_DISTANCE = 0.7
   __USE_RANSAC = True
+  __RANSAC_REPROJ_THRESHOLD = 5.0
 
   def __init__(self, min_match_count=4):
     self.MIN_MATCH_COUNT = min_match_count
@@ -40,7 +41,7 @@ class FeatureMatcher:
       if (self.__USE_RANSAC):
         src_pts = np.float32([ kp1[m.queryIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         dst_pts = np.float32([ kp2[m.trainIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
-        M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
+        M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, self.__RANSAC_REPROJ_THRESHOLD)
         return (mask.ravel().tolist().count(1) > self.MIN_MATCH_COUNT)
       else:
         return True
@@ -71,7 +72,7 @@ class FeatureMatcher:
     if len(good)>self.MIN_MATCH_COUNT:
       src_pts = np.float32([ hash1[0][m.queryIdx].pt for m in good ]).reshape(-1,1,2)
       dst_pts = np.float32([ hash2[0][m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-      M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 10.0)
+      M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, self.__RANSAC_REPROJ_THRESHOLD)
       matchesMask = mask.ravel().tolist()
       print("Mask matches: "+str(matchesMask.count(1)))
       if (matchesMask.count(1) > 0):
