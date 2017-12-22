@@ -16,14 +16,16 @@ class MatcherWrapper:
     
     best_id = None
     max_good_matches = 0
+    extra_matches = 0
     
     for id in ids:
       id_keypoints = self._get_keypoints(id)
       
       if (self.matcher.match_descriptors(processed_image[0], processed_image[1], id_keypoints[0], id_keypoints[1])):
-        if (len(self.matcher.good_matches) > max_good_matches):
+        if (self.matcher.ransac_matches_count > max_good_matches or self.matcher.good_matches_count > extra_matches):
           best_id = id
-          max_good_matches = len(self.matcher.good_matches)
+          max_good_matches = self.matcher.ransac_good_matches
+          extra_matches = self.matcher.good_matches_count
 
     return best_id
 

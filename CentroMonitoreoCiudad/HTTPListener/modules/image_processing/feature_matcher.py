@@ -11,7 +11,7 @@ class FeatureMatcher:
 
   __PORC_DISTANCE = 0.7
   __USE_RANSAC = True
-  __RANSAC_REPROJ_THRESHOLD = 5.0
+  __RANSAC_REPROJ_THRESHOLD = 3.0
 
   def __init__(self, min_match_count=4):
     self.MIN_MATCH_COUNT = min_match_count
@@ -36,13 +36,16 @@ class FeatureMatcher:
     for m,n in self._compare_descriptors(desc1, desc2):
       if m.distance < self.__PORC_DISTANCE*n.distance:
         self.good_matches.append(m)
-
+    
+    self.good_matches_count = len(self.good_matches_count)
+    
     if (len(self.good_matches) > self.MIN_MATCH_COUNT):
       if (self.__USE_RANSAC):
         src_pts = np.float32([ kp1[m.queryIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         dst_pts = np.float32([ kp2[m.trainIdx].pt for m in self.good_matches ]).reshape(-1,1,2)
         M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, self.__RANSAC_REPROJ_THRESHOLD)
-        return (mask.ravel().tolist().count(1) > self.MIN_MATCH_COUNT)
+        self.ransac_matches_count = mask.ravel().tolist().count(1)
+        return (self.ransac_matches_count > self.MIN_MATCH_COUNT)
       else:
         return True
     else: 
