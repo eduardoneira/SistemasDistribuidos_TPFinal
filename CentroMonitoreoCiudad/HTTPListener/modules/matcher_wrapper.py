@@ -2,7 +2,7 @@
 
 from cachetools import LRUCache
 from modules.image_processing.surf_feature_matcher import *
-import pdb
+import logging
 
 class MatcherWrapper:
 
@@ -24,9 +24,11 @@ class MatcherWrapper:
       if (self.matcher.match_descriptors(processed_image[0], processed_image[1], id_keypoints[0], id_keypoints[1])):
         if (self.matcher.ransac_matches_count > max_good_matches or self.matcher.good_matches_count > extra_matches):
           best_id = id
-          max_good_matches = self.matcher.ransac_good_matches
+          max_good_matches = self.matcher.ransac_matches_count
           extra_matches = self.matcher.good_matches_count
 
+    logging.debug("Max features found: "+str(max_good_matches))
+    
     return best_id
 
   def dump_keypoints(self, id, image):

@@ -1,6 +1,6 @@
 {
   "network": {
-    "broker_client_host": "127.0.0.1",
+    "broker_client_host": "localhost",
     "queue_client": "http_rpc"
   },
   "requests": {

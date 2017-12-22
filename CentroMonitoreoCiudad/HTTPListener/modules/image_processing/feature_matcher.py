@@ -37,7 +37,7 @@ class FeatureMatcher:
       if m.distance < self.__PORC_DISTANCE*n.distance:
         self.good_matches.append(m)
     
-    self.good_matches_count = len(self.good_matches_count)
+    self.good_matches_count = len(self.good_matches)
     
     if (len(self.good_matches) > self.MIN_MATCH_COUNT):
       if (self.__USE_RANSAC):
