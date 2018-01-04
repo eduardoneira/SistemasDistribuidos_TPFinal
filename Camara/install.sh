@@ -7,3 +7,5 @@ cd setup/
 ./python.sh
 
 cd ..
+
+echo "Listo"

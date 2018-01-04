@@ -8,6 +8,3 @@ pip3 install --user pygame
 
 echo "Instalando eclipse paho para cliente mqtt"
 pip3 install --user paho-mqtt
-
-echo "Instalando videosequence"
-pip3 install --user videosequence
