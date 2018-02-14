@@ -12,7 +12,7 @@ Para instalar todas las dependencias necesarias en Debian/Ubuntu, correr el sigu
 ```
 sudo ./install.sh
 ```
-# Configuración
+# Configuration
 
 Antes de ejecutar un CMB es recomendable configurar los parámetros en el archivo config.json. Allí se puede especificar:
 * network:
