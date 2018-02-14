@@ -12,7 +12,6 @@ def handle_message(body):
   logging.debug('Mensaje recibido: {%s,%s}', payload['location'],payload['timestamp'])
   print("Se recibio mensaje de frame. Comienza el cropeo")
 
-  payload['type'] = config['network']['message_type']
   payload['faces'] = cropper.crop_base64(payload['frame'])
   
   if config['logger']['save_image']:

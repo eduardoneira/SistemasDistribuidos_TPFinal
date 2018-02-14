@@ -2,7 +2,7 @@
 
 # Install
 
-Este sistema esta pensado para correr dentro de una raspberry pi con Raspbian con python3. Sin embargo, se puede utilizar también desde cualquier computadora con linux mockeando la cámara con una carpeta del FileSystem. Para instalar todas las dependencias necesarias en Ubuntu/Debian, correr el siguiente comando:
+Este sistema esta pensado para correr dentro de una raspberry pi con Raspbian y está codificado en python3. Sin embargo, se puede utilizar también desde cualquier computadora con linux mockeando la cámara con una carpeta del FileSystem. Para instalar todas las dependencias necesarias en Ubuntu/Debian, correr el siguiente comando:
 
 ```
 ./install.sh
@@ -30,7 +30,7 @@ Para lanzar una cámara, correr el siguiente comando.
 
 # Overview
 
-El sistema de cámara de vigilancia utiliza rabbitMQ con MQTT como protocolo para enviar mensajes a su respectivo CMB. La manera de diferenciar entre distintos CMB es tanto a través de la IP del broker como del tópico. Las imagenes las consigue utilizando la RaspCam, las convierte a base64 y las adjunta en un mensaje json con el timestamp y la ubicación. Los mensajes que se envian siguen con el siguiente formato:
+El sistema de cámara de vigilancia utiliza rabbitMQ con MQTT como protocolo para enviar mensajes a su respectivo CMB. La manera de diferenciar entre distintos CMB a través de la IP del broker y del tópico. Las imagenes se consiguen utilizando la RaspCam, luego las convierte a base64 y finalmente las adjunta en un mensaje json con el timestamp y la ubicación. Los mensajes que se envian siguen con el siguiente formato:
 
 ```javascript
 { "timestamp": "17-07-2017||01:09:07.434053", "location": [-34.5884843, -58.3962122], "frame": "base64_image"}

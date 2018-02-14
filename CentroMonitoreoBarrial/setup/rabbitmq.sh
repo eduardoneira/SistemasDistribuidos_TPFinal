@@ -4,9 +4,9 @@ if ! command -v rabbitmq-server > /dev/null 2>&1; then
  
 	echo "Instalando dependencias rabbitMQ"
 
-	sudo dnf install erlang
-	sudo dnf install logrotate
-	sudo dnf install socat
+	sudo apt-get install erlang
+	sudo apt-get install logrotate
+	sudo apt-get install socat
 
 	echo "Comenzando instalacion rabbitMQ"
 
@@ -17,6 +17,7 @@ if ! command -v rabbitmq-server > /dev/null 2>&1; then
 	#Para usar mqtt
 	sudo rabbitmq-plugins enable rabbitmq_mqtt
 
+	#copy configuration to path
 	sudo cp ../../Utils/rabbitmq.config /etc/rabbitmq/
 
 fi
