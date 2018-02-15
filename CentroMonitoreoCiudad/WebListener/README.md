@@ -1,4 +1,4 @@
-# Centro de Monitoreo Ciudad - HTTPListener
+# Centro de Monitoreo Ciudad - WebListener
 
 # Dependencias
 
@@ -17,7 +17,7 @@ Las dependencias principales de este módulo son:
 
 # Run
 
-Para correr al HTTPListener es necesario levantar al menos un worker. Para esto correr el siguiente comando:
+Para correr al WebListener es necesario levantar al menos un worker. Para esto correr el siguiente comando:
 
 ```
 ./worker.py

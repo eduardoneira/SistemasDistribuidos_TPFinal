@@ -14,26 +14,26 @@ Estos comandos se encargan de instalar todas las dependecias necesarias para cor
 
 # Configuration
 
-Antes de levantar al CMC, es necesario configurar los distintos parámetros de cada módulo. Estos se encuentran en ImageListener/config.json y HTTPListener/config.json. Para más información de los parámetros, leer el README que se encuentra en dichos módulos.
+Antes de levantar al CMC, es necesario configurar los distintos parámetros de cada módulo. Estos se encuentran en ImageListener/config.json y WebListener/config.json. Para más información de los parámetros, leer el README que se encuentra en dichos módulos.
 
 # Run
 
-Para correr al CMC es necesario levantar workers, al menos uno para el ImageListener y otro para el HTTPListener. Para levantar el ImageListener, utilizar los siguientes comandos:
+Para correr al CMC es necesario levantar workers, al menos uno para el ImageListener y otro para el WebListener. Para levantar el ImageListener, utilizar los siguientes comandos:
 
 ```
 cd ImageListener/
 ./worker.py
 ```
-En cuanto al HTTPListener, utilizar los siguientes comandos:
+En cuanto al WebListener, utilizar los siguientes comandos:
 
 ```
-cd HTTPListener/
+cd WebListener/
 ./worker.py
 ```
 
 # Overview
 
-El CMC se compone de tres módulos principales: el ImageListener, que se encarga de escuchar mensajes de todas los CMB, el HTTPListener, que se encarga de escuchar requests que le lleguen desde el cliente web, y el FaceRecognizer, que es un wrapper de opencv con algoritmos útiles para reconocimiento facial.
+El CMC se compone de tres módulos principales: el ImageListener, que se encarga de escuchar mensajes de todas los CMB, el WebListener, que se encarga de escuchar requests que le lleguen desde el cliente web, y el FaceRecognizer, que es un wrapper de opencv con algoritmos útiles para reconocimiento facial.
 Utiliza una base de datos relacional (Postgresql) para guardar toda la metadata de las imágenes con resultados positivos y las imágenes se almacenan en el disco duro.
 
 La base de datos se compone de 4 tablas:
@@ -60,4 +60,4 @@ image_database
 
 Dentro de people/id1/ se encuentran las imagenes que se cargan al momento de querer buscar a una persona. Cuando se sube una imagen a la base de datos de busqueda, se almacena en keypoints una serialización de los datos principales de cada una de las imagenes enviadas. Una vez que se encuentra un match, en found/id1/ se va a guardar la cara recortada de la imagen original y el bigpics se va a guardar la imagen original.
 
-Los módulos ImageListener y HTTPListener están diseñados de manera de que interactuan con ambas bases de datos. Utilizan un esquema de workers, los cuales son completamente paralelizables. Esto nos permite levantar la cantidad de workers que creamos convenientes según el uso del sistema. 
+Los módulos ImageListener y WebListener están diseñados de manera de que interactuan con ambas bases de datos. Utilizan un esquema de workers, los cuales son completamente paralelizables. Esto nos permite levantar la cantidad de workers que creamos convenientes según el uso del sistema. 
