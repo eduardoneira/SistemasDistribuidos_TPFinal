@@ -1,6 +1,6 @@
 log/
 modules/__pycache__
 setup/OpenCV
-tests/att_faces/
+tests/
 LBPH_dump
-tests/*.jpg
+tests/images
