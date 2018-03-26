@@ -10,22 +10,22 @@ from modules.opencv_helper import *
 
 class FeatureMatcher:
 
-     __PORC_DISTANCE = 0.7
-     __USE_RANSAC = True
-     __RANSAC_REPROJ_THRESHOLD = 3.0
-     FLANN_INDEX_KDTREE = 1
-     FLANN_INDEX_LSH = 6
+    __PORC_DISTANCE = 0.7
+    __USE_RANSAC = True
+    __RANSAC_REPROJ_THRESHOLD = 3.0
+    FLANN_INDEX_KDTREE = 1
+    FLANN_INDEX_LSH = 6
 
-     LSH = 'LSH'
+    LSH = 'LSH'
     KDTREE = 'KDTREE'
         
     def __init__(self, min_match_count=4, flann_index=KDTREE):
         self.MIN_MATCH_COUNT = min_match_count
 
         if (flann_index == self.LSH) :
-          index_params= dict(algorithm = FLANN_INDEX_LSH, table_number = 12, key_size = 20, multi_probe_level = 2)
+          index_params= dict(algorithm = self.FLANN_INDEX_LSH, table_number = 12, key_size = 20, multi_probe_level = 2)
         else:
-          index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 5)
+          index_params = dict(algorithm = self.FLANN_INDEX_KDTREE, trees = 5)
 
         search_params = dict(checks = 200)
         self.flann = cv2.FlannBasedMatcher(index_params, search_params)
@@ -80,7 +80,7 @@ class FeatureMatcher:
         for m in matches:
             if len(m) == 2:
                 if m[0].distance < self.__PORC_DISTANCE*m[1].distance:
-                good.append(m[0])
+                    good.append(m[0])
 
         print("Good matches: "+ str(len(good)))
 

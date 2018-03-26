@@ -15,54 +15,10 @@ def config_cropper():
            "shrink_factor": 0.20
          }
 
-# class CompareImageTest(unittest.TestCase):
-
-#   def __crop_image(self, filename, index):
-#     with open(filename,'rb') as fd:
-#       img = fd.read()
-  
-#     img_b64 = base64.b64encode(img).decode('utf-8')
-
-#     img_cropped = cropper.crop_base64(img_b64)[index]
-
-#     img_features = feature_matcher.find_features_base64(img_cropped)  
-
-#     return (filename, img_features)
-
-#   def setUp(self):
-#     self.cropper = FaceCropper(config_cropper())
-  
-#     with open("fixtures.json") as file:
-#       self.fixtures = json.load(file)
-
-#     self.users = []
-#     for user, images in self.fixtures:
-#       self.users.append(user)
-#       self.images[user] = []
-#       for image in images:
-#         self.images[user].append(self.__crop_image(image["filename"], image["index"]))
-
-#   def __one_vs_all(self, user_to_test):
-#     for image_to_test in self.images[user_to_test]:
-#       for user in self.users:
-#         total_images = 0
-
-#         for image in self.images[user]:
-#           if image_to_test != image 
-#             is_match = self.feature_matcher.match_descriptors(image_to_test[1][0], image_to_test[1][1], image[1][0], image[1][1]) 
-#             matches_count = self.feature_matcher.good_matches_count
-#             print("La imagen ")
-  
-#   def ORBTest(self):    
-#     self.feature_matcher = ORBFeatureMatcher(min_match_count=5)
-
-#     for user in self.users:
-#       self.__one_vs_all(user)
-    
 if __name__ == '__main__':
 
-  feature_matcher = SURFFeatureMatcher(min_match_count=4, threshold=400)
-  # feature_matcher = ORBFeatureMatcher(min_match_count=5)
+  # feature_matcher = SURFFeatureMatcher(min_match_count=4, threshold=400)
+  feature_matcher = ORBFeatureMatcher(min_match_count=5)
   cropper = FaceCropper(config_cropper())
   
   with open('tests/20.jpg','rb') as fd:
